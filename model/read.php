@@ -11,7 +11,7 @@ while ($registros = $querySelect->fetch_assoc()):
     $email = $registros['email'];
     $celphone = $registros['celphone'];
     $status = $registros['status'];
-    $dtregister = $registros['dtregister'];
+	$dtregister = date("d/m/Y", strtotime($registros['dtregister']));
     
 
 	echo 
@@ -44,20 +44,5 @@ while ($registros = $querySelect->fetch_assoc()):
 		  
 
 endwhile;
-
-/*
-			<td>
-				<a href='editar.php?id=$idcia'>
-					<i class='fa fa-pencil'></i>
-				</a>
-			</td>
-
-			<td>
-				<a href='banco_de_dados/delete.php?id=$idcia'>
-					<i class='fa fa-trash'></i>
-				</a>
-			</td>
-
-*/
 
  ?>

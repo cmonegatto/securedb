@@ -7,7 +7,7 @@ require_once("vendor/autoload.php");
 
 // During instantiation
 $app = new \Slim\Slim(array(
-    'templates.path' => './templates'
+    'templates.path' => './view'
 ));
 
 
@@ -29,11 +29,11 @@ $app->get('/route/:parametro', function ($parametro) use ($app) {
 */
 
 $app->get('/', function () use ($app) {  
-    $app->render('login.php');
+    $app->render('/login.php');
 });
 
 $app->get('/company', function () use ($app){
-    $app->render('company.php');    
+    $app->render('company_table.php');    
 });
 
 
