@@ -1,0 +1,48 @@
+/*
+class .
+id #
+*/
+
+h3 {
+    padding-top: 10px;
+	padding-bottom: 40px;
+}
+
+#id-login {
+/*	background: rgba(47, 0, 235, 0.176);
+	color: black;*/
+	padding: 30px;
+	margin: 0px; 
+
+}
+
+body {
+	background: rgba(47, 0, 235, 0.116);
+/*	background: white; */
+}
+
+/* Posiciona os itens do menu mais a direita*/
+.nav-item {
+	padding-left: 25px;
+
+}
+
+/* Ajusta o fonte da TABLE */
+
+table {
+	font-size: small;
+}
+
+
+/* Ajusta a grade do container mais para esquerda */
+.container {
+	margin-left: auto;
+	margin-top: 15px;
+
+}
+
+/* pinta os ícones de cinza */
+.fa {
+	color: #039be5;
+}
+
