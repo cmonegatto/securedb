@@ -37,8 +37,17 @@ $app->get('/company', function () use ($app){
 });
 
 
-$app->get('/company/insert/:p', function ($p) use ($app) {
-    echo $p;
+$app->get('/company/insert', function () use ($app) {
+    $app->render('company_crud.php');
+});
+
+$app->post('/company/insert', function () use ($app) {
+    $app->render('company_crud.php');
+});
+
+$app->get('/company/update/:p', function ($p) use ($app) {
+    $data = array("data"=>array("idcia"=>$p));
+    $app->render('company_crud.php', $data, 200);         
 });
 
 $app->get('/company/delete/:p', function ($p) use ($app) {

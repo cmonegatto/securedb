@@ -5,7 +5,7 @@ id #
 
 h3 {
     padding-top: 10px;
-	padding-bottom: 40px;
+	padding-bottom: 15px;
 }
 
 #id-login {
@@ -17,8 +17,8 @@ h3 {
 }
 
 body {
-	background: rgba(47, 0, 235, 0.116);
-/*	background: white; */
+/*	background: rgba(47, 0, 235, 0.116); */
+	background: white; 
 }
 
 /* Posiciona os itens do menu mais a direita*/
@@ -45,4 +45,3 @@ table {
 .fa {
 	color: #039be5;
 }
-

@@ -11,7 +11,7 @@ include_once 'include/menu_inc.php';
 
         <div class="col-sm-12" >
 
-            <form method="get" action="\view/company_crud.php">
+            <form method="post" action="\company/insert">
 
 
                 <h3>Cadastro de Empresas</h3>  

@@ -10,6 +10,7 @@
 			});
 
 			$('#myTable').dataTable( {
+					"order":[],
 					"language": 
 					{ "search": "Buscar", 
 						"info": "Mostrando _START_ até _END_ de _TOTAL_ linhas", 
@@ -29,3 +30,4 @@
 
 	</body>
 </html>
+

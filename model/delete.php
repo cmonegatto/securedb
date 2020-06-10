@@ -1,6 +1,5 @@
 <?php 
 
-
 include_once 'conexao.php';
 
 $idcia = $data['idcia'];
@@ -17,7 +16,7 @@ endif;
 
 if( mysqli_affected_rows($link) >0):
 	header("Location: \company");
-	die();
+	exit;
 	
 endif;
 

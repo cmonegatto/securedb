@@ -1,10 +1,23 @@
 <?php 
 
-include "class/Sql.php";
+session_start();
+include "../class/Sql.php";
+
+/*
+if (!isset($data)) {
+    $operation = "INSERT";
+} else {
+    $operation = "UPDATE";
+    $_SESSION["idcia"] = $data['idcia'];
+};
+*/
+
+$idcia = $_SESSION["idcia"];
+
 
 $conn=new Sql();
 
-$result= $conn->select("SELECT * FROM adm_cias ORDER BY cianame");
+$result= $conn->select("SELECT * FROM adm_cias WHERE idcia={$idcia}");
 
 foreach ($result as $key => $value) {
 
@@ -29,32 +42,30 @@ foreach ($result as $key => $value) {
 }
 
 
+
+
+
+
 /*
-foreach ($result as $key => $value) {
-
-	echo "<tr>";
-
-	foreach ($result[$key] as $data){
-		echo "<td>$data</td>";		
-	}
-	
-	$id = $result[$key]["idcia"];
-	echo "
-			<td>
-				<a href='\company/insert/$id'>
-					<i class='fa fa-pencil'></i>
-				</a>
-			</td>
-
-			<td>
-				<a href='\company/delete/$id'>
-					<i class='fa fa-trash'></i>
-				</a>
-			</td>";
+if (!$queryUpdate):
+	echo "erro no INSERT! <br>";
+	echo $sql;
+endif;
 
 
-	echo "</tr>";
+if( mysqli_affected_rows($link) >0):
+    header("Location: \company/insert");
+	exit;	
+endif;
 
-}
+$cianame = $_GET["cianame"];
+$respname = $_GET["respname"];
+$email = $_GET["email"];
+$celphone = $_GET["celphone"];
+$exampleRadios = $_GET["exampleRadios"];
+
+$status = ($exampleRadios == "ativo")? 1: 0;
+
 */
+
 ?>
