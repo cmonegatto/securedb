@@ -33,26 +33,26 @@ $app->get('/', function () use ($app) {
 });
 
 $app->get('/company', function () use ($app){
-    $app->render('company_table.php');    
+    $app->render('company/table.php');    
 });
 
 
 $app->get('/company/insert', function () use ($app) {
-    $app->render('company_crud.php');
+    $app->render('company/insert.php');
 });
 
 $app->post('/company/insert', function () use ($app) {
-    $app->render('company_crud.php');
+    $app->render('company/insert.php');
 });
 
 $app->get('/company/update/:p', function ($p) use ($app) {
     $data = array("data"=>array("idcia"=>$p));
-    $app->render('company_crud.php', $data, 200);         
+    $app->render('/company/update.php', $data, 200);         
 });
 
 $app->get('/company/delete/:p', function ($p) use ($app) {
     $data = array("data"=>array("idcia"=>$p));
-    $app->render('\../model/delete.php', $data, 200);
+    $app->render('\../model/company/delete.php', $data, 200);
 });
 
 $app->get('/user', function () use ($app){

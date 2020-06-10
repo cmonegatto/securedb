@@ -4,6 +4,22 @@ session_start();
 
 include_once 'include/header_inc.php';
 include_once 'include/menu_inc.php';
+include_once 'class/Sql.php';
+
+$idcia = $data['idcia'];
+
+$_SESSION['idcia'] = $idcia;
+
+$conn=new Sql();
+
+$result = $conn->select("SELECT * FROM adm_cias WHERE idcia={$idcia}");
+
+$cianame = $result[0]['cianame'];
+$respname = $result[0]['respname'];
+$email = $result[0]['email'];
+$celphone = $result[0]['celphone'];
+$status = $result[0]['status'];
+
 
 ?>
    
@@ -13,36 +29,37 @@ include_once 'include/menu_inc.php';
 
         <div class="col-sm-8">
             
-            <h3>Cadastro de Empresas</h3>  
+            <h3>Cadastro de Empresas (update)</h3>  
 
-            <form method="put" action="\model/insert.php">
+            <form method="put" action="\model/company\update.php">
                 <div class="form-group">
                     <label for="nome">Nome da Companhia</label>
-                    <input type="text" class="form-control" name="cianame" id="cianame" maxlength="50" required >
+                    <input type="text" class="form-control" name="cianame" id="cianame" value="<?php echo $cianame?>" maxlength="50" required >
                 </div>
 
                 <div class="form-group">
                     <label for="respname">Nome do Responsável</label>
-                    <input type="text" class="form-control" name="respname" id="respname" maxlength="50" required>
+                    <input type="text" class="form-control" name="respname" id="respname" value="<?php echo $respname?>"maxlength="50" required>
                 </div>          
 
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input type="email" class="form-control" name="email" id="email" maxlength="50" required>
+                    <input type="email" class="form-control" name="email" id="email" maxlength="50" value="<?php echo $email?>" required>
                 </div>          
 
                 <div class="form-group">
                     <label for="celphone">Número telefone celular</label>
-                    <input type="tel" class="form-control" name="celphone" id="celphone" maxlength="20" required>
+                    <input type="tel" class="form-control" name="celphone" id="celphone" maxlength="20" value="<?php echo $celphone?>" required>
                 </div>          
 
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ativo" checked >
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ativo" <?php echo ($status==1)? "checked":""?> >
                     <label class="form-check-label" for="exampleRadios1">Ativo</label>
                 </div>
 
+
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="inativo">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="inativo" <?php echo ($status==0)? "checked":""?> >
                     <label class="form-check-label" for="exampleRadios2">Invativo</label>
                 </div>
 <!--

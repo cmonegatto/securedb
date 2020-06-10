@@ -1,6 +1,6 @@
 <?php 
 
-include_once 'conexao.php';
+include_once '../conexao.php';
 
 $cianame = $_GET["cianame"];
 $respname = $_GET["respname"];
