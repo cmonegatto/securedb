@@ -10,6 +10,7 @@
 			});
 
 			$('#myTable').dataTable( {
+					"scrollX": true,
 					"order":[],
 					"language": 
 					{ "search": "Buscar", 

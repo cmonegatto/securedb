@@ -16,21 +16,21 @@ include_once 'include/menu_inc.php';
 
                 <h3>Cadastro de Usuários</h3>  
                 <hr />
-                <table class="table table-hover" id="myTable">
+                <table class="table table-hover display nowrap" id="myTable" style="width:100%"> 
                     <thead>
                         <tr>
 <!--                        <th scope="col">#</th> -->
+                            <th scope="col"></th>
+                            <th scope="col"></th>
                             <th scope="col">Nome</th>
                             <th scope="col">Empresa</th>
                             <th scope="col">Login</th>
                             <th scope="col">e-mail</th>
                             <th scope="col">Telefone</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Admin</th>
-                            <th scope="col">Super-User</th>
+                            <th scope="col">ADM</th>
+                            <th scope="col">Super</th>
                             <th scope="col">Data</th>
-<!--                        <th scope="col">Editar</th> -->
-                            <th scope="col">Excluir</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -9,6 +9,7 @@ $result= $conn->select("SELECT * FROM adm_cias ORDER BY cianame");
 foreach ($result as $key => $value) {
 
 	$status = $result[$key]['status']==1?"Ativo":"Inativo";
+	$dtregister = date("m-Y", strtotime($result[$key]['dtregister']));
 
 	echo 
 	"<tr>";
@@ -17,16 +18,17 @@ foreach ($result as $key => $value) {
 
 		$id = $result[$key]["idcia"];
 
-		echo "<td><a href='\company/update/$id'>".$result[$key]['cianame']."</a></td>";
+		echo "<td><a href='\company/update/$id'><i class='fa fa-pencil'></i></a></td>
+			  <td><a href='\company/delete/$id'><i class='fa fa-trash'></i></a></td>";
+
+		echo "<td>".$result[$key]['cianame']."</td>";
 		echo "<td>".$result[$key]['respname']."</td>";		
 		echo "<td>".$result[$key]['email']."</td>";		
 		echo "<td>".$result[$key]['celphone']."</td>";		
 		echo "<td>".$status."</td>";		
-		echo "<td>".$result[$key]['dtregister']."</td>";		
+		echo "<td>".$dtregister."</td>
 
 
-//		echo "<td><a href='\company/update/$id'><i class='fa fa-pencil'></i></a></td>
-		echo "<td><a href='\company/delete/$id'><i class='fa fa-trash'></i></a></td>
 	</tr>";
 
 }
