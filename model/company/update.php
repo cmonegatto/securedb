@@ -5,12 +5,13 @@ session_start();
 include "../../class/Sql.php";
 
 $idcia = $_SESSION['idcia'];
-$cianame = $_GET["cianame"];
-$respname = $_GET["respname"];
-$email = $_GET["email"];
-$celphone = $_GET["celphone"];
-$exampleRadios = $_GET["exampleRadios"];
-$status = ($exampleRadios == "ativo")? 1: 0;
+$cianame = $_POST["cianame"];
+$respname = $_POST["respname"];
+$email = $_POST["email"];
+$celphone = $_POST["celphone"];
+$status = $_POST["status"];
+
+$status = ($status == "on")? 1: 0;
 
 
 $conn=new Sql();
@@ -23,18 +24,6 @@ $result= $conn->select("UPDATE adm_cias
 $result= $conn->select("UPDATE adm_cias 
 						   SET cianame = '$cianame', respname = '$respname', email = '$email', celphone = $celphone, status = $status
 						 WHERE idcia=:IDCIA", array(":IDCIA"=>$idcia));
-
-
-
-var_dump($result);
-die();
-
-if (!$result) {
-	echo "ERRO NA ATUALIZAÇÃO";
-	die();
-} else {
-
-}
 
 
 header("Location: \company");
@@ -53,11 +42,11 @@ if( mysqli_affected_rows($link) >0):
 	exit;	
 endif;
 
-$cianame = $_GET["cianame"];
-$respname = $_GET["respname"];
-$email = $_GET["email"];
-$celphone = $_GET["celphone"];
-$exampleRadios = $_GET["exampleRadios"];
+$cianame = $_POST["cianame"];
+$respname = $_POST["respname"];
+$email = $_POST["email"];
+$celphone = $_POST["celphone"];
+$exampleRadios = $_POST["exampleRadios"];
 
 $status = ($exampleRadios == "ativo")? 1: 0;
 

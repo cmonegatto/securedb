@@ -11,21 +11,24 @@ include_once 'include/menu_inc.php';
 
         <div class="col-sm-12" >
 
-            <form method="post" action="\company/insert">
+            <form method="post" action="\users/insert">
 
 
-                <h3>Cadastro de Empresas</h3>  
+                <h3>Cadastro de Usuários</h3>  
                 <hr />
                 <table class="table table-hover" id="myTable">
                     <thead>
                         <tr>
 <!--                        <th scope="col">#</th> -->
-                            <th scope="col">Companhia</th>
-                            <th scope="col">Responsável</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Empresa</th>
+                            <th scope="col">Login</th>
                             <th scope="col">e-mail</th>
                             <th scope="col">Telefone</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Data Registro</th>
+                            <th scope="col">Admin</th>
+                            <th scope="col">Super-User</th>
+                            <th scope="col">Data</th>
 <!--                        <th scope="col">Editar</th> -->
                             <th scope="col">Excluir</th>
                         </tr>
@@ -33,7 +36,7 @@ include_once 'include/menu_inc.php';
                     <tbody>
 
                         <?php 
-                            include_once 'model/company/read.php';
+                            include_once 'model/users/read.php';
                         ?>
 
                     </tbody>

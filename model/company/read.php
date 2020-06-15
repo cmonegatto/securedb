@@ -12,18 +12,21 @@ foreach ($result as $key => $value) {
 
 	echo 
 	"<tr>";
-		echo "<td>".$result[$key]['idcia']."</td>";		
-		echo "<td>".$result[$key]['cianame']."</td>";		
+//		echo "<td>".$result[$key]['idcia']."</td>";		
+//		echo "<td>".$result[$key]['cianame']."</td>";		
+
+		$id = $result[$key]["idcia"];
+
+		echo "<td><a href='\company/update/$id'>".$result[$key]['cianame']."</a></td>";
 		echo "<td>".$result[$key]['respname']."</td>";		
 		echo "<td>".$result[$key]['email']."</td>";		
 		echo "<td>".$result[$key]['celphone']."</td>";		
 		echo "<td>".$status."</td>";		
 		echo "<td>".$result[$key]['dtregister']."</td>";		
 
-		$id = $result[$key]["idcia"];
 
-		echo "<td><a href='\company/update/$id'><i class='fa fa-pencil'></i></a></td>
-			<td><a href='\company/delete/$id'><i class='fa fa-trash'></i></a></td>
+//		echo "<td><a href='\company/update/$id'><i class='fa fa-pencil'></i></a></td>
+		echo "<td><a href='\company/delete/$id'><i class='fa fa-trash'></i></a></td>
 	</tr>";
 
 }

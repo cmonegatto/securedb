@@ -3,9 +3,25 @@ class .
 id #
 */
 
+	
+.navbar-light .navbar-nav .nav-link:hover {
+		/*background: rgb(173, 18, 18);*/
+		background: black;
+
+	}	
+
+.dropdown-item:hover {
+		background: rgba(47, 0, 235, 0.116);
+		color: gray;
+	}	
+
 h3 {
     padding-top: 10px;
-	padding-bottom: 15px;
+	padding-bottom: 0px;
+}
+
+hr {
+	padding-bottom: 10px;
 }
 
 #id-login {
@@ -18,7 +34,7 @@ h3 {
 
 body {
 /*	background: rgba(47, 0, 235, 0.116); */
-	background: white; 
+	background: rgba(47, 0, 235, 0.116);
 }
 
 /* Posiciona os itens do menu mais a direita*/
@@ -45,3 +61,4 @@ table {
 .fa {
 	color: #039be5;
 }
+

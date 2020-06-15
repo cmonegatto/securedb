@@ -2,13 +2,13 @@
 
 include_once '../conexao.php';
 
-$cianame = $_GET["cianame"];
-$respname = $_GET["respname"];
-$email = $_GET["email"];
-$celphone = $_GET["celphone"];
-$exampleRadios = $_GET["exampleRadios"];
+$cianame = $_POST["cianame"];
+$respname = $_POST["respname"];
+$email = $_POST["email"];
+$celphone = $_POST["celphone"];
+$status = $_POST["status"];
 
-$status = ($exampleRadios == "ativo")? 1: 0;
+$status = ($status == "on")? 1: 0;
 
 
 $sql = "INSERT INTO adm_cias (cianame, respname, email, celphone, status)

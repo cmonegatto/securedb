@@ -18,7 +18,7 @@
 				  <a class="nav-link dropdown-toggle text-white-50" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cadastros</a>
 				  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item" href="\company">Companhias</a>
-					<a class="dropdown-item" href="\user">Usuários</a>
+					<a class="dropdown-item" href="\users">Usuários</a>
 					<a class="dropdown-item" href="\environment">Ambientes</a>
 					<a class="dropdown-item" href="\database">Banco Dados</a>
 					<a class="dropdown-item" href="\lockapp">Aplicações Bloqueadas </a>
@@ -37,12 +37,12 @@
 				</li>
 -->
 			</ul>
-<!-- 
+
             <form class="form-inline my-2 my-lg-0">
-				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+				<input class="form-control mr-sm-2" type="search" aria-label="Search">
 				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
             </form>
--->            
+
 		</div>
 	</nav>
 

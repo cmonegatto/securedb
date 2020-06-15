@@ -29,9 +29,10 @@ $status = $result[0]['status'];
 
         <div class="col-sm-8">
             
-            <h3>Cadastro de Empresas (update)</h3>  
+            <h3>Cadastro de Empresas (edit)</h3>  
+            <hr />
 
-            <form method="put" action="\model/company\update.php">
+            <form method="post" action="\model/company\update.php">
                 <div class="form-group">
                     <label for="nome">Nome da Companhia</label>
                     <input type="text" class="form-control" name="cianame" id="cianame" value="<?php echo $cianame?>" maxlength="50" required >
@@ -50,8 +51,10 @@ $status = $result[0]['status'];
                 <div class="form-group">
                     <label for="celphone">Número telefone celular</label>
                     <input type="tel" class="form-control" name="celphone" id="celphone" maxlength="20" value="<?php echo $celphone?>" required>
+
                 </div>          
 
+<!--
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="ativo" <?php echo ($status==1)? "checked":""?> >
                     <label class="form-check-label" for="exampleRadios1">Ativo</label>
@@ -62,11 +65,15 @@ $status = $result[0]['status'];
                     <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="inativo" <?php echo ($status==0)? "checked":""?> >
                     <label class="form-check-label" for="exampleRadios2">Invativo</label>
                 </div>
-<!--
-                <button type="submit" class="btn btn-primary">Salvar</button>
-                <button type="reset" class="btn btn-secondary">Limpar</button>
 -->
-                
+
+                <div class="custom-control custom-checkbox col-md-2">
+                    <input type="checkbox" class="custom-control-input" name="status" id="status" <?php echo ($status==1)? "checked":""?>>
+                    <label class="custom-control-label" for="status">Ativo</label>
+                </div>
+
+                <hr />
+
                 <div class="input-field">
                     <input type="submit" value="Salvar" class="btn btn-primary">                
                     <a href="\company" class="btn btn-secondary">Voltar</a>

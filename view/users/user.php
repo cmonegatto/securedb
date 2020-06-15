@@ -5,7 +5,7 @@ include_once 'include/menu_inc.php';
 
 ?>
    
-    <div class="container">
+<div class="container">
       
 <!--
       <div class="page-header">

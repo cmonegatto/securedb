@@ -32,6 +32,11 @@ $app->get('/', function () use ($app) {
     $app->render('/login.php');
 });
 
+
+/* ---------------------------------------------------------------------------
+*  ROTAS PARA CRUD EMPRESA/COMPANHIA
+* --------------------------------------------------------------------------- */
+
 $app->get('/company', function () use ($app){
     $app->render('company/table.php');    
 });
@@ -55,9 +60,35 @@ $app->get('/company/delete/:p', function ($p) use ($app) {
     $app->render('\../model/company/delete.php', $data, 200);
 });
 
-$app->get('/user', function () use ($app){
-    $app->render('user.php');    
+
+/* ---------------------------------------------------------------------------
+*  ROTAS PARA CRUD USUARIOS
+* --------------------------------------------------------------------------- */
+
+$app->get('/users', function () use ($app){
+    $app->render('users/table.php');    
 });
+
+$app->get('/users/insert', function () use ($app) {
+    $app->render('users/insert.php');
+});
+
+$app->post('/users/insert', function () use ($app) {
+    $app->render('users/insert.php');
+});
+
+$app->get('/users/update/:p', function ($p) use ($app) {
+    $data = array("data"=>array("iduser"=>$p));
+    $app->render('users/update.php', $data, 200);         
+});
+
+$app->get('/users/delete/:p', function ($p) use ($app) {
+    $data = array("data"=>array("iduser"=>$p));
+    $app->render('\../model/users/delete.php', $data, 200);
+});
+
+
+// ---------------------------------------------------------------------------
 
 $app->get('/environment', function () use ($app){
     $app->render('environment.php');    
