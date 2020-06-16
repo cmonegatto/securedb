@@ -38,26 +38,26 @@ $app->get('/', function () use ($app) {
 * --------------------------------------------------------------------------- */
 
 $app->get('/company', function () use ($app){
-    $app->render('company/table.php');    
+    $app->render('tab-company.php');    
 });
 
 
 $app->get('/company/insert', function () use ($app) {
-    $app->render('company/insert.php');
+    $app->render('ins-company.php');
 });
 
 $app->post('/company/insert', function () use ($app) {
-    $app->render('company/insert.php');
+    $app->render('ins-company.php');
 });
 
 $app->get('/company/update/:p', function ($p) use ($app) {
     $data = array("data"=>array("idcia"=>$p));
-    $app->render('/company/update.php', $data, 200);         
+    $app->render('upd-company.php', $data, 200);         
 });
 
 $app->get('/company/delete/:p', function ($p) use ($app) {
     $data = array("data"=>array("idcia"=>$p));
-    $app->render('\../model/company/delete.php', $data, 200);
+    $app->render('\../model/del-company.php', $data, 200);
 });
 
 
@@ -66,25 +66,25 @@ $app->get('/company/delete/:p', function ($p) use ($app) {
 * --------------------------------------------------------------------------- */
 
 $app->get('/users', function () use ($app){
-    $app->render('users/table.php');    
+    $app->render('tab-users.php');    
 });
 
 $app->get('/users/insert', function () use ($app) {
-    $app->render('users/insert.php');
+    $app->render('ins-users.php');
 });
 
 $app->post('/users/insert', function () use ($app) {
-    $app->render('users/insert.php');
+    $app->render('ins-users.php');
 });
 
 $app->get('/users/update/:p', function ($p) use ($app) {
     $data = array("data"=>array("iduser"=>$p));
-    $app->render('users/update.php', $data, 200);         
+    $app->render('upd-users.php', $data, 200);         
 });
 
 $app->get('/users/delete/:p', function ($p) use ($app) {
     $data = array("data"=>array("iduser"=>$p));
-    $app->render('\../model/users/delete.php', $data, 200);
+    $app->render('\../model/del-users.php', $data, 200);
 });
 
 

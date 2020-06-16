@@ -14,8 +14,8 @@ if (isset($_SESSION['idcia'])) {
     $idcia = $_SESSION['idcia'];
 }
 
-$ciacombo = $conn->select("SELECT idcia, cianame FROM adm_cias WHERE idcia = $idcia ORDER BY cianame");
-$result   = $conn->select("SELECT idcia, cianame FROM adm_cias WHERE idcia <>  $idcia ORDER BY cianame");
+$ciacombo = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE idcia = $idcia ORDER BY cianame");
+$result   = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE idcia <>  $idcia ORDER BY cianame");
 
 
 echo '<select class="input-large form-control" id="idcia" name="idcia" required>';

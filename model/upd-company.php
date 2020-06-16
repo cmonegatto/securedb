@@ -2,7 +2,7 @@
 
 session_start();
 
-include "../../class/Sql.php";
+include "../class/Sql.php";
 
 $idcia = $_SESSION['idcia'];
 $cianame = $_POST["cianame"];
@@ -21,13 +21,13 @@ $result= $conn->select("UPDATE adm_cias
 						 WHERE idcia={$idcia}");
 */
 
-$result= $conn->select("UPDATE adm_cias 
-						   SET cianame = '$cianame', respname = '$respname', email = '$email', celphone = $celphone, status = $status
-						 WHERE idcia=:IDCIA", array(":IDCIA"=>$idcia));
+$result= $conn->sql( basename(__FILE__),
+					 "UPDATE adm_cias 
+						 SET cianame = '$cianame', respname = '$respname', email = '$email', celphone = $celphone, status = $status
+					   WHERE idcia=:IDCIA", array(":IDCIA"=>$idcia));
 
 
 header("Location: \company");
-
 
 
 /*

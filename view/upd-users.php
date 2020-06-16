@@ -4,24 +4,50 @@ session_start();
 
 include_once 'include/header_inc.php';
 include_once 'include/menu_inc.php';
+include_once 'class/Sql.php';
+
+$iduser = $data['iduser'];
+
+$_SESSION['iduser'] = $iduser;
+
+
+$conn=new Sql();
+
+$result = $conn->select("SELECT * FROM adm_users WHERE iduser={$iduser}");
+
+$idcia		= $result[0]["idcia"];
+$nome 		= $result[0]["name"];
+$login		= $result[0]["login"];
+$email		= $result[0]["email"];
+$telefone 	= $result[0]["celphone"];
+$senha		= $result[0]["password"];
+
+$status		= ($result[0]["status"])     ? "checked" : "";
+$admin		= ($result[0]["admin"])      ? "checked" : "";
+$superuser	= ($result[0]["superuser"])  ? "checked" : "";
+
+
+$_SESSION['idcia'] = $idcia;
+
+
 
 ?>
 
 
 <div class="container">
     <div>
-        <h3>Cadastro de Usuários (new)</h3>         
+        <h3>Cadastro de Usuários (edit)</h3>         
         <hr />
     </div>
 
-    <form method="post" action="\model/users/insert.php">
+    <form method="post" action="\model/upd-users.php">
+
 
         <div style="padding-bottom:5px; padding-right:0px" class="row col-md-8">   
             <label for="idcia">Empresa</label>
 
             <?php 
-                $_SESSION['idcia'] = 0;
-                include_once 'model/users/read-ciabox.php';
+                include_once 'model/list-users-ciabox.php';
             ?>
 
         </div>
@@ -31,12 +57,12 @@ include_once 'include/menu_inc.php';
 
             <div class="form-group col-md-4">
                 <label for="nome">Nome</label>
-                <input type="text" name="nome" class="form-control" id="nome" required>
+                <input type="text" name="nome" class="form-control" id="nome" value="<?php echo $nome?>" required>
             </div>
 
             <div class="form-group col-md-4">
                 <label  for="login">Login</label>
-                <input type="text" name="login" class="form-control" id="login" required>
+                <input type="text" name="login" class="form-control" id="login" value="<?php echo $login?>" required>
             </div>          
             
         </div>
@@ -45,12 +71,12 @@ include_once 'include/menu_inc.php';
         <div class="row">       
             <div class="form-group col-md-4">
                 <label  for="email">E-mail</label>
-                <input type="email" name="email" class="form-control" id="email" required>
+                <input type="email" name="email" class="form-control" id="email" value="<?php echo $email?>" required>
             </div>
 
             <div class="form-group col-md-4">
                 <label  for="telefone">Telefone</label>
-                <input type="tel" name="telefone" class="form-control" id="telefone" required>
+                <input type="tel" name="telefone" class="form-control" id="telefone" value="<?php echo $telefone?>" required>
             </div>
         </div>     
 
@@ -59,7 +85,7 @@ include_once 'include/menu_inc.php';
 
             <div class="form-group col-md-4">
                 <label  for="senha">Senha</label>
-                <input type="password" name="senha" class="form-control" id="senha" required>
+                <input type="password" name="senha" class="form-control" id="senha" value="<?php echo $senha?>" required>
             </div>
 
             <div class="form-group col-md-4">
@@ -73,17 +99,17 @@ include_once 'include/menu_inc.php';
         <div class="row col-md-8">       
 
             <div class="custom-control custom-checkbox col-md-2">
-                <input type="checkbox" class="custom-control-input" name="status" id="status" checked>
+                <input type="checkbox" class="custom-control-input" name="status" id="status" <?php echo $status ?> >
                 <label class="custom-control-label" for="status">Ativo</label>
             </div>
 
             <div class="custom-control custom-checkbox col-md-2">
-                <input type="checkbox" class="custom-control-input" name="admin" id="admin">
+                <input type="checkbox" class="custom-control-input" name="admin" id="admin" <?php echo $admin ?> >
                 <label class="custom-control-label" for="admin">Admin</label>
             </div>
 
             <div class="custom-control custom-checkbox col-md-2">
-                <input type="checkbox" class="custom-control-input" name="superuser" id="superuser">
+                <input type="checkbox" class="custom-control-input" name="superuser" id="superuser" <?php echo $superuser ?> >
                 <label class="custom-control-label" for="superuser">Super-User</label>
             </div>
 

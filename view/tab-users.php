@@ -36,7 +36,7 @@ include_once 'include/menu_inc.php';
                     <tbody>
 
                         <?php 
-                            include_once 'model/users/read.php';
+                            include_once 'model/list-users.php';
                         ?>
 
                     </tbody>

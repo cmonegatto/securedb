@@ -32,7 +32,7 @@ $status = $result[0]['status'];
             <h3>Cadastro de Empresas (edit)</h3>  
             <hr />
 
-            <form method="post" action="\model/company\update.php">
+            <form method="post" action="\model/upd-company.php">
                 <div class="form-group">
                     <label for="nome">Nome da Companhia</label>
                     <input type="text" class="form-control" name="cianame" id="cianame" value="<?php echo $cianame?>" maxlength="50" required >

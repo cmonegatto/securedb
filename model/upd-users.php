@@ -2,7 +2,7 @@
 
 session_start();
 
-include "../../class/Sql.php";
+include "../class/Sql.php";
 
 $idcia		= $_POST["idcia"];
 $nome 		= $_POST["nome"];
@@ -20,10 +20,10 @@ $iduser = $_SESSION['iduser'];
 $conn=new Sql();
 
 
-$result= $conn->select("UPDATE adm_users 
-						   SET idcia = $idcia, name = '$nome', login = '$login', email = '$email', celphone = $telefone, password = '$senha', status = $status, admin = $admin, superuser = $superuser
-						 WHERE iduser=$iduser");
-
+$result= $conn->sql( basename(__FILE__),
+					"UPDATE adm_users 
+					    SET idcia = $idcia, name = '$nome', login = '$login', email = '$email', celphone = $telefone, password = '$senha', status = $status, admin = $admin, superuser = $superuser
+					  WHERE iduser=$iduser");
 
 
 header("Location: \users");

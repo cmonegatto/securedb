@@ -33,7 +33,7 @@ include_once 'include/menu_inc.php';
                     <tbody>
 
                         <?php 
-                            include_once 'model/company/read.php';
+                            include_once 'model/list-company.php';
                         ?>
 
                     </tbody>
