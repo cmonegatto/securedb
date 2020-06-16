@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+//session_start();
 
 include_once 'include/header_inc.php';
 include_once 'include/menu_inc.php';
@@ -81,6 +81,7 @@ $_SESSION['idcia'] = $idcia;
         </div>     
 
 
+        <!--
         <div class="row">     
 
             <div class="form-group col-md-4">
@@ -94,7 +95,7 @@ $_SESSION['idcia'] = $idcia;
             </div>
 
         </div>
-
+-->
 
         <div class="row col-md-8">       
 

@@ -34,7 +34,9 @@ hr {
 
 body {
 /*	background: rgba(47, 0, 235, 0.116); */
-	background: rgba(47, 0, 235, 0.116);
+	background: rgba(47, 0, 235, 0.047);
+/*	background: black;
+	color: #616d72;*/
 }
 
 /* Posiciona os itens do menu mais a direita*/

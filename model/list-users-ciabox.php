@@ -10,15 +10,24 @@ $conn=new Sql();
 
 $idcia=0;
 
-if (isset($_SESSION['idcia'])) {
+if (isset($_SESSION['idcia'])) :
     $idcia = $_SESSION['idcia'];
-}
+else:
+    $idcia = $_SESSION['s_idcia'];
+endif;
 
-$ciacombo = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE idcia = $idcia ORDER BY cianame");
-$result   = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE idcia <>  $idcia ORDER BY cianame");
+
+if ($_SESSION['s_superuser']):
+    $ciacombo = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE idcia = $idcia ORDER BY cianame");
+    $result   = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE idcia <>  $idcia ORDER BY cianame");
+
+else:
+    $ciacombo = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE idcia = $idcia ORDER BY cianame");
+    $result   = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE 1 = 2 ORDER BY cianame");
+endif;    
 
 
-echo '<select class="input-large form-control" id="idcia" name="idcia" required>';
+echo '<select class="input-large form-control" id="idcia" name="idcia" autofocus required>';
 
 //monta o primeiro registro conforme associado ao usuario
 if ($idcia > 0 ) {

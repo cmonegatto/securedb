@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 require_once("vendor/autoload.php");
 
 //$app = new \Slim\Slim();
@@ -29,8 +30,18 @@ $app->get('/route/:parametro', function ($parametro) use ($app) {
 */
 
 $app->get('/', function () use ($app) {  
-    $app->render('/login.php');
+    if (isset($_SESSION['s_iduser'])):
+        $app->render('/start.php');        
+    else:
+        $app->render('/login.php');
+    endif;
 });
+
+$app->get('/logout', function () use ($app) {  
+    session_unset();
+    $app->render('/login.php');        
+});
+
 
 
 /* ---------------------------------------------------------------------------

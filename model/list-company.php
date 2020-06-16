@@ -18,8 +18,13 @@ foreach ($result as $key => $value) {
 
 		$id = $result[$key]["idcia"];
 
-		echo "<td><a href='\company/update/$id'><i class='fa fa-pencil'></i></a></td>
-			  <td><a href='\company/delete/$id'><i class='fa fa-trash'></i></a></td>";
+		echo "<td><a href='\company/update/$id'><i class='fa fa-pencil'></i></a></td>";
+
+		if ($_SESSION['s_superuser']):
+			echo "<td><a href='\company/delete/$id'><i class='fa fa-trash'></i></a></td>";
+		else:
+			echo "<td><a href='#'><i class='fa fa-trash'></i></a></td>";
+		endif;
 
 		echo "<td>".$result[$key]['cianame']."</td>";
 		echo "<td>".$result[$key]['respname']."</td>";		

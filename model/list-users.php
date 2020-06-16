@@ -2,12 +2,19 @@
 
 include "class/Sql.php";
 
+if (!$_SESSION['s_superuser']):
+	$idcia = $_SESSION['s_idcia'];
+else:
+	$idcia = '%';
+endif;	
+
 $conn=new Sql();
 
 $result= $conn->sql(basename(__FILE__), 
 					"SELECT u.*, c.cianame 
 					   FROM adm_users u, adm_cias c
-					  WHERE u.idcia = c.idcia");
+					  WHERE u.idcia = c.idcia
+					    AND u.idcia like '$idcia'");
 			  
 
 foreach ($result as $key => $value) {
@@ -25,11 +32,16 @@ foreach ($result as $key => $value) {
 
 		$id = $result[$key]["iduser"];
 
-		echo "<td><a href='\users/update/$id'><i class='fa fa-pencil'></i></a></td>
-			  <td><a href='\users/delete/$id'><i class='fa fa-trash'></i></a></td>";
+		echo "<td><a href='\users/update/$id'><i class='fa fa-pencil'></i></a></td>";
 
-		echo "<td>".$result[$key]['name']."</td>";		
-		echo "<td>".$result[$key]['cianame']."</td>";
+		if ($_SESSION['s_superuser']):		
+			echo "<td><a href='\users/delete/$id'><i class='fa fa-trash'></i></a></td>";
+		else:
+			echo "<td><a href='#'><i class='fa fa-trash'></i></a></td>";
+		endif;
+
+  		echo "<td>".$result[$key]['name']."</td>";		
+  		echo "<td>".$result[$key]['cianame']."</td>";
 		echo "<td>".$result[$key]['login']."</td>";		
 		echo "<td>".$result[$key]['email']."</td>";		
 		echo "<td>".$result[$key]['celphone']."</td>";		

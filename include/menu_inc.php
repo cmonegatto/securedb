@@ -1,4 +1,21 @@
+<?php
 
+if (!isset($_SESSION['s_iduser'])):
+	$user = 0;
+	$admin = 0;
+	$superuser = 0;
+
+elseif ($_SESSION['s_superuser']):
+	$user = 1;
+	$admin = 1; // se for SUPER USER já acima do AMIN
+	$superuser = $_SESSION['s_superuser'];
+else:	
+	$user = 1;
+	$admin = $_SESSION['s_admin'];
+	$superuser = $_SESSION['s_superuser'];
+endif;
+
+?>
 
 
 		<nav class="navbar navbar-expand-lg navbar-light bg-dark">
@@ -17,11 +34,11 @@
 				<li class="nav-item dropdown">
 				  <a class="nav-link dropdown-toggle text-white-50" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cadastros</a>
 				  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="\company">Companhias</a>
-					<a class="dropdown-item" href="\users">Usuários</a>
-					<a class="dropdown-item" href="\environment">Ambientes</a>
-					<a class="dropdown-item" href="\database">Banco Dados</a>
-					<a class="dropdown-item" href="\lockapp">Aplicações Bloqueadas </a>
+					<a class="dropdown-item <?= ($superuser)? '': 'disabled'?>" href="\company">Companhias</a>
+					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="\users">Usuários</a>
+					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="\environment">Ambientes</a>
+					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="\database">Banco Dados</a>
+					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="\lockapp">Aplicações Bloqueadas </a>
 <!--					<div class="dropdown-divider"></div> 
 					<a class="dropdown-item" href="#">Something else here</a> 
 -->
@@ -29,19 +46,36 @@
 				</li>
 				<li class="nav-item active">
 					<a class="nav-link text-white-50" href="#">Operação<span class="sr-only">(current)</span></a>
-				  </li>
+				</li>
 				  
-<!--
+				<li class="nav-item active">
+					<a class="nav-link text-white-50" href="/logout">Sair<span class="sr-only">(current)</span></a>
+				</li>
+
+
 				<li class="nav-item">
 				  <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
 				</li>
--->
+
 			</ul>
 
+            <form class="form-inline my-2 my-lg-0">
+				<?php
+					if (isset($_SESSION['s_nameuser'])):
+						//echo "<p>Olá {$_SESSION['s_nameuser']} </p>";
+						echo "<span style='color:white'>Olá {$_SESSION['s_nameuser']} </span>";
+						//<span style="color:blue">HTML</span>
+					endif;
+				?>
+
+            </form>
+
+<!--
             <form class="form-inline my-2 my-lg-0">
 				<input class="form-control mr-sm-2" type="search" aria-label="Search">
 				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
             </form>
+-->
 
 		</div>
 	</nav>

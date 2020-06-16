@@ -7,7 +7,7 @@ $nome 		= $_POST["nome"];
 $login		= $_POST["login"];
 $email		= $_POST["email"];
 $telefone 	= $_POST["telefone"];
-$senha		= $_POST["senha"];
+$senha		= md5($_POST["senha"]);
 
 $status		= (isset($_POST["status"])) ? 1 : 0;
 $admin		= (isset($_POST["admin"])) ? 1 : 0;

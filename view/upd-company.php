@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+//session_start();
 
 include_once 'include/header_inc.php';
 include_once 'include/menu_inc.php';
@@ -35,7 +35,7 @@ $status = $result[0]['status'];
             <form method="post" action="\model/upd-company.php">
                 <div class="form-group">
                     <label for="nome">Nome da Companhia</label>
-                    <input type="text" class="form-control" name="cianame" id="cianame" value="<?php echo $cianame?>" maxlength="50" required >
+                    <input type="text" class="form-control" name="cianame" id="cianame" value="<?php echo $cianame?>" maxlength="50" autofocus required >
                 </div>
 
                 <div class="form-group">

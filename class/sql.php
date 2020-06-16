@@ -57,7 +57,7 @@ class Sql {
 
 			$conn2 = new Sql();
 			$r = $conn2->sql(basename(__FILE__), "insert into adm_errors (iduser, frommodule, sqltext, message) values (:ID, :MODULENAME, :SQLTEXT, :ERROR_MESSAGE)", array
-								(":ID"=>999, 
+								(":ID"=>$_SESSION['s_iduser'], 
 								 ":MODULENAME"=>$moduloName,
 								 ":SQLTEXT"=>$rawQuery,
 								 ":ERROR_MESSAGE"=>$error_message

@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+//session_start();
 
 include_once 'include/header_inc.php';
 include_once 'include/menu_inc.php';
@@ -20,7 +20,7 @@ include_once 'include/menu_inc.php';
             <label for="idcia">Empresa</label>
 
             <?php 
-                $_SESSION['idcia'] = 0;
+                //$_SESSION['idcia'] = 0;
                 include_once 'model/list-users-ciabox.php';
             ?>
 
@@ -62,10 +62,12 @@ include_once 'include/menu_inc.php';
                 <input type="password" name="senha" class="form-control" id="senha" required>
             </div>
 
+<!--
             <div class="form-group col-md-4">
                 <label  for="confsenha">Confirme a senha</label>
                 <input type="password" name="confsenha" class="form-control" id="confsenha"  required>
             </div>
+-->
 
         </div>
 
