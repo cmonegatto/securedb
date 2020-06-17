@@ -85,7 +85,7 @@ include_once 'include/menu_inc.php';
             </div>
 
             <div class="custom-control custom-checkbox col-md-2">
-                <input type="checkbox" class="custom-control-input" name="superuser" id="superuser">
+                <input type="checkbox" class="custom-control-input" name="superuser" id="superuser" <?= ($_SESSION['s_superuser'])?"":"disabled"?> >
                 <label class="custom-control-label" for="superuser">Super-User</label>
             </div>
 

@@ -110,7 +110,7 @@ $_SESSION['idcia'] = $idcia;
             </div>
 
             <div class="custom-control custom-checkbox col-md-2">
-                <input type="checkbox" class="custom-control-input" name="superuser" id="superuser" <?php echo $superuser ?> >
+                <input type="checkbox" class="custom-control-input" name="superuser" id="superuser" <?php echo $superuser ?> <?= ($_SESSION['s_superuser'])?"":"disabled"?> >
                 <label class="custom-control-label" for="superuser">Super-User</label>
             </div>
 
