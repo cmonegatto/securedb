@@ -36,7 +36,7 @@ endif;
 				  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item <?= ($superuser)? '': 'disabled'?>" href="\company">Companhias</a>
 					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="\users">Usuários</a>
-					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="\environment">Ambientes</a>
+					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="\categories">Categoria de ambientes</a>
 					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="\database">Banco Dados</a>
 					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="\lockapp">Aplicações Bloqueadas </a>
 <!--					<div class="dropdown-divider"></div> 

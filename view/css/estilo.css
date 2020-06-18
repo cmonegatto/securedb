@@ -24,25 +24,17 @@ hr {
 	padding-bottom: 10px;
 }
 
-#id-login {
-/*	background: rgba(47, 0, 235, 0.176);
-	color: black;*/
-	padding: 30px;
-	margin: 0px; 
-
-}
-
 body {
-/*	background: rgba(47, 0, 235, 0.116); */
-	background: rgba(47, 0, 235, 0.047);
-/*	background: black;
-	color: #616d72;*/
+	background: rgba(47, 0, 235, 0.116); 
+	/*	background: rgba(47, 0, 235, 0.047);
+	background: black;
+	color: #616d72; */
 }
 
 /* Posiciona os itens do menu mais a direita*/
 .nav-item {
 	padding-left: 25px;
-
+	
 }
 
 /* Ajusta o fonte da TABLE */
@@ -53,10 +45,10 @@ table {
 
 
 /* Ajusta a grade do container mais para esquerda */
-.container {
+.container h3 {
 	margin-left: auto;
 	margin-top: 15px;
-
+	
 }
 
 /* pinta os ícones de cinza */
@@ -65,10 +57,12 @@ table {
 }
 
 
-#id-login {
+.imglogin {
 	background-image: url(/img/login.png);
 	background-repeat: no-repeat;
 	background-size: cover;
-	padding-bottom: 100px;
+	padding-bottom: 340px;
+	padding-top: 30px;
+	/*opacity: 0.5;*/
 	
 }

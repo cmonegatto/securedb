@@ -7,10 +7,13 @@ include_once 'include/menu_inc.php';
 
 ?>
 
+<section class="imglogin" style="background-image: url('/img/login.png');">
+
+
 <div class="container">
     
 
-    <div class="row" id="id-login">
+    <div class="row">
         
         <div class="col-sm-4">
             <h3>Inicie sua sessão</h3> 
@@ -44,6 +47,6 @@ include_once 'include/menu_inc.php';
     </div>
 
 </div>
-  
+<section>  
 
 <?php include_once 'include/footer_inc.php' ?>

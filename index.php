@@ -101,9 +101,32 @@ $app->get('/users/delete/:p', function ($p) use ($app) {
 
 // ---------------------------------------------------------------------------
 
-$app->get('/environment', function () use ($app){
-    $app->render('environment.php');    
+$app->get('/categories', function () use ($app){
+    $app->render('tab-categories.php');    
 });
+
+$app->get('/categories/insert', function () use ($app) {
+    $app->render('ins-categories.php');
+});
+
+$app->post('/categories/insert', function () use ($app) {
+    $app->render('ins-categories.php');
+});
+
+$app->get('/categories/update/:p', function ($p) use ($app) {
+    $data = array("data"=>array("idcat"=>$p));
+    $app->render('upd-categories.php', $data, 200);         
+});
+
+$app->get('/categories/delete/:p', function ($p) use ($app) {
+    $data = array("data"=>array("idcat"=>$p));
+    $app->render('\../model/del-categories.php', $data, 200);
+});
+
+
+
+// ---------------------------------------------------------------------------
+
 
 $app->get('/database', function () use ($app){
     $app->render('database.php');    
