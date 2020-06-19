@@ -27,7 +27,8 @@ else:
 endif;    
 
 
-echo '<select class="input-large form-control" id="idcia" name="idcia" autofocus required>';
+echo '<select class="input-large form-control" id="idcia" name="idcia" style="margin-bottom: 20px" autofocus required>';
+
 
 //monta o primeiro registro conforme associado ao usuario
 if ($idcia > 0 ) {

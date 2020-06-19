@@ -29,7 +29,7 @@ $result= $conn->sql( basename(__FILE__),
 				   );
 
 if ($result[0]["qtd"] > 0):
-	$_SESSION['msg']="Registro já existe!";
+	$_SESSION['msg']="Registro alterado duplicou com um já existente!";	
 endif;
 
 if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):

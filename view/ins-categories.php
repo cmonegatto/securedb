@@ -16,14 +16,17 @@ include_once 'include/menu_inc.php';
 
     <form method="post" action="\model/ins-categories.php">
 
-        <div style="padding-bottom:5px; padding-right:0px" class="row col-md-8">   
-            <label for="idcia">Empresa</label>
+        <div class="row">        
 
-            <?php 
-                //$_SESSION['idcia'] = 0;
-                include_once 'model/list-users-ciabox.php';
-            ?>
+            <div style="margin-left:2px" class="row col-md-8">               
+                <label for="idcia">Empresa</label>
 
+                <?php 
+                    //$_SESSION['idcia'] = 0;
+                    include_once 'model/list-users-ciabox.php';
+                ?>
+
+            </div>
         </div>
 
 

@@ -24,13 +24,6 @@ $result= $conn->sql( basename(__FILE__),
 					    SET idcia = $idcia, name = '$nome', login = '$login', email = '$email', celphone = $telefone, status = $status, admin = $admin, superuser = $superuser
 					  WHERE iduser=$iduser");
 
-/* abaixo faz update na senha (precisa ver isso antes)
-$result= $conn->sql( basename(__FILE__),
-					"UPDATE adm_users 
-					    SET idcia = $idcia, name = '$nome', login = '$login', email = '$email', celphone = $telefone, password = '$senha', status = $status, admin = $admin, superuser = $superuser
-					  WHERE iduser=$iduser");
-*/
-
 header("Location: \users");
 
 

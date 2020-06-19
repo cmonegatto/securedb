@@ -17,7 +17,7 @@ include_once 'include/menu_inc.php';
 
     <form method="post" action="\model/ins-databases.php">
 
-    <div class="row">
+        <div class="row">
             <div style="margin-left:2px" class="row col-md-12">   
                 <label for="idcat">Categoria DB</label>
             </div>

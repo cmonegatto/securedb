@@ -33,13 +33,7 @@ foreach ($result as $key => $value) {
 		$idcia = $result[$key]["idcia"];
 
 		echo "<td><a href='\databases/update/$iddb/$idcia'><i class='fa fa-pencil'></i></a></td>";
-
-		if ($_SESSION['s_superuser']):		
-			echo "<td><a href='\databases/delete/$iddb'><i class='fa fa-trash'></i></a></td>";
-		else:
-			echo "<td><a href='#'><i class='fa fa-trash'></i></a></td>";
-		endif;
-
+		echo "<td><a href='\databases/delete/$iddb'><i class='fa fa-trash'></i></a></td>";
 		if ($_SESSION['s_superuser']) echo "<td>".$result[$key]['cianame']."</td>";		
   		echo "<td>".$result[$key]['dbname']."</td>";
 		echo "<td>".$result[$key]['category']."</td>";
