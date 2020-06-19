@@ -99,7 +99,10 @@ $app->get('/users/delete/:p', function ($p) use ($app) {
 });
 
 
-// ---------------------------------------------------------------------------
+/* ---------------------------------------------------------------------------
+*  ROTAS PARA CRUD CATEGORIAS DE AMBIENTES
+* --------------------------------------------------------------------------- */
+
 
 $app->get('/categories', function () use ($app){
     $app->render('tab-categories.php');    
@@ -125,12 +128,39 @@ $app->get('/categories/delete/:p', function ($p) use ($app) {
 
 
 
-// ---------------------------------------------------------------------------
+/* ---------------------------------------------------------------------------
+*  ROTAS PARA CRUD DATABASES
+* --------------------------------------------------------------------------- */
 
-
-$app->get('/database', function () use ($app){
-    $app->render('database.php');    
+$app->get('/databases', function () use ($app){
+    $app->render('tab-databases.php');    
 });
+
+$app->get('/databases/insert', function () use ($app) {
+    $app->render('ins-databases.php');
+});
+
+$app->post('/databases/insert', function () use ($app) {
+    $app->render('ins-databases.php');
+});
+
+$app->get('/databases/update/:p1/:p2', function ($iddb, $idcia) use ($app) {
+    $data = array("data"=>array("iddb"=>$iddb, "idcia"=>$idcia));
+    $app->render('upd-databases.php', $data, 200);         
+});
+
+$app->get('/databases/delete/:p', function ($p) use ($app) {
+    $data = array("data"=>array("iddb"=>$p));
+    $app->render('\../model/del-databases.php', $data, 200);
+});
+
+
+
+
+
+/* ---------------------------------------------------------------------------
+*  ROTAS PARA CRUD xxx
+* --------------------------------------------------------------------------- */
 
 $app->get('/lockapp', function () use ($app){
     $app->render('lockapp.php');    

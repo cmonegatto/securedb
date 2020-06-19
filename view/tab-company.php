@@ -22,7 +22,13 @@ include_once 'include/menu_inc.php';
 <!--                        <th scope="col">#</th> -->
                             <th scope="col"></th>
                             <th scope="col"></th>
-                            <th scope="col">Companhia</th>
+
+                            <?php 
+                                if ($_SESSION['s_superuser']):
+                                    echo '<th scope="col">Companhia</th>';
+                                endif;
+                            ?>
+
                             <th scope="col">Responsável</th>
                             <th scope="col">e-mail</th>
                             <th scope="col">Telefone</th>

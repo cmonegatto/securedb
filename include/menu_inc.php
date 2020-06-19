@@ -37,8 +37,8 @@ endif;
 					<a class="dropdown-item <?= ($superuser)? '': 'disabled'?>" href="\company">Companhias</a>
 					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="\users">Usuários</a>
 					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="\categories">Categoria de ambientes</a>
-					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="\database">Banco Dados</a>
-					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="\lockapp">Aplicações Bloqueadas </a>
+					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="\databases">Bancos de dados</a>
+					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="\lockapp">Aplicações bloqueadas </a>
 <!--					<div class="dropdown-divider"></div> 
 					<a class="dropdown-item" href="#">Something else here</a> 
 -->

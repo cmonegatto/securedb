@@ -47,6 +47,7 @@ include_once 'include/menu_inc.php';
     </div>
 
 </div>
-<section>  
+
+<section>
 
 <?php include_once 'include/footer_inc.php' ?>

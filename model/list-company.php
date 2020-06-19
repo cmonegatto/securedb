@@ -26,7 +26,7 @@ foreach ($result as $key => $value) {
 			echo "<td><a href='#'><i class='fa fa-trash'></i></a></td>";
 		endif;
 
-		echo "<td>".$result[$key]['cianame']."</td>";
+		if ($_SESSION['s_superuser']) echo "<td>".$result[$key]['cianame']."</td>";
 		echo "<td>".$result[$key]['respname']."</td>";		
 		echo "<td>".$result[$key]['email']."</td>";		
 		echo "<td>".$result[$key]['celphone']."</td>";		

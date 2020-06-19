@@ -1,3 +1,19 @@
+CREATE TABLE `adm_databases` (
+  `iddb` int(11) NOT NULL AUTO_INCREMENT,
+  `idcat` int(11) NOT NULL,
+  `dbname` varchar(50) NOT NULL,
+  `hostname` varchar(50) DEFAULT NULL,
+  `username` varchar(20) DEFAULT NULL,
+  `password` varchar(256) DEFAULT NULL,  
+  `dtregister` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`iddb`),
+  KEY `FK_db_cat_idx` (`idcat`),
+  CONSTRAINT uc_database UNIQUE (idcat, dbname),
+  CONSTRAINT `fk_db_cat` FOREIGN KEY (`idcat`) REFERENCES `adm_categories` (`idcat`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 CREATE TABLE `adm_categories` (
   `idcat` int(11) NOT NULL AUTO_INCREMENT,
   `idcia` int(11) NOT NULL,

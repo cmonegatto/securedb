@@ -41,7 +41,7 @@ foreach ($result as $key => $value) {
 		endif;
 
   		echo "<td>".$result[$key]['name']."</td>";		
-  		echo "<td>".$result[$key]['cianame']."</td>";
+		if ($_SESSION['s_superuser']) echo "<td>".$result[$key]['cianame']."</td>";
 		echo "<td>".$result[$key]['login']."</td>";		
 		echo "<td>".$result[$key]['email']."</td>";		
 		echo "<td>".$result[$key]['celphone']."</td>";		
