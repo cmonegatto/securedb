@@ -1,5 +1,7 @@
 <?php
 
+/* Verificar ROLE do usuario para dar permissão aos menus */
+
 if (!isset($_SESSION['s_iduser'])):
 	$user = 0;
 	$admin = 0;
@@ -45,7 +47,7 @@ endif;
 				  </div>
 				</li>
 				<li class="nav-item active">
-					<a class="nav-link text-white-50" href="#">Operação<span class="sr-only">(current)</span></a>
+					<a class="nav-link text-white-50" href="\admlogins">Operação<span class="sr-only">(current)</span></a>
 				</li>
 				  
 				<li class="nav-item active">

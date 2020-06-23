@@ -166,6 +166,10 @@ $app->get('/lockapp', function () use ($app){
     $app->render('lockapp.php');    
 });
 
+$app->get('/admlogins', function () use ($app){    
+    $app->render('tab-admlogins.php');        
+});
+
 
 $app->run();
 

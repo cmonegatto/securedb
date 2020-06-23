@@ -4,19 +4,40 @@
 
 class Sql {
 
-	const HOSTNAME = "localhost";
-	const USERNAME = "root";
-	const PASSWORD = "";
-	const DBNAME = "securedb";
 
 	private $conn;
 
-	public function __construct()
+	public function __construct($db="", $hostname="", $username="", $password="", $dbname="")
 	{
+		if ($db.$hostname.$username.$password.$dbname == ""):
+			$hostname	= "localhost";
+			$username	= "root";
+			$password	= "";
+			$dbname		= "securedb";
+			$db			= "mysql";
 
-		$this->conn = new \PDO(
-			"mysql:dbname=".Sql::DBNAME.";host=".Sql::HOSTNAME, Sql::USERNAME, Sql::PASSWORD
-		);
+			$this->conn = new \PDO(
+				"{$db}:dbname={$dbname};host={$hostname}", $username, $password
+			);
+	
+		else:
+
+			$tns = " (DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP) (HOST = ".$hostname.")(PORT = 1521)))(CONNECT_DATA = (SID = ".$dbname.")))";
+
+			try{
+				$this->conn = new \PDO(
+					//"{$db}:dbname={$dbname};$tns", $username, $password
+					"oci:dbname=".$tns,$username,$password
+				);
+			}catch(PDOException $e){
+				echo ($e->getMessage());
+			}
+			
+
+		endif;
+
+
+		
 
 	}
 

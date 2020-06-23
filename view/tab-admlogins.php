@@ -14,32 +14,27 @@ include_once 'include/menu_inc.php';
             <form method="post" action="\databases/insert">
 
 
-                <h3>Cadastro de Banco de dados</h3>  
+                <h3>LOG de usuarios suspeitos</h3>  
                 <hr />
-                <table class="table table-bordered  table-hover display nowrap" id="myTable" style="width:100%"> 
+                <table class="table table-bordered table-hover display nowrap" id="myTable" style="width:100%"> 
                     <thead>
                         <tr>
 <!--                        <th scope="col">#</th> -->
                             <th scope="col"></th>
                             <th scope="col"></th>
-
-                            <?php 
-                                if ($_SESSION['s_superuser']):
-                                    echo '<th scope="col">Empresa</th>';
-                                endif;
-                            ?>
-
-                            <th scope="col">Nome DB</th>
-                            <th scope="col">Categoria</th>
-                            <th scope="col">Hostname</th>
+                            <th scope="col">Qtd</th>
                             <th scope="col">Username</th>
-                            <th scope="col">Password</th>
+                            <th scope="col">OsUser</th>
+                            <th scope="col">Machine</th>
+                            <th scope="col">Program</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">?</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         <?php 
-                            include_once 'model/list-databases.php';
+                            include_once 'model/list-admlogins.php';
                         ?>
 
                     </tbody>
