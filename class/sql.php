@@ -7,7 +7,7 @@ class Sql {
 
 	private $conn;
 
-	public function __construct($db="", $hostname="", $username="", $password="", $dbname="")
+	public function __construct($db="", $hostname="", $username="", $password="", $dbname="", $port=1521)
 	{
 		if ($db.$hostname.$username.$password.$dbname == ""):
 			$hostname	= "localhost";
@@ -22,7 +22,7 @@ class Sql {
 	
 		else:
 
-			$tns = " (DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP) (HOST = ".$hostname.")(PORT = 1521)))(CONNECT_DATA = (SID = ".$dbname.")))";
+			$tns = " (DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP) (HOST = ".$hostname.")(PORT = ".$port.")))(CONNECT_DATA = (SID = ".$dbname.")))";
 
 			try{
 				$this->conn = new \PDO(
@@ -30,7 +30,8 @@ class Sql {
 					"oci:dbname=".$tns,$username,$password
 				);
 			}catch(PDOException $e){
-				echo ($e->getMessage());
+				//echo ($e->getMessage());
+				$_SESSION['msg'] = ($e->getMessage());
 			}
 			
 

@@ -1,8 +1,40 @@
 <?php 
 
 include_once "class/Sql.php";
+include "function/utils.php";
 
-$conn=new Sql("oci", "localhost", "administrador", "adm", "XE");
+$iddb  = $data['iddb'];
+$idcat = $data['idcat'];
+
+$conn=new Sql();
+
+$result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname
+											FROM adm_databases
+										   WHERE iddb = $iddb");
+
+$localhost = $result[0]['hostname'];
+$username = $result[0]['username'];
+$password = encrypt_decrypt('decrypt', $result[0]['password']);
+$dbname = $result[0]['dbname'];
+
+$conn=new Sql("oci", $localhost, $username, $password, $dbname, 1521); // trocar a porta pela tabela no cadastro.
+
+
+if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
+    header("Location: \admlogins/0/0");
+	exit;	
+endif;
+
+
+
+if (!$conn):
+	$_SESSION['msg'] = "Database não disponível, verifique os dados de conexão";
+	die();
+endif;
+
+
+
+
 
 
 if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :

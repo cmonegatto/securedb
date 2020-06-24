@@ -79,7 +79,9 @@ $_SESSION['idcat'] = $data['idcat'];
                     <tbody>
 
                         <?php 
-                            include_once 'model/list-admlogins.php';                            
+                            if ($_SESSION['iddb'] <> 0):
+                                include_once 'model/list-admlogins.php';                            
+                            endif;
                         ?>
 
                     </tbody>
@@ -112,6 +114,8 @@ $_SESSION['idcat'] = $data['idcat'];
         var idb     =   $("#iddb").val();
         var idcat   =   $("#idcat").val();
         
+        //alert ("iddb: " + idb + " - idcat: " + idcat);
+
         if (idb !== "" && idcat !== "") {
             window.location=`\../../admlogins/${idb}/${idcat}`;
         };    
@@ -125,7 +129,9 @@ $_SESSION['idcat'] = $data['idcat'];
 
             //$('#iddb').hide();
             //$('.carregando').show();
-            
+
+            //alert ("iddb: " + $("#iddb").val()  + " - idcat: " + $(this).val());
+
             
             $.getJSON('../../model/tab-admlogins-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
                 var options = ''; //'<option value="">Escolha o banco de dados</option>';	

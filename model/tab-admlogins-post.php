@@ -12,7 +12,8 @@ $conn=new Sql();
 $idcat = $_REQUEST['idcat'];
 $iddb = $_SESSION['iddb'];
 
-if ($iddb  == 0 ):
+/*
+if ($iddb  == "" ):
 
     $result   = $conn->sql(basename(__FILE__), 
                 "SELECT DISTINCT db.iddb, db.dbname
@@ -25,7 +26,7 @@ if ($iddb  == 0 ):
     );    
 
 else:
-
+*/
     $result   = $conn->sql(basename(__FILE__), 
                 "SELECT DISTINCT db.iddb, db.dbname
                 FROM adm_categories cat
@@ -46,7 +47,8 @@ else:
                   AND db.iddb <> $iddb"
     );
 
-endif;
+//endif;
+
 
 foreach ($result as $key => $value) {
 
@@ -55,6 +57,13 @@ foreach ($result as $key => $value) {
         'dbname' => $result[$key]['dbname']);
  
 };
+
+// caso não encontre linhas no select limpa o combo...
+if ( !isset($iddb_post) ) :
+    $iddb_post[] = array(
+        'iddb'	 => "",
+        'dbname' => "");
+endif;
 
 echo(json_encode($iddb_post));
 
