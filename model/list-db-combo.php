@@ -4,8 +4,10 @@
 * Carrega o combo de empresas: para INSERT carrega todos, para UPDATE coloca a empresa selecionada em primeiro
 */
 
-include_once "class/Sql.php";
+echo "bingoooooooooooooooo********************************";
+die();
 
+include_once "class/Sql.php";
 $conn=new Sql();
 
 $idcia=0;
@@ -21,9 +23,10 @@ else:
     $idcia = $_SESSION['s_idcia'];
 endif;
 
+
 if ($_SESSION['s_superuser']) $idcia = '%';
 
-echo '<select class="col-md-4 input-large form-control" id="idcat" name="idcat" style="margin-bottom: 15px; margin-left:15px"  autofocus required>';
+//echo '<select class="col-md-4 input-large form-control" id="iddb" name="iddb" style="margin-bottom: 15px; margin-left:15px"  autofocus required>';
 
 
 if ($iddb == 0): /* inclusão*/
@@ -31,7 +34,7 @@ if ($iddb == 0): /* inclusão*/
     echo "<option value=''</option>";    
     
     
-    $result   = $conn->sql(basename(__FILE__), "SELECT DISTINCT cat.idcat, cat.category, cat.idcia, cia.cianame
+    $result   = $conn->sql(basename(__FILE__), "SELECT DISTINCT db.iddb, db.dbname
                                                   FROM adm_categories cat
                                                   LEFT JOIN adm_databases db
                                                     ON cat.idcat=db.idcat
@@ -43,7 +46,7 @@ if ($iddb == 0): /* inclusão*/
 
 else:
    
-    $result   = $conn->sql(basename(__FILE__), "SELECT DISTINCT cat.idcat, cat.category, cat.idcia, cia.cianame
+    $result   = $conn->sql(basename(__FILE__), "SELECT DISTINCT db.iddb, db.dbname
                                                   FROM adm_categories cat
                                                   LEFT JOIN adm_databases db
                                                     ON cat.idcat=db.idcat   
@@ -51,7 +54,7 @@ else:
                                                     ON cia.idcia = cat.idcia
                                                  WHERE db.iddb = $iddb                                                   
                                                  UNION 
-                                                 SELECT DISTINCT cat.idcat, cat.category, cat.idcia, cia.cianame
+                                                 SELECT DISTINCT db.iddb, db.dbname
                                                   FROM adm_categories cat
                                                   LEFT JOIN adm_databases db
                                                     ON cat.idcat=db.idcat
@@ -66,20 +69,13 @@ endif;
 
 
 foreach ($result as $key => $value) {
-    
-    if ($_SESSION['s_superuser']):
-        $category = $result[$key]['category'] . " - " . $result[$key]['cianame'];
-    else:
-        $category = $result[$key]['category'];
-    endif;
 
-
-    echo "    
-    <option value=".$result[$key]['idcat'].">".$category."</option>";    
+    echo "
+    <option value=".$result[$key]['iddb'].">".$result[$key]['dbname']."</option>";        
 
 };
 
-echo "</select>";
+//echo "</select>";
 
 ?>
 

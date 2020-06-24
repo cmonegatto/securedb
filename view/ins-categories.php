@@ -23,7 +23,7 @@ include_once 'include/menu_inc.php';
 
                 <?php 
                     //$_SESSION['idcia'] = 0;
-                    include_once 'model/list-users-ciabox.php';
+                    include_once 'model/list-cia-combo.php';
                 ?>
 
             </div>

@@ -40,10 +40,14 @@ $password	= encrypt_decrypt('decrypt', $result[0]["password"]);
                 <label for="idcat">Categoria DB</label>
             </div>
 
-            <?php 
-                //$_SESSION['idcia'] = 0;
-                include_once 'model/list-databases-catbox.php';
-            ?>
+            <select class="col-md-4 input-large form-control" id="idcat" name="idcat" style="margin-bottom: 15px; margin-left:15px"  autofocus required>';
+
+                <?php 
+                    //$_SESSION['idcia'] = 0;
+                    include_once 'model/list-cat-combo.php';
+                ?>
+
+            </select>
 
         </div>
 

@@ -3,6 +3,9 @@
 include_once 'include/header_inc.php';
 include_once 'include/menu_inc.php';
 
+$_SESSION['iddb']  = $data['iddb'];
+$_SESSION['idcat'] = $data['idcat'];
+
 ?>
    
 <div class="container">
@@ -15,7 +18,49 @@ include_once 'include/menu_inc.php';
 
 
                 <h3>LOG de usuarios suspeitos</h3>  
+
                 <hr />
+
+
+                <div class="row" style="padding-bottom:20px">
+
+                    <div style="margin-left:2px" class="row col-md-1">   
+                        <label for="idcat">Categoria</label>
+                    </div>
+
+
+                    <select class="col-md-4 input-large form-control" id="idcat" name="idcat" style="margin-bottom: 15px; margin-left:15px"  autofocus required>'
+                        <?php 
+                            include_once 'model/list-cat-combo.php';
+                        ?>
+                    </select>
+
+
+                    <div style="margin-left:2px" class="row col-md-1">   
+                        <label for="iddb">Database</label>
+                    </div>
+
+
+                    <select class="col-md-4 input-large form-control" id="iddb" name="iddb" style="margin-bottom: 15px; margin-left:15px"  autofocus required>';
+                        <!--<option value="">Escolha a CATEGORIA</option>-->
+                    </select>
+
+<!--
+                    <div>
+                    <button style="margin-left:20px" type="button" class="btn btn-success" id="pxesquisar">xPesquisar</button>
+                    </div>
+-->
+                    <div>
+                        <a href="#" type="button" class="btn btn-success" style="margin-left:20px" >
+                            <span class="fa fa-refresh" style="color:white" id="pesquisar"> refresh</span>
+                            </a>
+                    </div>
+
+                </div>
+
+
+
+
                 <table class="table table-bordered table-hover display nowrap" id="myTable" style="width:100%"> 
                     <thead>
                         <tr>
@@ -34,7 +79,7 @@ include_once 'include/menu_inc.php';
                     <tbody>
 
                         <?php 
-                            include_once 'model/list-admlogins.php';
+                            include_once 'model/list-admlogins.php';                            
                         ?>
 
                     </tbody>
@@ -55,4 +100,96 @@ include_once 'include/menu_inc.php';
     </div>
 </div>
 
+<?php 
+//$_SESSION['iddb']  = 0;
+//$_SESSION['idcat'] = 0;
+?>
+
+
+<script>
+
+    $("#pesquisar").click(function() {
+        var idb     =   $("#iddb").val();
+        var idcat   =   $("#idcat").val();
+        
+        if (idb !== "" && idcat !== "") {
+            window.location=`\../../admlogins/${idb}/${idcat}`;
+        };    
+
+    });
+
+
+
+    $('#idcat').after(function(){
+        if( $(this).val() ) {
+
+            //$('#iddb').hide();
+            //$('.carregando').show();
+            
+            
+            $.getJSON('../../model/tab-admlogins-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
+                var options = ''; //'<option value="">Escolha o banco de dados</option>';	
+                for (var i = 0; i < j.length; i++) {
+                    options += '<option value="' + j[i].iddb + '">' + j[i].dbname + '</option>';
+                }	
+                $('#iddb').html(options).show();
+                //$('.carregando').hide();
+            });
+        } else {
+            //$('#iddb').html('<option value="">– erro na leitura da categoria –</option>');
+        }
+    });
+
+    $('#idcat').change(function(){
+        if( $(this).val() ) {
+
+            //$('#iddb').hide();
+            //$('.carregando').show();
+            
+            
+            $.getJSON('../../model/tab-admlogins-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
+                var options = '<option value="">Escolha o banco de dados</option>';	
+                for (var i = 0; i < j.length; i++) {
+                    options += '<option value="' + j[i].iddb + '">' + j[i].dbname + '</option>';
+                }	
+                $('#iddb').html(options).show();
+                //$('.carregando').hide();
+            });
+        } else {
+            //$('#iddb').html('<option value="">– erro na leitura da categoria –</option>');
+        }
+    });
+
+
+/*
+    $("#c").on("change", function() {
+        var idcat = $("#idcat").val();
+        
+        $.ajax({ 
+            url: '../model/list-db-combo.php',
+            type: 'POST',
+            data: {id:idcat},
+            beforeSend: function(){
+                $("#iddb").html('carregando...');
+            },
+            success: function(data)
+            {
+                $("#iddb").css({'display':'block'});
+                $("#iddb").html(data);
+            },
+            error: function (data)
+            {
+                $("#iddb").css({'display':'block'});
+                $("#iddb").html("houve um erro ao carregar");
+            }
+        });
+        alert (idcat);
+
+    });
+*/
+</script>
+
+
+
 <?php include_once 'include/footer_inc.php' ?>
+

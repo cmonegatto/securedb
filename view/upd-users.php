@@ -47,7 +47,7 @@ $_SESSION['idcia'] = $idcia;
             <label for="idcia">Empresa</label>
 
             <?php 
-                include_once 'model/list-users-ciabox.php';
+                include_once 'model/list-cia-combo.php';
             ?>
 
         </div>

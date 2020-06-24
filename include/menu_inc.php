@@ -47,7 +47,7 @@ endif;
 				  </div>
 				</li>
 				<li class="nav-item active">
-					<a class="nav-link text-white-50" href="\admlogins">Operação<span class="sr-only">(current)</span></a>
+					<a class="nav-link text-white-50" href="\admlogins/0/0">Operação<span class="sr-only">(current)</span></a>
 				</li>
 				  
 				<li class="nav-item active">

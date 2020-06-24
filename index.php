@@ -166,10 +166,10 @@ $app->get('/lockapp', function () use ($app){
     $app->render('lockapp.php');    
 });
 
-$app->get('/admlogins', function () use ($app){    
-    $app->render('tab-admlogins.php');        
+$app->get('/admlogins/:iddb/:idcat', function ($iddb, $idcat) use ($app){    
+    $data = array("data"=>array("iddb"=>$iddb, "idcat"=>$idcat));
+    $app->render('tab-admlogins.php', $data, 200);
 });
-
 
 $app->run();
 
