@@ -63,7 +63,8 @@ $_SESSION['idcia'] = $idcia;
         <div class="row">       
             <div class="input-field col-md-4">
                 <input type="submit" value="Salvar" class="btn btn-primary">                
-                <a href="\categories" class="btn btn-secondary">Voltar</a>
+                <!-- <a href="\categories" class="btn btn-secondary">Voltar</a> -->
+                <input type="button" value="Voltar" class="btn btn-secondary" onClick="JavaScript: window.history.back();">
             </div>
         </div>
 

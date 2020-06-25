@@ -88,7 +88,9 @@ $_SESSION['idcat'] = $data['idcat'];
                     </tbody>
 
                 </table>
-                <button type="submit" class="btn btn-primary">Novo registro</button>
+                <button type="submit" class="btn btn-primary">Nova Regra</button>
+                <button type="submit" class="btn btn-danger">Bloqueio de Usuário</button>
+                <button type="submit" class="btn btn-warning">Ferramentas proibidas</button>
 
                 <?php
                     if(isset($_SESSION['msg'])):

@@ -157,19 +157,26 @@ $app->get('/databases/delete/:p', function ($p) use ($app) {
 
 
 
-
 /* ---------------------------------------------------------------------------
-*  ROTAS PARA CRUD xxx
+*  ROTAS PARA CRUD (tela de log do logins_log)
 * --------------------------------------------------------------------------- */
 
-$app->get('/lockapp', function () use ($app){
-    $app->render('lockapp.php');    
-});
 
-$app->get('/admlogins/:iddb/:idcat', function ($iddb, $idcat) use ($app){    
+$app->get('/admlogins/:iddb/:idcat', function ($iddb, $idcat) use ($app){      
     $data = array("data"=>array("iddb"=>$iddb, "idcat"=>$idcat));
     $app->render('tab-admlogins.php', $data, 200);
 });
+
+
+/* ---------------------------------------------------------------------------
+*  ROTAS PARA CRUD (tela de CRUD TOOLS)
+* --------------------------------------------------------------------------- */
+
+$app->get('/admtools', function () use ($app){      
+    $app->render('tab-admtools.php');
+});
+
+
 
 $app->run();
 
