@@ -26,37 +26,29 @@ if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
 endif;
 
 
-
-if (!$conn):
-	$_SESSION['msg'] = "Database não disponível, verifique os dados de conexão";
-	die();
-endif;
-
-
-
-
-
-
 if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 
 	//$_SESSION['iddb'] = 0;
 
 	$result= $conn->sql( basename(__FILE__), 
-						"SELECT count(*) as qtd, username, osuser, machine, program, killed
-							FROM adm_logins_log
-						GROUP BY  username, osuser, machine, program, killed
-						ORDER BY 1 desc"
-						
+						"SELECT count(*) as qtd, ll.username, ll.osuser, ll.machine, ll.program, ll.module, ll.killed, decode(tk.username,'','N','S') as to_kill,
+								adm_logins_fun(ll.username, ll.osuser, ll.machine, ll.program, ll.module) as kill
+						   FROM adm_logins_log ll
+						   LEFT JOIN adm_logins_to_kill tk
+						     ON ll.username = tk.username
+						  GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, ll.killed, decode(tk.username,'','N','S')
+						  ORDER BY 1 desc"						
 						);
 			  
 
 	foreach ($result as $key => $value) {
 		
-		if ($result[$key]['USERNAME'] == 'ADMINISTRADOR'):
+		if ($result[$key]['KILL']):
 			echo 
-			"<tr class='dif'>";
+			"<tr class='nok'>";
 		else:
-			"<tr>";
+			echo
+			"<tr class='ok'>";
 		endif;
 
 
@@ -67,11 +59,17 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 		echo "<td>".$result[$key]['OSUSER']."</td>";
 		echo "<td>".$result[$key]['MACHINE']."</td>";
 		echo "<td>".$result[$key]['PROGRAM']."</td>";
+		echo "<td>".$result[$key]['MODULE']."</td>";
 		echo "<td>".$result[$key]['KILLED']."</td>";
-		echo "<td><a href='\databases/delete/1'><i class='fa fa-unlock'></i></a></td>
+
+		if ($result[$key]['TO_KILL'] == "S"):
+			echo "<td><a href='\databases/delete/1'><i class='fa fa-lock'></i></a></td>";
+		else:
+			echo "<td><a href='\databases/delete/1'><i class='fa fa-unlock'></i></a></td>";
+		endif;
 
 
-		</tr>";
+		echo "</tr>";
 
 	};
 

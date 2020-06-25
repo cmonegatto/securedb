@@ -16,7 +16,7 @@ include_once 'include/menu_inc.php';
 
                 <h3>Cadastro de Categorias</h3>  
                 <hr />
-                <table class="table table-bordered table-hover display nowrap" id="myTable" style="width:100%"> 
+                <table class="table table-hover display nowrap" id="myTable" style="width:100%"> 
                     <thead>
                         <tr>
 <!--                        <th scope="col">#</th> -->

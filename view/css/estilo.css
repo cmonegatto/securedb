@@ -79,14 +79,21 @@ table {
 
 
 
-
 table#alter tr td { /* Toda a tabela com fundo creme */
 	background: #ffc;
 	} 
 
-table#myTable tr.dif td {
-	/* background: #eee; 
-	background: lightgreen;
+table#myTable tr.ok td {
+	/*background: green;*/
+	color: gray;
+}
+
+table#myTable tr.nok td {
+	color: rgb(228, 40, 16);
+	background: lightyellow;
+	font-weight: inherit;
+/*	background: lightgreen;
 	background: white;
 	color: black;*/
 	}
+
