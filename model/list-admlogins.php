@@ -8,16 +8,19 @@ $idcat = $data['idcat'];
 
 $conn=new Sql();
 
-$result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname
+$result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
 											FROM adm_databases
 										   WHERE iddb = $iddb");
 
-$localhost = $result[0]['hostname'];
-$username = $result[0]['username'];
-$password = encrypt_decrypt('decrypt', $result[0]['password']);
-$dbname = $result[0]['dbname'];
+$localhost	= $result[0]['hostname'];
+$username	= $result[0]['username'];
+$password	= encrypt_decrypt('decrypt', $result[0]['password']);
+$dbname		= $result[0]['dbname'];
+$port		= $result[0]['port'];
+$player		= $result[0]['player'];
 
-$conn=new Sql("oci", $localhost, $username, $password, $dbname, 1521); // trocar a porta pela tabela no cadastro.
+
+$conn=new Sql($player, $localhost, $username, $password, $dbname, $port);
 
 
 if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):

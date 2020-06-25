@@ -10,6 +10,8 @@ $iddb = $_SESSION['iddb'];
 $idcat		= $_POST["idcat"];
 $dbname		= $_POST["dbname"];
 $hostname	= $_POST["hostname"];
+$port		= $_POST["port"];
+$player		= $_POST["player"];
 $username	= $_POST["username"];
 $password	= encrypt_decrypt('encrypt', $_POST["password"]);
 
@@ -39,12 +41,14 @@ endif;
 
 $result= $conn->sql( basename(__FILE__), 
 					 "UPDATE adm_databases
-						 SET idcat = :IDCAT, dbname = :DBNAME, hostname = :HOSTNAME, username = :USERNAME, password = :PASSWORD
+						 SET idcat = :IDCAT, dbname = :DBNAME, hostname = :HOSTNAME, port = :PORT, player := :PLAYER, username = :USERNAME, password = :PASSWORD
 					   WHERE iddb = :IDDB",
 					  array(":IDDB"=> $iddb,
 					  		":IDCAT"=> $idcat,
 					  		":DBNAME"=> $dbname,
 					  		":HOSTNAME"=> $hostname,
+					  		":PORT"=> $port,
+					  		":PLAYER"=> $player,
 							":USERNAME"=> $username,
 							":PASSWORD"=> $password
 					  		)

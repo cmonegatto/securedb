@@ -7,7 +7,7 @@ class Sql {
 
 	private $conn;
 
-	public function __construct($db="", $hostname="", $username="", $password="", $dbname="", $port=1521)
+	public function __construct($db="", $hostname="", $username="", $password="", $dbname="", $port="")
 	{
 		if ($db.$hostname.$username.$password.$dbname == ""):
 			$hostname	= "localhost";

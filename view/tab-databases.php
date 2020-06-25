@@ -29,9 +29,11 @@ include_once 'include/menu_inc.php';
                                 endif;
                             ?>
 
-                            <th scope="col">Nome DB</th>
                             <th scope="col">Categoria</th>
+                            <th scope="col">Nome DB</th>
                             <th scope="col">Hostname</th>
+                            <th scope="col">Port</th>
+                            <th scope="col">Player</th>
                             <th scope="col">Username</th>
                             <th scope="col">Password</th>
                         </tr>

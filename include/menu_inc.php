@@ -34,21 +34,37 @@ endif;
 			  <ul class="navbar-nav mr-auto">
 
 				<li class="nav-item dropdown">
-				  <a class="nav-link dropdown-toggle text-white-50" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cadastros</a>
+				  <a class="nav-link dropdown-toggle text-white-50" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cadastros básicos</a>
 				  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item <?= ($superuser)? '': 'disabled'?>" href="\company">Companhias</a>
 					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="\users">Usuários</a>
 					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="\categories">Categoria de ambientes</a>
 					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="\databases">Bancos de dados</a>
-					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="\lockapp">Aplicações bloqueadas </a>
 <!--					<div class="dropdown-divider"></div> 
 					<a class="dropdown-item" href="#">Something else here</a> 
 -->
 				  </div>
+
+
+				  <li class="nav-item dropdown">
+				  <a class="nav-link dropdown-toggle text-white-50" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gestão de acessos</a>
+				  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="#">Aplicações bloqueadas</a>
+					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="#">Lock Down de usuário</a>				
+					<div class="dropdown-divider"></div> 
+					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="#">Gestão das regras de acesso</a>
+					<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="\admlogins/0/0">Acessos suspeiros</a>
+				  </div>
+
+
+<!--
 				</li>
+
 				<li class="nav-item active">
 					<a class="nav-link text-white-50" href="\admlogins/0/0">Operação<span class="sr-only">(current)</span></a>
 				</li>
+-->
+
 				  
 				<li class="nav-item active">
 					<a class="nav-link text-white-50" href="/logout">Sair<span class="sr-only">(current)</span></a>

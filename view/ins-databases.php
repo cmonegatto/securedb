@@ -63,6 +63,29 @@ include_once 'include/menu_inc.php';
         </div>
 
 
+        <div class="row">
+            <div class="form-group col-md-4">
+                    <label  for="port">Porta</label>
+                    <input type="text" name="port" class="form-control" id="port">
+            </div>          
+
+
+            <div style="margin-left:0px" class="form-group col-md-4">   
+                <label for="player">Database</label>
+                <select class="col-md-5 input-large form-control" id="player" name="player" style="margin-bottom: 15px" required>';
+
+                        <option value=""></option>
+                        <option value="OCI">Oracle</option>
+                        <option value="MYSQL">MYSQL</option>
+                        <option value="SQLSRV">SQL Server</option>
+                </select>
+            </div>
+
+
+        </div>
+
+
+
         <hr />
 
         <div class="row">       

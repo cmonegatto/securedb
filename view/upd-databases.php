@@ -18,9 +18,11 @@ $conn=new Sql();
 
 $result = $conn->select("SELECT * FROM adm_databases WHERE iddb={$iddb}");
 
-$idcat = $result[0]["idcat"];
+$idcat      = $result[0]["idcat"];
 $dbname		= $result[0]["dbname"];
 $hostname	= $result[0]["hostname"];
+$port	    = $result[0]["port"];
+$player	    = $result[0]["player"];
 $username	= $result[0]["username"];
 $password	= encrypt_decrypt('decrypt', $result[0]["password"]);
 
@@ -78,6 +80,38 @@ $password	= encrypt_decrypt('decrypt', $result[0]["password"]);
                 <label  for="password">Senha</label>
                 <input type="text" name="password" class="form-control" id="password" value="<?php echo $password ?>"  required>
             </div>          
+
+        </div>
+
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                    <label  for="port">Porta</label>
+                    <input type="text" name="port" class="form-control" id="port" value="<?php echo $port ?>" >
+            </div>          
+
+
+            <div style="margin-left:0px" class="form-group col-md-4">   
+                <label for="player">Database</label>
+                <select class="col-md-5 input-large form-control" id="player" name="player" style="margin-bottom: 15px" required>';
+                    <?php
+                        if ($player == 'OCI'):
+                            echo "<option value='OCI'>Oracle</option>
+                                  <option value='MYSQL'>MYSQL</option>
+                                  <option value='SQLSRV'>SQL Server</option>";
+                        elseif ($player == 'MYSQL'):
+                            echo "<option value='MYSQL'>MYSQL</option>
+                                  <option value='OCI'>Oracle</option>                            
+                                  <option value='SQLSRV'>SQL Server</option>";
+                        else:
+                            echo "<option value='SQLSRV'>SQL Server</option>
+                                  <option value='MYSQL'>MYSQL</option>
+                                  <option value='OCI'>Oracle</option>";                        
+                        endif;
+                    ?>
+                </select>
+            </div>
+
 
         </div>
 
