@@ -51,7 +51,7 @@ endif;
 						<a class="dropdown-item <?= ($user)? '': 'disabled'?>" href="#">Lock Down de usuário</a>				
 						<div class="dropdown-divider"></div> 
 						<a class="dropdown-item <?= ($user)? '': 'disabled'?>" href="#">Gestão das regras de acesso</a>
-						<a class="dropdown-item <?= ($user)? '': 'disabled'?>" href="\admlogins/0/0">Acessos suspeiros</a>
+						<a class="dropdown-item <?= ($user)? '': 'disabled'?>" href="\admloginslog/0/0">Acessos suspeiros</a>
 					</div>
 				</li>
 

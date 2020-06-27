@@ -32,6 +32,7 @@ class Sql {
 			}catch(PDOException $e){
 				//echo ($e->getMessage());
 				$_SESSION['msg'] = ($e->getMessage());
+
 			}
 			
 

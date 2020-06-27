@@ -3,8 +3,17 @@
 include_once 'include/header_inc.php';
 include_once 'include/menu_inc.php';
 
-$_SESSION['iddb']  = $data['iddb'];
-$_SESSION['idcat'] = $data['idcat'];
+//$iddb = $_SESSION['iddb'];
+//$idcat = $_SESSION['idcat'];
+
+
+$iddb	= $_POST['iddb'];
+$idcat	= $_POST['idcat'];
+
+$datetime = date("Y-m-d", strtotime("now")) . "T08:00";
+
+//$datetime = date("Y/m/d H:i", strtotime("now"));
+
 
 ?>
    
@@ -14,83 +23,145 @@ $_SESSION['idcat'] = $data['idcat'];
 
         <div class="col-sm-12" >
 
-            <form method="post" action="\databases/insert">
+            <form method="post" action="\admlogins/insert">
 
 
-                <h3>LOG de usuarios suspeitos</h3>  
+                <h3>Gestão das regras de acesso</h3>  
 
                 <hr />
 
+                <!-- ****************************************************************************************** -->
 
-                <div class="row" style="padding-bottom:20px">
 
-                    <div style="margin-left:2px" class="row col-md-1">   
-                        <label for="idcat">Categoria</label>
+                <div class="row">   
+
+                    <div class="form-group col-md-2">
+                        <label for="username">Usuário (username)</label>
+                        <input type="text" name="username" class="form-control upper" id="username" >
                     </div>
 
+                    <div class="form-group col-md-2">
+                        <label  for="OsUser">Usuário AD (osuser)</label>
+                        <input type="text" name="OsUser" class="form-control upper" id="OsUser" >
+                    </div>          
 
-                    <select class="col-md-4 input-large form-control" id="idcat" name="idcat" style="margin-bottom: 15px; margin-left:15px"  autofocus required>'
-                        <?php 
-                            include_once 'model/list-cat-combo.php';
-                        ?>
-                    </select>
+                    <div class="form-group col-md-2">
+                        <label  for="machine">Máquina (hostname)</label>
+                        <input type="text" name="machine" class="form-control upper" id="machine" >
+                    </div>          
+
+                    <div class="form-group col-md-3">
+                        <label  for="begin-date">Data Inicio</label>
+                        <input type="datetime-local" value="<?php echo $datetime?>" name="begin-date" class="form-control" id="begin-date" required>
+                    </div>          
+
+                    <div class="form-group col-md-3">
+                        <label  for="end-date">Data Fim</label>
+                        <input type="datetime-local" name="end-date" class="form-control" id="end-date" >
+                    </div>         
+
+                </div>
 
 
-                    <div style="margin-left:2px" class="row col-md-1">   
-                        <label for="iddb">Database</label>
+                <div class="row">   
+
+                    <div class="form-group col-md-10">
+                        <label for="freetools">Ferramentas autorizadas</label>
+                        <input type="text" name="freetools" class="form-control upper" value="*" id="freetools" maxlength="200"  >
                     </div>
 
+                    <div class="form-group col-md-2">
+                        <label  for="sessions-per-user">Sessões</label>
+                        <input type="text" name="sessions-per-user" class="form-control" id="sessions-per-user" >
+                    </div>             
 
-                    <select class="col-md-4 input-large form-control" id="iddb" name="iddb" style="margin-bottom: 15px; margin-left:15px"  autofocus required>';
-                        <!--<option value="">Escolha a CATEGORIA</option>-->
-                    </select>
+                </div>
 
-<!--
-                    <div>
-                    <button style="margin-left:20px" type="button" class="btn btn-success" id="pxesquisar">xPesquisar</button>
+
+                <div class="row">   
+                    <div class="form-group col-md-6">
+                        <label for="exampleFormControlTextarea1">PL/SQL para inicialização</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                     </div>
--->
-                    <div>
-                        <a href="#" type="button" class="btn btn-success" style="margin-left:20px" >
-                            <span class="fa fa-refresh" style="color:white" id="pesquisar"> refresh</span>
-                            </a>
+
+                    <div class="form-group col-md-6">
+                        <label for="exampleFormControlTextarea1">Comentários sobre essa regra...</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                     </div>
 
                 </div>
 
 
 
+                <div class="row col-md-12"> 
+                    <div class="custom-control custom-checkbox col-md-2">
+                        <input type="checkbox" class="custom-control-input" name="log-logon" id="log-logon" >
+                        <label class="custom-control-label" for="log-logon">Logar</label>
+                    </div>
 
-                <table class="table table-hover display nowrap" id="myTable" style="width:100%"> 
+                    <div class="custom-control custom-checkbox col-md-2">
+                        <input type="checkbox" class="custom-control-input" name="trace" id="trace" >
+                        <label class="custom-control-label" for="trace">Trace</label>
+                    </div>
+
+                    <div class="custom-control custom-checkbox col-md-2">
+                        <input type="checkbox" class="custom-control-input" name="cursor-sharing" id="cursor-sharing" >
+                        <label class="custom-control-label" for="cursor-sharing">Cursor Sharing</label>
+                    </div>
+                </div>
+
+
+
+
+
+                <hr />
+
+                <div class="input-field col-md-4">
+                    <input type="submit" value="Salvar" class="btn btn-primary">
+                </div>
+
+            </form>
+
+            <div class="input-field col-md-4">
+                <?php
+                    echo "<a href='\admloginslog/$iddb/$idcat'><button class='btn btn-secondary'>Voltar</button></a>";
+                ?>
+            </div>
+
+
+                <!-- *********************************************************************************************** -->
+
+                <table class="table table-hover table-bordered display nowrap" id="myTable" style="width:100%"> 
                     <thead>
                         <tr>
-<!--                        <th scope="col">#</th> -->
                             <th scope="col"></th>
                             <th scope="col"></th>
-                            <th scope="col">Qtd</th>
+                            <th scope="col">#</th>
                             <th scope="col">Username</th>
                             <th scope="col">OsUser</th>
                             <th scope="col">Machine</th>
-                            <th scope="col">Program</th>
-                            <th scope="col">Module</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">?</th>
+                            <th scope="col">Data inicio</th>
+                            <th scope="col">Data Fim</th>
+                            <th scope="col">Ferramentas</th>
+                            <th scope="col">Nº Sessões</th>
+                            <th scope="col">Logar</th>
+                            <th scope="col">Trace</th>
+                            <th scope="col">Cursor;Sharing</th>
+                            <th scope="col">PL/SQL init</th>
+                            <th scope="col">Comentários</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         <?php 
-                            if ($_SESSION['iddb'] <> 0):
+                            //if ($_SESSION['iddb'] <> 0):
                                 include_once 'model/list-admlogins.php';                            
-                            endif;
+                            //endif;
                         ?>
 
                     </tbody>
 
                 </table>
-                <button type="submit" class="btn btn-primary">Nova Regra</button>
-                <button type="submit" class="btn btn-danger">Bloqueio de Usuário</button>
-                <button type="submit" class="btn btn-warning">Ferramentas proibidas</button>
 
                 <?php
                     if(isset($_SESSION['msg'])):
@@ -99,7 +170,10 @@ $_SESSION['idcat'] = $data['idcat'];
                     endif;
                 ?>
 
-            </form>
+ <!--           </form> -->
+            
+
+
         </div>
 
     </div>
@@ -112,93 +186,14 @@ $_SESSION['idcat'] = $data['idcat'];
 
 
 <script>
+    $(".upper").change(function(){
 
-    $("#pesquisar").click(function() {
-        var idb     =   $("#iddb").val();
-        var idcat   =   $("#idcat").val();
-        
-        //alert ("iddb: " + idb + " - idcat: " + idcat);
-
-        if (idb !== "" && idcat !== "") {
-            window.location=`\../../admlogins/${idb}/${idcat}`;
-        };    
-
+    $(this).val($(this).val().toUpperCase());
     });
-
-
-
-    $('#idcat').after(function(){
-        if( $(this).val() ) {
-
-            //$('#iddb').hide();
-            //$('.carregando').show();
-
-            //alert ("iddb: " + $("#iddb").val()  + " - idcat: " + $(this).val());
-
-            
-            $.getJSON('../../model/tab-admlogins-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
-                var options = ''; //'<option value="">Escolha o banco de dados</option>';	
-                for (var i = 0; i < j.length; i++) {
-                    options += '<option value="' + j[i].iddb + '">' + j[i].dbname + '</option>';
-                }	
-                $('#iddb').html(options).show();
-                //$('.carregando').hide();
-            });
-        } else {
-            //$('#iddb').html('<option value="">– erro na leitura da categoria –</option>');
-        }
-    });
-
-    $('#idcat').change(function(){
-        if( $(this).val() ) {
-
-            //$('#iddb').hide();
-            //$('.carregando').show();
-            
-            
-            $.getJSON('../../model/tab-admlogins-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
-                var options = '<option value="">Escolha o banco de dados</option>';	
-                for (var i = 0; i < j.length; i++) {
-                    options += '<option value="' + j[i].iddb + '">' + j[i].dbname + '</option>';
-                }	
-                $('#iddb').html(options).show();
-                //$('.carregando').hide();
-            });
-        } else {
-            //$('#iddb').html('<option value="">– erro na leitura da categoria –</option>');
-        }
-    });
-
-
-/*
-    $("#c").on("change", function() {
-        var idcat = $("#idcat").val();
-        
-        $.ajax({ 
-            url: '../model/list-db-combo.php',
-            type: 'POST',
-            data: {id:idcat},
-            beforeSend: function(){
-                $("#iddb").html('carregando...');
-            },
-            success: function(data)
-            {
-                $("#iddb").css({'display':'block'});
-                $("#iddb").html(data);
-            },
-            error: function (data)
-            {
-                $("#iddb").css({'display':'block'});
-                $("#iddb").html("houve um erro ao carregar");
-            }
-        });
-        alert (idcat);
-
-    });
-*/
 </script>
 
 
-
 <?php include_once 'include/footer_inc.php' ?>
+
+
 

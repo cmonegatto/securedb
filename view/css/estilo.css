@@ -25,9 +25,9 @@ hr {
 }
 
 body {
-	/*background: rgba(47, 0, 235, 0.116); 
+	/*background: rgba(47, 0, 235, 0.116); */
 	background: rgba(47, 0, 235, 0.047);
-	background: black;
+	/*background: black;
 	color: #616d72; */
 }
 
@@ -84,7 +84,6 @@ table#alter tr td { /* Toda a tabela com fundo creme */
 	} 
 
 table#myTable tr.ok td {
-	/*background: green;*/
 	color: gray;
 }
 

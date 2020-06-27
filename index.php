@@ -162,10 +162,25 @@ $app->get('/databases/delete/:p', function ($p) use ($app) {
 * --------------------------------------------------------------------------- */
 
 
-$app->get('/admlogins/:iddb/:idcat', function ($iddb, $idcat) use ($app){      
-    $data = array("data"=>array("iddb"=>$iddb, "idcat"=>$idcat));
-    $app->render('tab-admlogins.php', $data, 200);
+$app->get('/admlogins', function () use ($app){       
+    $app->render('tab-admlogins.php');
 });
+
+$app->post('/admlogins', function () use ($app){       
+    $app->render('tab-admlogins.php');
+});
+
+
+/* ---------------------------------------------------------------------------
+*  ROTAS PARA CRUD (tela de log do logins)
+* --------------------------------------------------------------------------- */
+
+$app->get('/admloginslog/:iddb/:idcat', function ($iddb, $idcat) use ($app){      
+    $data = array("data"=>array("iddb"=>$iddb, "idcat"=>$idcat));
+    $app->render('tab-admloginslog.php', $data, 200);
+});
+
+
 
 
 /* ---------------------------------------------------------------------------
