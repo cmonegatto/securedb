@@ -9,8 +9,10 @@ include "function/utils.php";
 //$iddb  = $_SESSION['iddb'];
 //$idcat = $_SESSION['idcat'];
 
-$iddb	= $_POST['iddb'];
-$idcat	= $_POST['idcat'];
+
+$iddb	= (!isset($_POST['iddb']))?$_SESSION['iddb']:$_POST['iddb'];
+$idcat	= (!isset($_POST['idcat']))?$_SESSION['idcat']:$_POST['idcat'];
+
 
 $conn=new Sql();
 
@@ -29,12 +31,10 @@ $player		= $result[0]['player'];
 
 $conn=new Sql($player, $localhost, $username, $password, $dbname, $port);
 
-/*
 if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
     header("Location: \admloginslog/0/0");
 	exit;	
 endif;
-*/
 
 //if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 

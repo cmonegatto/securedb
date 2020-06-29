@@ -170,6 +170,12 @@ $app->post('/admlogins', function () use ($app){
     $app->render('tab-admlogins.php');
 });
 
+$app->POST('/admlogins/insert', function () use ($app){       
+    $app->render('\../model/ins-admlogins.php');
+});
+
+
+
 
 /* ---------------------------------------------------------------------------
 *  ROTAS PARA CRUD (tela de log do logins)

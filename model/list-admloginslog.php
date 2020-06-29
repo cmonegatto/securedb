@@ -47,16 +47,20 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 	foreach ($result as $key => $value) {
 		
 		if ($result[$key]['KILL']):
-			echo 
-			"<tr class='nok'>";
+			echo "<tr class='nok'>";
 		else:
-			echo
-			"<tr class='ok'>";
+			echo "<tr class='ok'>";
 		endif;
 
 
-		echo "<td><a href='\databases/update/1/1'><i class='fa fa-pencil'></i></a></td>";
-		echo "<td><a href='\databases/delete/1'><i class='fa fa-trash'></i></a></td>";
+		if ($result[$key]['TO_KILL'] == "S"):
+			echo "<td><a href='#'><i class='fa fa-lock'></i></a></td>";
+		else:
+			echo "<td><a href='#'><i class='fa fa-unlock'></i></a></td>";
+		endif;
+
+
+		echo "<td><a href='#'><i class='fa fa-trash'></i></a></td>";
   		echo "<td>".$result[$key]['QTD']."</td>";
 		echo "<td>".$result[$key]['USERNAME']."</td>";
 		echo "<td>".$result[$key]['OSUSER']."</td>";
@@ -65,11 +69,6 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 		echo "<td>".$result[$key]['MODULE']."</td>";
 		echo "<td>".$result[$key]['KILLED']."</td>";
 
-		if ($result[$key]['TO_KILL'] == "S"):
-			echo "<td><a href='\databases/delete/1'><i class='fa fa-lock'></i></a></td>";
-		else:
-			echo "<td><a href='\databases/delete/1'><i class='fa fa-unlock'></i></a></td>";
-		endif;
 
 
 		echo "</tr>";

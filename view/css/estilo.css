@@ -25,10 +25,9 @@ hr {
 }
 
 body {
-	/*background: rgba(47, 0, 235, 0.116); */
-	background: rgba(47, 0, 235, 0.047);
-	/*background: black;
-	color: #616d72; */
+	background: rgba(47, 0, 235, 0.047); 
+/*	background: black;*/
+
 }
 
 /* Posiciona os itens do menu mais a direita*/
@@ -83,10 +82,13 @@ table#alter tr td { /* Toda a tabela com fundo creme */
 	background: #ffc;
 	} 
 
+
+/* colorindo registros da adm_logins_log que ATENDEM as regras */
 table#myTable tr.ok td {
 	color: gray;
 }
 
+/* colorindo registros da adm_logins_log que NÃO ATENDAM a regras */
 table#myTable tr.nok td {
 	color: rgb(228, 40, 16);
 	background: lightyellow;

@@ -76,7 +76,12 @@ class Sql {
 
 			
 			$error_message = $stmt->errorInfo()[2];	
-			$_SESSION['msg'] = "Erro na transação com banco de dados: " . $error_message;
+
+			if ( strpos($error_message, 'ORA-00001')):
+				$_SESSION['msg'] = "Erro na transação com banco de dados: Esse registro já existe!";
+			else:
+				$_SESSION['msg'] = "Erro na transação com banco de dados: " . $error_message;
+			endif;
 
 			$conn2 = new Sql();
 			$r = $conn2->sql( basename(__FILE__), 

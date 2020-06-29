@@ -65,7 +65,7 @@ $_SESSION['idcat'] = $data['idcat'];
                     <thead>
                         <tr>
 <!--                        <th scope="col">#</th> -->
-                            <th scope="col"></th>
+                            <th scope="col">?</th>                            
                             <th scope="col"></th>
                             <th scope="col">Qtd</th>
                             <th scope="col">Username</th>
@@ -74,7 +74,6 @@ $_SESSION['idcat'] = $data['idcat'];
                             <th scope="col">Program</th>
                             <th scope="col">Module</th>
                             <th scope="col">Status</th>
-                            <th scope="col">?</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -88,7 +87,7 @@ $_SESSION['idcat'] = $data['idcat'];
                     </tbody>
 
                 </table>
-                <button type="submit" class="btn btn-primary">Nova Regra</button>
+                <button type="submit" class="btn btn-primary">Gestão das Regras</button>
 
 
                 <!-- <a href="https://wipsites.com.br"><button class="btn btn-danger">Meu Botão</button></a> -->

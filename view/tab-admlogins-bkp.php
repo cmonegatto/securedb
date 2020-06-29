@@ -39,34 +39,6 @@ $datetime = date("Y-m-d", strtotime("now")) . "T08:00";
                 <!-- ****************************************************************************************** -->
 
 
-                <div class="row" style="padding-bottom:20px">
-
-                    <div style="margin-left:2px" class="row col-md-1">   
-                        <label for="idcat">Categoria</label>
-                    </div>
-
-
-                    <select class="col-md-4 input-large form-control" id="idcat" name="idcat" style="margin-bottom: 15px; margin-left:15px" disabled>'
-                        <?php 
-                            include_once 'model/list-cat-combo.php';
-                        ?>
-                    </select>
-
-
-                    <div style="margin-left:2px" class="row col-md-1">   
-                        <label for="iddb">Database</label>
-                    </div>
-
-
-                    <select class="col-md-4 input-large form-control" id="iddb" name="iddb" style="margin-bottom: 15px; margin-left:15px" disabled>';
-                        <!--<option value="">Escolha a CATEGORIA</option>-->
-                    </select>
-
-                </div>
-
-
-
-
                 <div class="row">
 
                     <div class="form-group col-md-2">
@@ -149,13 +121,30 @@ $datetime = date("Y-m-d", strtotime("now")) . "T08:00";
                 <hr />
 
                 <div class="row"> 
-                    <div class="input-field col-md-4">
+                    <div class="input-field col-md-1">
                         <input type="submit" value="Salvar" class="btn btn-primary">
-                        <input type="button" value="Voltar" id="btnvoltar" class="btn btn-secondary">
                     </div>
+
+                    <div class="input-field col-md-1">
+                        <?php
+                            //<a href='#'><button class='btn btn-secondary btnvoltar'>Voltar</button></a>;
+
+                        echo '
+                            <a href="#" type="button" id="btnvoltar" class="btn btn-success" style="margin-left:20px" >
+                                <span class="fa fa-refresh" style="color:white" id="pesquisar"> refresh</span>
+                            </a>';
+
+                            
+                        ?>
+                    </div>                    
+
                 </div>
 
             </form>
+
+
+
+
 
 
             <?php
@@ -222,54 +211,11 @@ $datetime = date("Y-m-d", strtotime("now")) . "T08:00";
 
 
     $("#btnvoltar").click(function() {
-        var iddb    =   $("#iddb").val();
-        var idcat   =   $("#idcat").val();
-        
-            window.location=`\../admloginslog/${iddb}/${idcat}`;
+            alert (iddb);
+            //window.location=`\../admloginslog/${iddb}/${idcat}`;
+            window.location=`\../admloginslog/0/0`;
     });
 
-
-    $('#idcat').after(function(){
-        if( $(this).val() ) {
-
-            //$('#iddb').hide();
-            //$('.carregando').show();
-
-            //alert ("iddb: " + $("#iddb").val()  + " - idcat: " + $(this).val());
-
-            
-            $.getJSON('../../model/tab-admloginslog-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
-                var options = ''; //'<option value="">Escolha o banco de dados</option>';	
-                for (var i = 0; i < j.length; i++) {
-                    options += '<option value="' + j[i].iddb + '">' + j[i].dbname + '</option>';
-                }	
-                $('#iddb').html(options).show();
-                //$('.carregando').hide();
-            });
-        } else {
-            //$('#iddb').html('<option value="">– erro na leitura da categoria –</option>');
-        }
-    });
-
-    $('#idcat').change(function(){
-        if( $(this).val() ) {
-
-            //$('#iddb').hide();
-            //$('.carregando').show();
-            
-            
-            $.getJSON('../../model/tab-admloginslog-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
-                var options = '<option value="">Escolha o banco de dados</option>';	
-                for (var i = 0; i < j.length; i++) {
-                    options += '<option value="' + j[i].iddb + '">' + j[i].dbname + '</option>';
-                }	
-                $('#iddb').html(options).show();
-                //$('.carregando').hide();
-            });
-        } else {
-            //$('#iddb').html('<option value="">– erro na leitura da categoria –</option>');
-        }
-    });
 
 </script>
 
