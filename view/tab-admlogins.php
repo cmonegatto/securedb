@@ -15,7 +15,9 @@ $_SESSION['idcat']  = $idcat;
 
 
 
-$datetime = date("Y-m-d", strtotime("now")) . "T08:00";
+//$datetime = date("Y-m-d", strtotime("now")) . "T08:00";
+
+$datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now"));
 
 //$datetime = date("Y/m/d H:i", strtotime("now"));
 
@@ -176,6 +178,7 @@ $datetime = date("Y-m-d", strtotime("now")) . "T08:00";
                         <tr>
                             <th scope="col"></th>
                             <th scope="col"></th>
+                            <th scope="col"></th>
                             <th scope="col">#</th>
                             <th scope="col">Username</th>
                             <th scope="col">OsUser</th>
@@ -202,6 +205,8 @@ $datetime = date("Y-m-d", strtotime("now")) . "T08:00";
                     </tbody>
 
                 </table>
+
+                <hr />
 
         </div>
 

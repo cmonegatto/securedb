@@ -61,11 +61,11 @@ $_SESSION['idcat'] = $data['idcat'];
 
 
 
-                <table class="table table-hover display nowrap" id="myTable" style="width:100%"> 
+                <table class="table table-dark display nowrap tab-admloginslog" id="myTable" style="width:100%"> 
                     <thead>
                         <tr>
 <!--                        <th scope="col">#</th> -->
-                            <th scope="col">?</th>                            
+                            <th scope="col"></th>                            
                             <th scope="col"></th>
                             <th scope="col">Qtd</th>
                             <th scope="col">Username</th>
@@ -88,6 +88,8 @@ $_SESSION['idcat'] = $data['idcat'];
 
                 </table>
                 <button type="submit" class="btn btn-primary">Gestão das Regras</button>
+                <button type="submit" class="btn btn-danger">Ativar bloqueio por usuário</button>
+                <button type="submit" class="btn btn-warning">Aplicações proibidas</button>
 
 
                 <!-- <a href="https://wipsites.com.br"><button class="btn btn-danger">Meu Botão</button></a> -->

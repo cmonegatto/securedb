@@ -1,5 +1,7 @@
 <?php 
 
+session_start();
+
 include "../class/Sql.php";
 
 $idcia		= $_POST["idcia"];
@@ -33,8 +35,8 @@ $result= $conn->sql( basename(__FILE__),
 				   );
 
 
-    header("Location: \users/insert");
-	exit;	
+header("Location: \users/insert");
+exit;	
 
 
 ?>

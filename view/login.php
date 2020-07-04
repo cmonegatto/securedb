@@ -19,7 +19,7 @@ include_once 'include/menu_inc.php';
             <h3>Inicie sua sessão</h3> 
             <hr/>      
 
-            <form method="POST" action="\controller/login.php">
+            <form method="POST" action="controller/login.php">
             
                 <div class="form-group">
                     <label for="email">E-mail</label>

@@ -11,7 +11,7 @@ include_once 'include/menu_inc.php';
 
         <div class="col-sm-12" >
 
-            <form method="post" action="\company/insert">
+            <form method="post" action="company/insert">
 
 
                 <h3>Cadastro de Empresas</h3>  
@@ -46,6 +46,14 @@ include_once 'include/menu_inc.php';
 
                 </table>
                 <button type="submit" class="btn btn-primary">Novo registro</button>
+
+                <?php
+                    if(isset($_SESSION['msg'])):
+                        echo "<span style='color:red'> {$_SESSION['msg']}</span>";
+                        $_SESSION['msg']="";
+                    endif;
+                ?>
+
             </form>
         </div>
 

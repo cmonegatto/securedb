@@ -36,14 +36,19 @@ endif;
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle text-white-50" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cadastros básicos</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item <?= ($superuser)? '': 'disabled'?>" href="\company">Companhias</a>
-						<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="\users">Usuários</a>
-						<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="\categories">Categoria de ambientes</a>
-						<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="\databases">Bancos de dados</a>
+						<a class="dropdown-item <?= ($superuser)? '': 'disabled'?>" href="/company">Companhias</a>
+						<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="/users">Usuários</a>
+						<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="/categories">Categoria de ambientes</a>
+						<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="/databases">Bancos de dados</a>
 					</div>
 				</li>
 
+				<li class="nav-item active">
+					<a class="nav-link text-white-50 <?= ($user)? '': 'disabled'?>" href="/admloginslog/0/0">Gestão de Acessos<span class="sr-only">(current)</span></a>
+				</li>
 
+
+<!--
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle text-white-50" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gestão de acessos</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -54,7 +59,7 @@ endif;
 						<a class="dropdown-item <?= ($user)? '': 'disabled'?>" href="\admloginslog/0/0">Acessos suspeiros</a>
 					</div>
 				</li>
-
+-->
 
 					
 				<li class="nav-item active">

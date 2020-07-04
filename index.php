@@ -31,15 +31,15 @@ $app->get('/route/:parametro', function ($parametro) use ($app) {
 
 $app->get('/', function () use ($app) {  
     if (isset($_SESSION['s_iduser'])):
-        $app->render('/start.php');        
+        $app->render('start.php');        
     else:
-        $app->render('/login.php');
+        $app->render('login.php');
     endif;
 });
 
 $app->get('/logout', function () use ($app) {  
     session_unset();
-    $app->render('/login.php');        
+    $app->render('login.php');        
 });
 
 
@@ -77,7 +77,7 @@ $app->get('/company/delete/:p', function ($p) use ($app) {
 * --------------------------------------------------------------------------- */
 
 $app->get('/users', function () use ($app){
-    $app->render('tab-users.php');    
+    $app->render('tab-users.php');   
 });
 
 $app->get('/users/insert', function () use ($app) {
@@ -170,10 +170,26 @@ $app->post('/admlogins', function () use ($app){
     $app->render('tab-admlogins.php');
 });
 
+/*
 $app->POST('/admlogins/insert', function () use ($app){       
     $app->render('\../model/ins-admlogins.php');
 });
+*/
 
+$app->get('/admlogins/update/:id', function ($id) use ($app) {
+    $data = array("data"=>array("id"=>$id));
+    $app->render('upd-admlogins.php', $data, 200);         
+});
+
+$app->get('/admlogins/delete/:id', function ($id) use ($app) {
+    $data = array("data"=>array("id"=>$id));
+    $app->render('\../model/del-admlogins.php', $data, 200);
+});
+
+$app->get('/admlogins/lockuser/:username', function ($username) use ($app) {
+    $data = array("data"=>array("username"=>$username));
+    $app->render('\../model/lock-admlogins.php', $data, 200);
+});
 
 
 
@@ -184,6 +200,19 @@ $app->POST('/admlogins/insert', function () use ($app){
 $app->get('/admloginslog/:iddb/:idcat', function ($iddb, $idcat) use ($app){      
     $data = array("data"=>array("iddb"=>$iddb, "idcat"=>$idcat));
     $app->render('tab-admloginslog.php', $data, 200);
+});
+
+$app->get('/admloginslog/detail/:username/:osuser/:machine/:program/:module', function ($username, $osuser, $machine, $program, $module) use ($app){      
+    $data = array("data"=>array
+                        ( "username"=> $username,
+                          "osuser"  => $osuser,
+                          "machine" => $machine,
+                          "program" => $program,
+                          "module"  => $module
+                         )
+                  );
+
+    $app->render('tab-det-admloginslog.php', $data, 200);
 });
 
 

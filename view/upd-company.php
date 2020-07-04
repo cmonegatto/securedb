@@ -76,10 +76,8 @@ $status = $result[0]['status'];
 
                 <div class="input-field">
                     <input type="submit" value="Salvar" class="btn btn-primary">                
-                    <!-- <a href="\company" class="btn btn-secondary">Voltar</a> -->
-                    <input type="button" value="Voltar" class="btn btn-secondary" onClick="JavaScript: window.history.back();">
+                    <a href="\company" class="btn btn-secondary">Voltar</a>
                 </div>
-
 
             </form>
         </div>

@@ -1,5 +1,7 @@
 <?php 
 
+session_start();
+
 include "../class/Sql.php";
 
 $cianame = $_POST["cianame"];

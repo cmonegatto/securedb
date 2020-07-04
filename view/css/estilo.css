@@ -25,8 +25,9 @@ hr {
 }
 
 body {
-	background: rgba(47, 0, 235, 0.047); 
-/*	background: black;*/
+	/*background: rgba(47, 0, 235, 0.047); */
+	background: rgba(47, 0, 235, 0.197); 
+	/*background: black;*/
 
 }
 
@@ -66,7 +67,7 @@ table {
 	
 }
 
-
+/*
 .imginicio {
 	padding-bottom: 640px;
 	background-repeat: no-repeat;
@@ -75,7 +76,7 @@ table {
 	opacity: 0.8;
 	
 }
-
+*/
 
 
 table#alter tr td { /* Toda a tabela com fundo creme */
@@ -84,17 +85,28 @@ table#alter tr td { /* Toda a tabela com fundo creme */
 
 
 /* colorindo registros da adm_logins_log que ATENDEM as regras */
-table#myTable tr.ok td {
-	color: gray;
+table#myTable tr.norule td {
+	/*color: lightgray;*/
+	color: yellow;
+	background: black;
 }
 
+table#myTable tr.rule td {
+	color: green;
+	background: black;	
+	/*background: rgba(5, 77, 5, 0.061);*/
+}
+
+
 /* colorindo registros da adm_logins_log que NÃO ATENDAM a regras */
-table#myTable tr.nok td {
+table#myTable tr.todie td {
 	color: rgb(228, 40, 16);
-	background: lightyellow;
-	font-weight: inherit;
-/*	background: lightgreen;
-	background: white;
-	color: black;*/
+	background: black;	
+	/*background: lightyellow;*/
 	}
+
+table.tab-admloginslog td {
+	background: black;	
+	font-size: x-small;
+}
 

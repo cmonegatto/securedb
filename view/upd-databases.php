@@ -121,20 +121,9 @@ $password	= encrypt_decrypt('decrypt', $result[0]["password"]);
         <div class="row">       
             <div class="input-field col-md-4">
                 <input type="submit" value="Salvar" class="btn btn-primary">                
-                <!--<a href="\databases" class="btn btn-secondary">Voltar</a> -->
-                <input type="button" value="Voltar" class="btn btn-secondary" onClick="JavaScript: window.history.back();">
+                <a href="\databases" class="btn btn-secondary">Voltar</a>
             </div>
         <div>
-
-
-        <?php
-
-            if(isset($_SESSION['msg'])):
-                echo "<span style='color:red'> {$_SESSION['msg']}</span>";
-                $_SESSION['msg']="";
-            endif;
-        ?>
-
 
     </form>
 

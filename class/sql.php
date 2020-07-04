@@ -22,17 +22,18 @@ class Sql {
 	
 		else:
 
-			$tns = " (DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP) (HOST = ".$hostname.")(PORT = ".$port.")))(CONNECT_DATA = (SID = ".$dbname.")))";
+			$tns = " (DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP) (HOST = ".$hostname.")(PORT = ".$port.")))(CONNECT_DATA = (SID=".$dbname.")))";
 
+			$db = strtolower($db);
 			try{
 				$this->conn = new \PDO(
 					//"{$db}:dbname={$dbname};$tns", $username, $password
-					"oci:dbname=".$tns,$username,$password
+					"$db:dbname=".$tns,$username,$password
 				);
 			}catch(PDOException $e){
 				//echo ($e->getMessage());
-				$_SESSION['msg'] = ($e->getMessage());
-
+				$_SESSION['msg'] = "Ocorreu um erro na conexão com banco de dados. Verifique os dados de conexão - " . ($e->getMessage());
+				$_SESSION['msg'] = $_SESSION['msg']."$db:dbname=".$tns .'/'. $username .'/**************';
 			}
 			
 
@@ -77,8 +78,9 @@ class Sql {
 			
 			$error_message = $stmt->errorInfo()[2];	
 
-			if ( strpos($error_message, 'ORA-00001')):
-				$_SESSION['msg'] = "Erro na transação com banco de dados: Esse registro já existe!";
+
+			if ( strpos($error_message, 'ORA-00001') || strpos($error_message, 'uplicate')>0 ):
+				$_SESSION['msg'] = "Erro na transação com banco de dados: Esse registro já existe! - ".$error_message;
 			else:
 				$_SESSION['msg'] = "Erro na transação com banco de dados: " . $error_message;
 			endif;

@@ -39,16 +39,34 @@ endif;
 //if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 
 	$result= $conn->sql( basename(__FILE__), 
-						"SELECT *								
-						   FROM adm_logins
+						"SELECT l.id_login, l.username, l.osuser, l.machine, l.begin_date, l.end_date, l.freetools, l.sessions_per_user, 
+								l.log_logon, l.trace, l.cursor_sharing, l.init_plsql, l.comments, decode(tk.username,'','N','S') as to_kill
+						   FROM adm_logins l
+						   LEFT JOIN adm_logins_to_kill tk
+							 ON l.username = tk.username
 						  ORDER BY id_login desc"
 						);
 			  
 
+
+
 	foreach ($result as $key => $value) {
 		
-		echo "<td><a href='\databases/update/1/1'><i class='fa fa-pencil'></i></a></td>";
-		echo "<td><a href='\databases/delete/1'><i class='fa fa-trash'></i></a></td>";
+		$id 	  = $result[$key]['ID_LOGIN'];
+		$username = $result[$key]['USERNAME'];
+
+		
+		if ($result[$key]['TO_KILL'] == "S" && $result[$key]['USERNAME']):
+			echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-lock'></i></a></td>";
+		elseif ($result[$key]['TO_KILL'] == "N" && $result[$key]['USERNAME']):
+			echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-unlock'></i></a></td>";
+		else:
+			echo "<td></td>";			
+		endif;
+
+
+		echo "<td><a href='\admlogins/update/$id'><i class='fa fa-pencil'></i></a></td>";
+		echo "<td><a href='\admlogins/delete/$id'><i class='fa fa-trash'></i></a></td>";
   		echo "<td>".$result[$key]['ID_LOGIN']."</td>";
   		echo "<td>".$result[$key]['USERNAME']."</td>";
   		echo "<td>".$result[$key]['OSUSER']."</td>";

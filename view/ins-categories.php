@@ -49,8 +49,8 @@ include_once 'include/menu_inc.php';
         <div class="row">       
             <div class="input-field col-md-4">
                 <input type="submit" value="Salvar" class="btn btn-primary">                
-                <!-- <a href="\categories" class="btn btn-secondary">Voltar</a> -->
-                <input type="button" value="Voltar" class="btn btn-secondary" onClick="JavaScript: window.history.back();">
+                <a href="\categories" class="btn btn-secondary">Voltar</a>
+                <!-- <input type="button" value="VoltarX" class="btn btn-secondary" onClick="JavaScript: window.history.back();"> -->
             </div>
         </div>
 

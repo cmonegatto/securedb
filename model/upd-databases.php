@@ -17,6 +17,7 @@ $password	= encrypt_decrypt('encrypt', $_POST["password"]);
 
 $conn=new Sql();
 
+/*
 // checa duplicidade
 $result= $conn->sql( basename(__FILE__), 
 					 "SELECT count(*) as qtd
@@ -38,6 +39,7 @@ if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
     header("Location: \databases");
 	exit;	
 endif;
+*/
 
 $result= $conn->sql( basename(__FILE__), 
 					 "UPDATE adm_databases

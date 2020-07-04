@@ -10,7 +10,7 @@ $descat		= $_POST["descat"];
 
 $conn=new Sql();
 
-
+/*
 $result= $conn->sql( basename(__FILE__), 
 					 "SELECT count(*) as qtd
 					    FROM adm_categories
@@ -30,7 +30,7 @@ if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
 	exit;	
 endif;
 
-
+*/
 $result= $conn->sql( basename(__FILE__), 
 					 "INSERT INTO adm_categories (idcia, category, descat)
 					  VALUES (:IDCIA, :CATEGORY, :DESCAT)",
