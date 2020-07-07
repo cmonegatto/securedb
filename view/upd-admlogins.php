@@ -2,9 +2,8 @@
 
 include_once 'include/header_inc.php';
 include_once 'include/menu_inc.php';
-
-//$iddb = $_SESSION['iddb'];
-//$idcat = $_SESSION['idcat'];
+include "class/Sql.php";
+include "function/utils.php";
 
 
 $iddb	= (!isset($_POST['iddb']))?$_SESSION['iddb']:$_POST['iddb'];
@@ -13,28 +12,78 @@ $idcat	= (!isset($_POST['idcat']))?$_SESSION['idcat']:$_POST['idcat'];
 $_SESSION['iddb']   = $iddb;
 $_SESSION['idcat']  = $idcat;
 
+///////////////////
+
+$id_login = $data['id'];
+$_SESSION['id_login'] = $id_login;
+
+$iddb	= (!isset($_POST['iddb']))?$_SESSION['iddb']:$_POST['iddb'];
+$idcat	= (!isset($_POST['idcat']))?$_SESSION['idcat']:$_POST['idcat'];
+
+$conn=new Sql();
+
+$result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
+											FROM adm_databases
+										   WHERE iddb = $iddb");
+
+$localhost	= $result[0]['hostname'];
+$user	    = $result[0]['username'];
+$password	= encrypt_decrypt('decrypt', $result[0]['password']);
+$dbname		= $result[0]['dbname'];
+$port		= $result[0]['port'];
+$player		= $result[0]['player'];
 
 
-//$datetime = date("Y-m-d", strtotime("now")) . "T08:00";
+$conn=new Sql($player, $localhost, $user, $password, $dbname, $port);
 
-$datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now"));
+if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
+    header("Location: \admloginslog/0/0");
+	exit;	
+endif;
 
-//$datetime = date("Y/m/d H:i", strtotime("now"));
+$result= $conn->sql(basename(__FILE__), 
+                    "SELECT id_login, username, osuser, machine, to_char(begin_date, 'yyyy-mm-dd hh24:mi') as begin_date, to_char(end_date, 'yyyy-mm-dd hh24:mi') as end_date, freetools, sessions_per_user, init_plsql, comments, log_logon, trace, cursor_sharing 
+                       FROM adm_logins 
+                      WHERE id_login=$id_login");
+
+
+$username		    = $result[0]["USERNAME"];
+$osuser		        = $result[0]["OSUSER"];
+$machine		    = $result[0]["MACHINE"];
+$begindate		    = $result[0]["BEGIN_DATE"];
+$enddate		    = $result[0]["END_DATE"];
+$freetools		    = $result[0]["FREETOOLS"];
+$sessionsperuser	= $result[0]["SESSIONS_PER_USER"];
+$initplsql		    = $result[0]["INIT_PLSQL"];
+$comments		    = $result[0]["COMMENTS"];
+$loglogon		    = ($result[0]["LOG_LOGON"]=="S") ? "checked" : "";
+$trace		        = ($result[0]["TRACE"]=="S") ? "checked" : "";
+$cursorsharing		= ($result[0]["CURSOR_SHARING"]=="S") ? "checked" : "";
+
+$begindate = date("Y-m-d", strtotime($result[0]['BEGIN_DATE'])) . 'T' . date("H:i", strtotime($result[0]['BEGIN_DATE']));
+
+if ($enddate):
+    $enddate   = date("Y-m-d", strtotime($result[0]['END_DATE']))   . 'T' . date("H:i", strtotime($result[0]['END_DATE']));
+endif;
+
+
+
+/////////////////////
 
 
 ?>
    
-<div class="container" >
+<div class="container">
 
     <div class="row">
 
-        <div class="col-md-12" >
+        <div class="col-sm-12" >
 
             <!-- <form method="post" action="\admlogins/insert"> -->
-            <form method="post" action="../model/ins-admlogins.php">
+            <form method="post" action="../../model/upd-admlogins.php">
 
 
-                <h3>Gestão das regras de acesso (new)</h3>  
+                <h3>Gestão das regras de acesso (edit)</h3>  
 
                 <hr />
 
@@ -73,27 +122,27 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
 
                     <div class="form-group col-md-2">
                         <label for="username">Usuário (username)</label>
-                        <input type="text" name="username" class="form-control upper" id="username" maxlength="30" autofocus>
+                        <input type="text" value="<?php echo $username ?>" name="username" class="form-control upper" id="username" maxlength="30" autofocus>
                     </div>
 
                     <div class="form-group col-md-2">
                         <label  for="osuser">Usuário AD (osuser)</label>
-                        <input type="text" name="osuser" class="form-control upper" id="osuser" maxlength="30" >
+                        <input type="text" value="<?php echo $osuser ?>" name="osuser" class="form-control upper" id="osuser" maxlength="30" >
                     </div>          
 
                     <div class="form-group col-md-2">
                         <label  for="machine">Máquina (host)</label>
-                        <input type="text" name="machine" class="form-control upper" id="machine" maxlength="64" >
+                        <input type="text" value="<?php echo $machine ?>" name="machine" class="form-control upper" id="machine" maxlength="64" >
                     </div>          
 
                     <div class="form-group col-md-3">
                         <label  for="begindate">Data Inicio</label>
-                        <input type="datetime-local" value="<?php echo $datetime?>" name="begindate" class="form-control" id="begindate" required>
+                        <input type="datetime-local" value="<?php echo $begindate ?>" name="begindate" class="form-control" id="begindate" required>
                     </div>          
 
                     <div class="form-group col-md-3">
                         <label  for="enddate">Data Fim</label>
-                        <input type="datetime-local" name="enddate" class="form-control" id="enddate" >
+                        <input type="datetime-local" value="<?php echo $enddate ?>" name="enddate" class="form-control" id="enddate" >
                     </div>         
 
                 </div>
@@ -103,12 +152,12 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
 
                     <div class="form-group col-md-10">
                         <label for="freetools">Ferramentas autorizadas</label>
-                        <input type="text" name="freetools" class="form-control upper" value="*" id="freetools" maxlength="200"  >
+                        <input type="text" value="<?php echo $freetools ?>" name="freetools" class="form-control upper" value="*" id="freetools" maxlength="200"  >
                     </div>
 
                     <div class="form-group col-md-2">
                         <label  for="sessionsperuser">Sessões</label>
-                        <input type="text" name="sessionsperuser" class="form-control" id="sessionsperuser" maxlength="2">
+                        <input type="text" value="<?php echo $sessionsperuser ?>" name="sessionsperuser" class="form-control" id="sessionsperuser" maxlength="2">
                     </div>             
 
                 </div>
@@ -117,31 +166,29 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
                 <div class="row">   
                     <div class="form-group col-md-6">
                         <label for="initplsql">PL/SQL para inicialização</label>
-                        <textarea class="form-control" name="initplsql" id="initplsql" rows="3" maxlength="4000"></textarea>
+                        <textarea class="form-control" name="initplsql" id="initplsql" rows="3" maxlength="4000"><?php echo $initplsql ?></textarea>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="comments">Comentários sobre essa regra...</label>
-                        <textarea class="form-control" name="comments" id="comments" rows="3" maxlength="4000"></textarea>
+                        <textarea class="form-control" name="comments" id="comments" rows="3" maxlength="4000"><?php echo $comments ?></textarea>
                     </div>
 
                 </div>
 
 
-
-                <div class="row col-md-10">
+                <div class="row col-md-10"> 
                     <div class="custom-control custom-checkbox col-md-4">
-                        <input type="checkbox" class="custom-control-input" value="0" name="loglogon" id="loglogon" >
-                        <label class="custom-control-label" for="loglogon">Gerar histórico de Acessos</label>
-                    </div>
+                        <input type="checkbox" class="custom-control-input" name="loglogon" id="loglogon" <?php echo $loglogon ?> >
+                        <label class="custom-control-label" for="loglogon">Gerar histórico de Acessos</label>                    </div>
 
                     <div class="custom-control custom-checkbox col-md-4">
-                        <input type="checkbox" class="custom-control-input" name="trace" id="trace" >
+                        <input type="checkbox" class="custom-control-input" name="trace" id="trace" <?php echo $trace ?> >
                         <label class="custom-control-label" for="trace">Gerar trace</label>
                     </div>
 
                     <div class="custom-control custom-checkbox col-md-4">
-                        <input type="checkbox" class="custom-control-input" name="cursorsharing" id="cursorsharing" >
+                        <input type="checkbox" class="custom-control-input" name="cursorsharing" id="cursorsharing" <?php echo $cursorsharing ?> >
                         <label class="custom-control-label" for="cursorsharing">Ativar Cursor Sharing</label>
                     </div>
                 </div>
@@ -151,19 +198,11 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
                 <hr />
 
                 <div class="row"> 
-                    <div class="input-field col-md-10">
+                    <div class="input-field col-md-8">
                         <input type="submit" value="Salvar"                         class="btn btn-primary">
                         <input type="button" value="Voltar"                         class="btn btn-secondary"   id="btnvoltar" >
-                        <!--
-                        <input type="button" value="Ativar bloqueio por usuário"    class="btn btn-danger"      id="btnbloqueio" >
-                        <input type="button" value="Aplicações proibidas"           class="btn btn-warning"     id="btnappproibido" >
-                        <input type="button" value="Ver Registro dos acessos"           class="btn btn-info"        id="btnloglogon" >
-                        <input type="button" value="Ver traces gerados"             class="btn btn-dark"     id="btntraces" >
-                        -->
                     </div>
                 </div>
-
-
 
             </form>
 
@@ -178,50 +217,6 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
 
                 <hr />
 
-                <!-- <a href="#" class="btn btn-danger   btn-custom"><span class="img-circle text-primary                btn-icon"></span>User Lock down</a> -->
-                <a href="\loginstokill" class="btn btn-danger   btn-custom"><span class="fa fa-lock img-circle  text-primary    btn-icon"></span> Ativar KILL por usuário</a>
-                <a href="#" class="btn btn-warning  btn-custom"><span class="img-circle text-primary                btn-icon"></span>Aplicações proibidas</a>
-                <a href="\loginslogons" class="btn btn-dark     btn-custom"><span class="fa fa-search img-circle text-primary   btn-icon"></span> Ver histórico de acessos</a>
-                <a href="\loginstrace"  class="btn btn-dark     btn-custom"><span class="fa fa-search img-circle text-primary   btn-icon"></span> Ver traces gerados</a>
-
-                <hr />
-
-                
-
-                <!-- *********************************************************************************************** -->
-
-                <table class="table table-hover tab-admlogins table-bordered display nowrap" id="myTable" style="width:100%"> 
-                    <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                            <th scope="col">#</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">OsUser</th>
-                            <th scope="col">Machine</th>
-                            <th scope="col">Data inicio</th>
-                            <th scope="col">Data Fim</th>
-                            <th scope="col">Ferramentas</th>
-                            <th scope="col">Nº Sessões</th>
-                            <th scope="col">Logar</th>
-                            <th scope="col">Trace</th>
-                            <th scope="col">Cursor;Sharing</th>
-                            <th scope="col">PL/SQL init</th>
-                            <th scope="col">Comentários</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <?php 
-                                include_once 'model/list-admlogins.php';                            
-                        ?>
-
-                    </tbody>
-
-                </table>
-
-                <hr />
 
         </div>
 
@@ -240,7 +235,7 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
         var iddb    =   $("#iddb").val();
         var idcat   =   $("#idcat").val();
         
-            window.location=`\../admloginslog/${iddb}/${idcat}`;
+            window.location=`/admlogins`;
     });
 
 

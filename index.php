@@ -217,6 +217,34 @@ $app->get('/admloginslog/detail/:username/:osuser/:machine/:program/:module', fu
 
 
 
+/* ---------------------------------------------------------------------------
+*  ROTAS PARA CRUD (tela de CRUD LOGINSLOGINS)
+* --------------------------------------------------------------------------- */
+
+$app->get('/loginslogons', function () use ($app){      
+    $app->render('tab-loginslogons.php');
+});
+
+
+/* ---------------------------------------------------------------------------
+*  ROTAS PARA CRUD (tela de CRUD LOGINSTRACE)
+* --------------------------------------------------------------------------- */
+
+$app->get('/loginstrace', function () use ($app){      
+    $app->render('tab-loginstrace.php');
+});
+
+
+/* ---------------------------------------------------------------------------
+*  ROTAS PARA CRUD (tela de CRUD LOGINS_TO_KILL)
+* --------------------------------------------------------------------------- */
+
+$app->get('/loginstokill', function () use ($app){      
+    $app->render('tab-loginstokill.php');
+});
+
+
+
 
 /* ---------------------------------------------------------------------------
 *  ROTAS PARA CRUD (tela de CRUD TOOLS)

@@ -25,9 +25,8 @@ hr {
 }
 
 body {
-	/*background: rgba(47, 0, 235, 0.047); */
 	background: rgba(47, 0, 235, 0.197); 
-	/*background: black;*/
+
 
 }
 
@@ -37,8 +36,7 @@ body {
 	
 }
 
-/* Ajusta o fonte da TABLE */
-
+/* Ajusta o tamanho da fonte de todos DATA TABLES */
 table {
 	font-size: small;
 }
@@ -84,29 +82,54 @@ table#alter tr td { /* Toda a tabela com fundo creme */
 	} 
 
 
-/* colorindo registros da adm_logins_log que ATENDEM as regras */
+/* colorindo registros da adm_logins_log que NÃO ATENDEM as regras */
 table#myTable tr.norule td {
 	/*color: lightgray;*/
-	color: yellow;
+	color: rgba(255, 255, 0, 0.952);
 	background: black;
 }
 
+/* colorindo registros da adm_logins_log que ATENDEM as regras */
 table#myTable tr.rule td {
-	color: green;
+	color: rgba(144, 238, 144, 0.653);
 	background: black;	
-	/*background: rgba(5, 77, 5, 0.061);*/
 }
 
 
-/* colorindo registros da adm_logins_log que NÃO ATENDAM a regras */
+/* colorindo registros da adm_logins_log que NÃO ATENDAM a regras e estão ativados TO KILL */
 table#myTable tr.todie td {
 	color: rgb(228, 40, 16);
 	background: black;	
-	/*background: lightyellow;*/
 	}
 
+/* fundo preto da tabelas adm_logins_log para realçar cores das linhas com regras */
 table.tab-admloginslog td {
 	background: black;	
 	font-size: x-small;
 }
 
+/* fonte da tabela adm_logins*/
+table.tab-admlogins td {
+	font-size: x-small;
+}
+
+
+
+/* regra para ADM_LOGINS_TO_KILL caso esteja setado para KILL */
+table.tab-loginstokill tr.tokill td {
+	color: rgb(228, 40, 16);
+	background: black;	
+	font-weight: bolder;	
+}
+
+/* regra para ADM_LOGINS_TO_KILL caso esteja setado NÃO KILL */
+table.tab-loginstokill tr.notokill td {
+	background: black;	
+	color: rgba(255, 255, 0, 0.952);
+	}
+
+/* regra para ADM_LOGINS_TO_KILL - para usuários com ADMINISTER DATABASE TRIGGER */
+table.tab-loginstokill tr.admtrigger td {
+	background: black;	
+	color: gray;
+}	

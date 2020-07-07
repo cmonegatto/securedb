@@ -10,6 +10,7 @@
 			});
 
 			$('#myTable').dataTable( {
+					stateSave: true,
 					"scrollX": true,
 					"order":[],
 					"language": 

@@ -39,7 +39,7 @@ endif;
 //if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 
 	$result= $conn->sql( basename(__FILE__), 
-						"SELECT l.id_login, l.username, l.osuser, l.machine, l.begin_date, l.end_date, l.freetools, l.sessions_per_user, 
+						"SELECT l.id_login, l.username, l.osuser, l.machine, to_char(l.begin_date, 'dd/mm/yy hh24:mi') as begin_date, to_char(l.end_date, 'dd/mm/yy hh24:mi') as end_date, l.freetools, l.sessions_per_user, 
 								l.log_logon, l.trace, l.cursor_sharing, l.init_plsql, l.comments, decode(tk.username,'','N','S') as to_kill
 						   FROM adm_logins l
 						   LEFT JOIN adm_logins_to_kill tk

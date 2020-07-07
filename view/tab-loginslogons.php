@@ -3,32 +3,26 @@
 include_once 'include/header_inc.php';
 include_once 'include/menu_inc.php';
 
+//$iddb = $_SESSION['iddb'];
+//$idcat = $_SESSION['idcat'];
+
+
 $iddb	= (!isset($_POST['iddb']))?$_SESSION['iddb']:$_POST['iddb'];
 $idcat	= (!isset($_POST['idcat']))?$_SESSION['idcat']:$_POST['idcat'];
 
 $_SESSION['iddb']   = $iddb;
 $_SESSION['idcat']  = $idcat;
 
-$_SESSION['username']   = $data['username'];
-$_SESSION['osuser']     = str_replace('*', '%', $data['osuser']);
-$_SESSION['machine']    = str_replace('*', '%', $data['machine']);
-$_SESSION['program']    = str_replace('*', '%', $data['program']);
-$_SESSION['module']     = str_replace('*', '%', $data['module']);
-
 
 ?>
    
-<div class="container">
+<div class="container" >
 
     <div class="row">
 
-        <div class="col-sm-12" >
+        <div class="col-md-12" >
 
-            <!-- <form method="post" action="\admlogins/insert"> -->
-            <form method="post" action="../model/ins-admlogins.php">
-
-
-                <h3>Detalhamento dos registros do log do banco de dados</h3>  
+                <h3>Histórico de acessos (ativado pela opção "Gerar histórico de Acessos") </h3>  
 
                 <hr />
 
@@ -44,7 +38,7 @@ $_SESSION['module']     = str_replace('*', '%', $data['module']);
 
                     <select class="col-md-4 input-large form-control" id="idcat" name="idcat" style="margin-bottom: 15px; margin-left:15px" disabled>'
                         <?php 
-                            include_once 'model/list-cat-combo.php';
+                            include 'model/list-cat-combo.php';
                         ?>
                     </select>
 
@@ -61,7 +55,37 @@ $_SESSION['module']     = str_replace('*', '%', $data['module']);
                 </div>
 
 
-            </form>
+                <!-- *********************************************************************************************** -->
+
+                <table class="table table-hover tab-admlogins table-bordered display nowrap" id="myTable" style="width:100%"> 
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Data/Hora</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Osuser</th>
+                            <th scope="col">Machine</th>
+                            <th scope="col">Terminal</th>
+                            <th scope="col">Program</th>
+                            <th scope="col">Module</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <?php 
+                            include_once 'model/list-loginslogons.php';
+                        ?>
+
+                    </tbody>
+
+                </table>
+
+
+                <div class="row"> 
+                    <div class="input-field col-md-10">
+                        <input type="button" value="Voltar"                         class="btn btn-secondary"   id="btnvoltar" >
+                    </div>
+                </div>
 
 
             <?php
@@ -71,59 +95,13 @@ $_SESSION['module']     = str_replace('*', '%', $data['module']);
                 endif;
             ?>
 
-
-                <!-- *********************************************************************************************** -->
-
-                <table class="table table-hover table-bordered display nowrap" id="myTable" style="width:100%">
-
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Data</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">OsUser</th>
-                            <th scope="col">Machine</th>
-                            <th scope="col">Terminal</th>
-                            <th scope="col">Program</th>
-                            <th scope="col">Module</th>
-                            <th scope="col">Killed</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <?php 
-                            //if ($_SESSION['iddb'] <> 0):
-                                include_once 'model/list-det-admloginslog.php';                                        
-                            //endif;
-                        ?>
-
-                    </tbody>
-
-                </table>
-
-                <hr />
-
-                <div class="row"> 
-                    <div class="input-field col-md-4">
-                        <input type="button" value="Voltar" id="btnvoltar" class="btn btn-secondary">
-                    </div>
-                </div>
-
-
         </div>
 
     </div>
 </div>
 
-<?php 
-//$_SESSION['iddb']  = 0;
-//$_SESSION['idcat'] = 0;
-?>
-
 
 <script>
-$(document).ready(function(){
-
     $(".upper").change(function(){
 
     $(this).val($(this).val().toUpperCase());
@@ -134,11 +112,12 @@ $(document).ready(function(){
         var iddb    =   $("#iddb").val();
         var idcat   =   $("#idcat").val();
         
-        window.location=`/admloginslog/${iddb}/${idcat}`;
+            //window.location=`\../admloginslog/${iddb}/${idcat}`;
+            window.location=`/admlogins`;            
     });
 
 
-    $('#idcat').after(function(){      
+    $('#idcat').after(function(){
         if( $(this).val() ) {
 
             //$('#iddb').hide();
@@ -146,7 +125,8 @@ $(document).ready(function(){
 
             //alert ("iddb: " + $("#iddb").val()  + " - idcat: " + $(this).val());
 
-            $.getJSON('../../../../../../model/tab-admloginslog-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
+            
+            $.getJSON('../model/tab-admloginslog-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
                 var options = ''; //'<option value="">Escolha o banco de dados</option>';	
                 for (var i = 0; i < j.length; i++) {
                     options += '<option value="' + j[i].iddb + '">' + j[i].dbname + '</option>';
@@ -166,7 +146,7 @@ $(document).ready(function(){
             //$('.carregando').show();
             
             
-            $.getJSON('../../../../../../model/tab-admloginslog-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
+            $.getJSON('../model/tab-admloginslog-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
                 var options = '<option value="">Escolha o banco de dados</option>';	
                 for (var i = 0; i < j.length; i++) {
                     options += '<option value="' + j[i].iddb + '">' + j[i].dbname + '</option>';
@@ -179,7 +159,6 @@ $(document).ready(function(){
         }
     });
 
-});
 </script>
 
 
