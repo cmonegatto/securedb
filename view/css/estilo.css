@@ -132,4 +132,5 @@ table.tab-loginstokill tr.notokill td {
 table.tab-loginstokill tr.admtrigger td {
 	background: black;	
 	color: gray;
+	/*text-decoration:line-through;*/
 }	

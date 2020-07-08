@@ -57,9 +57,11 @@ endif;
 
 		
 		if ($result[$key]['TO_KILL'] == "S" && $result[$key]['USERNAME']):
-			echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-lock'></i></a></td>";
+			//echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-lock'></i></a></td>";
+			echo "<td><i class='fa fa-lock'></i></a></td>";
 		elseif ($result[$key]['TO_KILL'] == "N" && $result[$key]['USERNAME']):
-			echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-unlock'></i></a></td>";
+			//echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-unlock'></i></a></td>";
+			echo "<td><i class='fa fa-unlock'></i></a></td>";
 		else:
 			echo "<td></td>";			
 		endif;

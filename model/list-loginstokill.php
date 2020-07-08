@@ -59,7 +59,7 @@ $result= $conn->sql( basename(__FILE__),
                                   AND grantee = u.username
                             )
                     )
-                    UNION ALL
+                    UNION
                     SELECT grantee as username, 1 as admtrigger, 0 as tokill
                       FROM dba_role_privs 
                      WHERE granted_role = 'DBA'

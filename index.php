@@ -250,12 +250,19 @@ $app->get('/loginstokill', function () use ($app){
 *  ROTAS PARA CRUD (tela de CRUD TOOLS)
 * --------------------------------------------------------------------------- */
 
-$app->get('/admtools', function () use ($app){      
-    $app->render('tab-admtools.php');
+$app->get('/loginstools', function () use ($app){      
+    $app->render('tab-loginstools.php');
+});
+
+
+$app->get('/loginstools/delete/:tool', function ($tool) use ($app){      
+    $data = array("data"=>array("tool"=>$tool));
+    $app->render('\../model/del-loginstools.php', $data, 200);
 });
 
 
 
 $app->run();
+
 
 ?>
