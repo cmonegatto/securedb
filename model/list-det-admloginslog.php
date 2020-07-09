@@ -74,16 +74,15 @@ endif;
   		echo "<td>".$result[$key]['TERMINAL']."</td>";
   		echo "<td>".$result[$key]['PROGRAM']."</td>";
   		echo "<td>".$result[$key]['MODULE']."</td>";
-  		echo "<td>".$result[$key]['KILLED']."</td>";
-		
 
-		/*
-		if ($result[$key]['TO_KILL'] == "S"):
-			echo "<td><a href='\databases/delete/1'><i class='fa fa-lock'></i></a></td>";
+		if ($result[$key]['KILLED'] == '*'):
+			echo "<td style='text-align:center'><i class='fa fa-user-times'></i></a></td>";
+		elseif ($result[$key]['KILLED'] == '#'):
+			echo "<td style='text-align:center'><i class='fa fa-clock-o'></i></a></td>";			
 		else:
-			echo "<td><a href='\databases/delete/1'><i class='fa fa-unlock'></i></a></td>";
-		endif; */
-
+			echo "<td></td>";			
+		endif;
+		  
 
 		echo "</tr>";
 

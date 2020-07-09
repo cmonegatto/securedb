@@ -134,3 +134,19 @@ table.tab-loginstokill tr.admtrigger td {
 	color: gray;
 	/*text-decoration:line-through;*/
 }	
+
+.fa-lock.img-circle.text-primary.btn-icon:before {
+	color:lightcoral;
+}
+
+.fa-times-circle.img-circle.text-primary.btn-icon:before{
+	color:lightyellow;
+}
+
+.fa-user-times:before{
+	color:red;
+}
+
+.fa-clock-o:before{
+	color:red;
+}

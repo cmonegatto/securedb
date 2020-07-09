@@ -179,10 +179,10 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
                 <hr />
 
                 <!-- <a href="#" class="btn btn-danger   btn-custom"><span class="img-circle text-primary                btn-icon"></span>User Lock down</a> -->
-                <a href="\loginstokill" class="btn btn-danger   btn-custom"><span class="fa fa-lock img-circle  text-primary    btn-icon"></span> Ativar KILL por usuário</a>
-                <a href="loginstools"   class="btn btn-warning  btn-custom"><span class="img-circle text-primary                btn-icon"></span>Aplicações proibidas</a>
-                <a href="\loginslogons" class="btn btn-dark     btn-custom"><span class="fa fa-search img-circle text-primary   btn-icon"></span> Ver histórico de acessos</a>
-                <a href="\loginstrace"  class="btn btn-dark     btn-custom"><span class="fa fa-search img-circle text-primary   btn-icon"></span> Ver traces gerados</a>
+                <a href="\loginstokill" class="btn btn-danger   btn-custom"><span class="fa fa-lock img-circle  text-primary        btn-icon"></span> Ativar KILL por usuário</a>
+                <a href="\loginstools"  class="btn btn-warning  btn-custom"><span class="fa fa-times-circle img-circle text-primary btn-icon"></span> Aplicações proibidas</a>
+                <a href="\loginslogons" class="btn btn-light    btn-custom"><span class="fa fa-search img-circle text-primary       btn-icon"></span> Ver histórico de acessos</a>
+                <a href="\loginstrace"  class="btn btn-light    btn-custom"><span class="fa fa-search img-circle text-primary       btn-icon"></span> Ver traces gerados</a>
 
                 <hr />
 

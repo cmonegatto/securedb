@@ -17,7 +17,7 @@ $_SESSION['idcat'] = $data['idcat'];
             <form method="post" action="\admlogins">
 
 
-                <h3>LOG de usuarios suspeitos</h3>  
+                <h3>Lista de acessos ao banco de dados</h3>  
 
                 <hr />
 

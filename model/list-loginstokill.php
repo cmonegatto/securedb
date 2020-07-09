@@ -85,12 +85,12 @@ foreach ($result as $key => $value) {
 
     if ($result[$key]['TOKILL'] && !$result[$key]['ADMTRIGGER']):
         echo "<tr class='tokill'>";
-        echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-lock'></i></a></td>";
-        $msg = 'usuário habilitado para KILL SESSION';        
+        echo "<td style='text-align:center'><a href='\admlogins/lockuser/$username'><i class='fa fa-lock'></i></a></td>";
+        $msg = 'usuário HABILITADO para KILL SESSION';        
 
     elseif (!$result[$key]['TOKILL'] && !$result[$key]['ADMTRIGGER']):
         echo "<tr class='notokill'>";
-        echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-unlock'></i></a></td>";
+        echo "<td style='text-align:center'><a href='\admlogins/lockuser/$username'><i class='fa fa-unlock'></i></a></td>";
         $msg = 'usuário DESABILITADO para kill session ';
 
     else:

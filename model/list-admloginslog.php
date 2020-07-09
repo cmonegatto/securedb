@@ -69,41 +69,37 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 
 		if ($result[$key]['TO_KILL'] == "S" && $result[$key]['USERNAME']):
 			//echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-lock'></i></a></td>";
-			echo "<td><i class='fa fa-lock'></i></a></td>";
+			echo "<td style='text-align:center'><i class='fa fa-lock'></i></a></td>";
 		elseif ($result[$key]['TO_KILL'] == "N" && $result[$key]['USERNAME']):
 			//echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-unlock'></i></a></td>";
-			echo "<td><i class='fa fa-unlock'></i></a></td>";
+			echo "<td style='text-align:center'><i class='fa fa-unlock'></i></a></td>";
 		else:
 			echo "<td></td>";			
 		endif;
-/*
 
-		if ($result[$key]['TO_KILL'] == "S"):
-			//echo "<td><a href='#'><i class='fa fa-lock'></i></a></td>";
-			echo "<td><i class='fa fa-lock'></i></a></td>";
-		else:
-			//echo "<td><a href='#'><i class='fa fa-unlock'></i></a></td>";
-			echo "<td><i class='fa fa-unlock'></i></a></td>";
-		endif;
-*/
 
 		$id = $username . '/' . str_replace('\\','*',$osuser) .'/'. str_replace('\\','*',$machine) .'/'. str_replace('\\','*',$program) .'/'. str_replace('\\','*',$module);
 
 
 		//echo "<td><a href='\admloginslog/detail/$username/$osuser/$machine/$program/$module/$killed'><i class='fa fa-search'></i></a></td>";
 
-		echo "<td><a href='\admloginslog/detail/$id'><i class='fa fa-search'></i></a></td>";
+		echo "<td style='text-align:center'><a href='\admloginslog/detail/$id'><i class='fa fa-search'></i></a></td>";
 
 		//echo "<td><a href='#'><i class='fa fa-trash'></i></a></td>";
-  		echo "<td>".$result[$key]['QTD']."</td>";
+  		echo "<td style='text-align:center'>".$result[$key]['QTD']."</td>";
 		echo "<td>".$result[$key]['USERNAME']."</td>";
 		echo "<td>".$result[$key]['OSUSER']."</td>";
 		echo "<td>".$result[$key]['MACHINE']."</td>";
 		echo "<td>".$result[$key]['PROGRAM']."</td>";
 		echo "<td>".$result[$key]['MODULE']."</td>";
-		echo "<td>".$result[$key]['KILLED']."</td>";
-
-
+		
+		if ($result[$key]['KILLED'] == '*'):
+			echo "<td style='text-align:center'><i class='fa fa-user-times'></i></a></td>";
+		elseif ($result[$key]['KILLED'] == '#'):
+			echo "<td style='text-align:center'><i class='fa fa-clock-o'></i></a></td>";			
+		else:
+			echo "<td></td>";			
+		endif;
 
 		echo "</tr>";
 
