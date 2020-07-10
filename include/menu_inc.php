@@ -47,19 +47,10 @@ endif;
 					<a class="nav-link text-white-50 <?= ($user)? '': 'disabled'?>" href="/admloginslog/0/0">Gestão de Acessos<span class="sr-only">(current)</span></a>
 				</li>
 
-
-<!--
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle text-white-50" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gestão de acessos</a>
-					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item <?= ($user)? '': 'disabled'?>" href="\admtools">Aplicações bloqueadas</a>
-						<a class="dropdown-item <?= ($user)? '': 'disabled'?>" href="#">Lock Down de usuário</a>				
-						<div class="dropdown-divider"></div> 
-						<a class="dropdown-item <?= ($user)? '': 'disabled'?>" href="#">Gestão das regras de acesso</a>
-						<a class="dropdown-item <?= ($user)? '': 'disabled'?>" href="\admloginslog/0/0">Acessos suspeiros</a>
-					</div>
+				<li class="nav-item active">
+					<a class="nav-link text-white-50 <?= ($user)? '': 'disabled'?>" href="/admloginslogall/0/-1">Dashboard Geral<span class="sr-only">(current)</span></a>
 				</li>
--->
+
 
 					
 				<li class="nav-item active">

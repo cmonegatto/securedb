@@ -150,3 +150,17 @@ table.tab-loginstokill tr.admtrigger td {
 .fa-clock-o:before{
 	color:red;
 }
+
+
+table#myTable tr.corsim td {
+	background: rgba(221, 221, 221, 0.500);
+}
+
+table#myTable tr.cornao td {
+	/*background: rgba(221, 221, 221, 0.693);*/
+	background: white;
+}
+	
+table.tab-admloginslog-all td {
+	font-size: smaller;
+}

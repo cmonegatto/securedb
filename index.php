@@ -261,6 +261,17 @@ $app->get('/loginstools/delete/:tool', function ($tool) use ($app){
 });
 
 
+/* ---------------------------------------------------------------------------
+*  DASHBOARD para os registros de ADM_LOGINS_LOG de todas ionstâncias por categoria
+* --------------------------------------------------------------------------- */
+
+
+$app->get('/admloginslogall/:idcat/:days', function ($idcat, $days) use ($app){      
+    $data = array("data"=>array("idcat"=>$idcat, "days"=>$days));
+    $app->render('tab-admloginslog-all.php', $data, 200);
+});
+
+
 
 $app->run();
 
