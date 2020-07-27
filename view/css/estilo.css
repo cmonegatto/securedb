@@ -135,13 +135,28 @@ table.tab-loginstokill tr.admtrigger td {
 	/*text-decoration:line-through;*/
 }	
 
+
+/* Ícone do botão ATIVAR KILL POR USUARIO da tela ADM_LOGINS */
 .fa-lock.img-circle.text-primary.btn-icon:before {
 	color:lightcoral;
 }
 
+/* Ícone do botão APLICAÇÕES PROIBIDAS da tela ADM_LOGINS */
 .fa-times-circle.img-circle.text-primary.btn-icon:before{
-	color:lightyellow;
+	color:lightcoral;
 }
+
+
+/* Ícone do botão BACKUP da tela ADM_LOGINS */
+.fa-clone.img-circle.text-primary.btn-icon:before{
+	color:lightgreen;
+}
+
+/* Ícone do botão RESTORE da tela ADM_LOGINS */
+.fa-clipboard.img-circle.text-primary.btn-icon:before{
+	color: lightyellow;
+}
+
 
 .fa-user-times:before{
 	color:red;
@@ -150,6 +165,8 @@ table.tab-loginstokill tr.admtrigger td {
 .fa-clock-o:before{
 	color:red;
 }
+
+
 
 
 table#myTable tr.corsim td {

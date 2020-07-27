@@ -39,7 +39,7 @@ endif;
 						<a class="dropdown-item <?= ($superuser)? '': 'disabled'?>" href="/company">Companhias</a>
 						<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="/users">Usuários</a>
 						<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="/categories">Categoria de ambientes</a>
-						<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" href="/databases">Bancos de dados</a>
+						<a class="dropdown-item <?= ($admin)? '': 'disabled'?>" 	href="/databases">Bancos de dados</a>
 					</div>
 				</li>
 
