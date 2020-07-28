@@ -10,13 +10,13 @@ $idcat	= $_SESSION['idcat'];
 
 $tools = $_POST["tools"];
 
-
 $conn=new Sql();
 
 
 $result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
 											FROM adm_databases
-										   WHERE iddb = $iddb");
+										   WHERE iddb = :IDDB", array(":IDDB" => $iddb));
+
 
 $localhost	= $result[0]['hostname'];
 $user	    = $result[0]['username'];

@@ -7,7 +7,7 @@ $iddb = $data['iddb'];
 $conn=new Sql();
 
 $result= $conn->sql(basename(__FILE__), 
-					"delete from adm_databases where iddb=$iddb");
+					"DELETE FROM adm_databases WHERE iddb = :IDDB", array(":IDDB" => $iddb));
 
 header("Location: \databases");
 exit;

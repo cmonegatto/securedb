@@ -2,6 +2,7 @@
 
 include "class/Sql.php";
 
+
 /* Se for SUPERUSER pega todas CIAS senão somente a do usuario 
 --------------------------------------------------------------*/
 if (!$_SESSION['s_superuser']):
@@ -11,17 +12,18 @@ else:
 endif;	
 /*--------------------------------------------------------------*/
 
-$conn=new Sql();
 
+$conn=new Sql();
 
 $result= $conn->sql( basename(__FILE__), 
 					 "SELECT db.*, cat.category, cia.idcia, cia.cianame 
 					    FROM adm_databases db, adm_categories cat, adm_cias cia
 					   WHERE db.idcat = cat.idcat
 					     AND cat.idcia = cia.idcia
-						 AND cat.idcia like '$idcia'
-					   ORDER BY cianame, category, dbname"
-					);
+						 AND cat.idcia like :IDCIA
+					   ORDER BY cianame, category, dbname",
+					   array(":IDCIA" => $idcia));
+
 			  
 
 foreach ($result as $key => $value) {

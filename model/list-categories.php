@@ -10,13 +10,14 @@ endif;
 
 $conn=new Sql();
 
+
 $result= $conn->sql( basename(__FILE__), 
 					 "SELECT cat.*, cia.cianame 
 					    FROM adm_categories cat, adm_cias cia
 					   WHERE cat.idcia = cia.idcia
-						 AND cat.idcia like '$idcia'
-					   ORDER BY cianame, category"
-					);
+						 AND cat.idcia like :IDCIA
+					   ORDER BY cianame, category",
+                       array(":IDCIA" => $idcia));					   
 			  
 
 foreach ($result as $key => $value) {

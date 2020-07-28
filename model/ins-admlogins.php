@@ -5,6 +5,7 @@ session_start();
 include "../class/Sql.php";
 include "../function/utils.php";
 
+
 $iddb	= $_SESSION['iddb'];
 $idcat	= $_SESSION['idcat'];
 
@@ -35,7 +36,7 @@ $conn=new Sql();
 
 $result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
 											FROM adm_databases
-										   WHERE iddb = $iddb");
+										   WHERE iddb = $iddb", array(":IDDB" => $iddb));
 
 $localhost	= $result[0]['hostname'];
 $user	    = $result[0]['username'];

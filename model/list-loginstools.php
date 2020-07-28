@@ -19,7 +19,8 @@ $conn=new Sql();
 
 $result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
 											FROM adm_databases
-										   WHERE iddb = $iddb");
+										   WHERE iddb = :IDDB",
+										   array(":IDDB" => $iddb));
 
 $localhost	= $result[0]['hostname'];
 $username	= $result[0]['username'];
@@ -36,28 +37,21 @@ if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
 	exit;	
 endif;
 
-//if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
-
-	$result= $conn->sql( basename(__FILE__), 
-						"SELECT *
-						   FROM adm_logins_tools"
-						);
-			  
 
 
+$result= $conn->sql( basename(__FILE__), "SELECT * FROM adm_logins_tools");
+			
+foreach ($result as $key => $value) {
+	
+	$program  = $result[$key]['PROGRAM'];
+	$id 	  = str_replace('%', '*', $program);
 
-	foreach ($result as $key => $value) {
-		
-        $program  = $result[$key]['PROGRAM'];
-        $id 	  = str_replace('%', '*', $program);
-    
-		echo "</tr>";
-		echo "<td><a href='\loginstools/delete/$id'><i class='fa fa-trash'></i></a></td>";
-		echo "<td>".$program."</td>";
-		echo "</tr>";
+	echo "</tr>";
+	echo "<td><a href='\loginstools/delete/$id'><i class='fa fa-trash'></i></a></td>";
+	echo "<td>".$program."</td>";
+	echo "</tr>";
 
-	};
+};
 
-//endif;
 
 ?>

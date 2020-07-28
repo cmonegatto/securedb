@@ -17,6 +17,7 @@ $password	= encrypt_decrypt('encrypt', $_POST["password"]);
 
 $conn=new Sql();
 
+
 /*
 // checa duplicidade
 $result= $conn->sql( basename(__FILE__), 

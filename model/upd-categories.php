@@ -48,5 +48,4 @@ $result= $conn->sql( basename(__FILE__),
     header("Location: \categories");
 	exit;	
 
-
 ?>

@@ -11,9 +11,11 @@ $idcat	= (!isset($_POST['idcat']))?$_SESSION['idcat']:$_POST['idcat'];
 
 $conn=new Sql();
 
+
 $result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
 											FROM adm_databases
-										   WHERE iddb = $iddb");
+                                           WHERE iddb = :IDDB",
+                                           array(":IDDB" => $iddb));
 
 $localhost	= $result[0]['hostname'];
 $user	    = $result[0]['username'];
@@ -33,7 +35,7 @@ endif;
 
 
 $result= $conn->sql(basename(__FILE__), 
-                    "delete from adm_logins_tools where program=:TOOL", array(":TOOL"=> $tool)
+                    "DELETE FROM adm_logins_tools WHERE program=:TOOL", array(":TOOL"=> $tool)
                    );
 
 header("Location: \loginstools");

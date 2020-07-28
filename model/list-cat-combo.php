@@ -37,9 +37,8 @@ if ($iddb == 0): /* inclusão*/
                                                     ON cat.idcat=db.idcat
                                                  INNER JOIN adm_cias cia
                                                     ON cia.idcia = cat.idcia
-                                                 WHERE cat.idcia like '$idcia'"
-                        );    
-
+                                                 WHERE cat.idcia like :IDCIA",
+                                                 array(":IDCIA" => $idcia));
 
 else:
 
@@ -49,7 +48,7 @@ else:
                                                     ON cat.idcat=db.idcat   
                                                  INNER JOIN adm_cias cia                                                 
                                                     ON cia.idcia = cat.idcia
-                                                 WHERE db.iddb = $iddb                                                   
+                                                 WHERE db.iddb = :IDDB
                                                  UNION 
                                                  SELECT DISTINCT cat.idcat, cat.category, cat.idcia, cia.cianame
                                                   FROM adm_categories cat
@@ -57,9 +56,9 @@ else:
                                                     ON cat.idcat=db.idcat
                                                  INNER JOIN adm_cias cia
                                                     ON cia.idcia = cat.idcia
-                                                 WHERE cat.idcia like '$idcia'"
-                                                   //AND db.iddb <> $iddb"
-                        );    
+                                                 WHERE cat.idcia like :IDCIA",
+                                                 array(":IDDB" => $iddb, ":IDCIA" => $idcia ));
+
 
                       
 endif;
@@ -78,8 +77,6 @@ foreach ($result as $key => $value) {
     <option value=".$result[$key]['idcat'].">".$category."</option>";    
 
 };
-
-//echo "</select>";
 
 ?>
 

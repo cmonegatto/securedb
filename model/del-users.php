@@ -7,7 +7,7 @@ $iduser = $data['iduser'];
 $conn=new Sql();
 
 $result= $conn->sql(basename(__FILE__), 
-					"delete from adm_users where iduser=$iduser");
+					"DELETE FROM adm_users where iduser=$iduser", array(":IDUSER" => $iduser));
 
 header("Location: \users");
 exit;

@@ -19,7 +19,8 @@ $conn=new Sql();
 
 $result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
 											FROM adm_databases
-										   WHERE iddb = $iddb");
+                                           WHERE iddb = :IDDB",
+										   array(":IDDB" => $iddb));
 
 $localhost	= $result[0]['hostname'];
 $username	= $result[0]['username'];
@@ -46,7 +47,6 @@ $result= $conn->sql( basename(__FILE__),
 
 
 foreach ($result as $key => $value) {
-    
 
     echo "<td>".$result[$key]['ID_LOGIN']."</td>";
     echo "<td>".$result[$key]['DATE_TIME']."</td>";

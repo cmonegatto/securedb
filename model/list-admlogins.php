@@ -9,7 +9,6 @@ include "function/utils.php";
 //$iddb  = $_SESSION['iddb'];
 //$idcat = $_SESSION['idcat'];
 
-
 $iddb	= (!isset($_POST['iddb']))?$_SESSION['iddb']:$_POST['iddb'];
 $idcat	= (!isset($_POST['idcat']))?$_SESSION['idcat']:$_POST['idcat'];
 
@@ -19,8 +18,8 @@ $conn=new Sql();
 
 $result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
 											FROM adm_databases
-										   WHERE iddb = $iddb");
-
+										   WHERE iddb = :IDDB", array(":IDDB" => $iddb));
+										   
 $localhost	= $result[0]['hostname'];
 $username	= $result[0]['username'];
 $password	= encrypt_decrypt('decrypt', $result[0]['password']);

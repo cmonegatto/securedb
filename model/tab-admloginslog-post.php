@@ -28,24 +28,24 @@ if ($iddb  == "" ):
 else:
 */
     $result   = $conn->sql(basename(__FILE__), 
-                "SELECT DISTINCT db.iddb, db.dbname
-                FROM adm_categories cat
-                LEFT JOIN adm_databases db
-                ON cat.idcat=db.idcat
-                INNER JOIN adm_cias cia
-                ON cia.idcia = cat.idcia
-                WHERE cat.idcat = $idcat
-                  AND db.iddb = $iddb
-                UNION 
-                SELECT DISTINCT db.iddb, db.dbname
-                FROM adm_categories cat
-                LEFT JOIN adm_databases db
-                ON cat.idcat=db.idcat
-                INNER JOIN adm_cias cia
-                ON cia.idcia = cat.idcia
-                WHERE cat.idcat = $idcat
-                  AND db.iddb <> $iddb"
-    );
+                    "SELECT DISTINCT db.iddb, db.dbname
+                       FROM adm_categories cat
+                       LEFT JOIN adm_databases db
+                         ON cat.idcat=db.idcat
+                      INNER JOIN adm_cias cia
+                         ON cia.idcia = cat.idcia
+                      WHERE cat.idcat = :IDCAT
+                        AND db.iddb = :IDDB
+                      UNION 
+                     SELECT DISTINCT db.iddb, db.dbname
+                       FROM adm_categories cat
+                       LEFT JOIN adm_databases db
+                         ON cat.idcat=db.idcat
+                      INNER JOIN adm_cias cia
+                         ON cia.idcia = cat.idcia
+                      WHERE cat.idcat = :IDCAT
+                        AND db.iddb <> :IDDB",
+                    array(":IDCAT" => $idcat, ":IDDB" => $iddb));
 
 //endif;
 

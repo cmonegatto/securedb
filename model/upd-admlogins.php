@@ -27,7 +27,6 @@ $begindate  = str_replace("T", " ", $begindate);
 $enddate    = str_replace("T", " ", $enddate);
 
 
-
 if (!($username.$osuser.$machine)):
      $_SESSION['msg'] = 'Preencha ao menos um dos três primeiros campos!';
     header("Location: \admlogins");
@@ -39,7 +38,9 @@ $conn=new Sql();
 
 $result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
 											FROM adm_databases
-										   WHERE iddb = $iddb");
+										   WHERE iddb = :IDDB",
+                    					   array(":IDDB" => $iddb));
+
 
 $localhost	= $result[0]['hostname'];
 $user	    = $result[0]['username'];

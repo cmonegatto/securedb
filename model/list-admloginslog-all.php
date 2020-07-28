@@ -13,8 +13,9 @@ $conn2=new Sql();
 
 $result1 = $conn1->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
 											  FROM adm_databases
-											 WHERE idcat = $idcat
-											 ORDER BY dbname");
+											 WHERE idcat = :IDCAT
+											 ORDER BY dbname",
+											 array(":IDCAT" => $idcat));
 
 
 foreach ($result1 as $key1 => $value) {

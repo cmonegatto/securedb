@@ -28,8 +28,6 @@ $result= $conn->sql(basename(__FILE__),
 				);
 
 header("Location: \company/insert");
-	exit;	
-
-	
+exit;	
 
 ?>

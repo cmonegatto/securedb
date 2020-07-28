@@ -6,6 +6,7 @@
 
 include_once "class/Sql.php";
 
+
 $conn=new Sql();
 
 $idcia=0;
@@ -18,12 +19,12 @@ endif;
 
 
 if ($_SESSION['s_superuser']):
-    $ciacombo = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE idcia = $idcia ORDER BY cianame");
-    $result   = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE idcia <>  $idcia ORDER BY cianame");
+    $ciacombo = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE idcia =  :IDCIA ORDER BY cianame", array(":IDCIA" => $idcia));
+    $result   = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE idcia <> :IDCIA ORDER BY cianame", array(":IDCIA" => $idcia));
 
 else:
-    $ciacombo = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE idcia = $idcia ORDER BY cianame");
-    $result   = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE 1 = 2 ORDER BY cianame");
+    $ciacombo = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE idcia =  :IDCIA ORDER BY cianame", array(":IDCIA" => $idcia));
+    $result   = $conn->sql(basename(__FILE__), "SELECT idcia, cianame FROM adm_cias WHERE 1 = 2           ORDER BY cianame");
 endif;    
 
 

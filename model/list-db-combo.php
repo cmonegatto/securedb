@@ -4,8 +4,6 @@
 * Carrega o combo de empresas: para INSERT carrega todos, para UPDATE coloca a empresa selecionada em primeiro
 */
 
-echo "bingoooooooooooooooo********************************";
-die();
 
 include_once "class/Sql.php";
 $conn=new Sql();
@@ -40,8 +38,8 @@ if ($iddb == 0): /* inclusão*/
                                                     ON cat.idcat=db.idcat
                                                  INNER JOIN adm_cias cia
                                                     ON cia.idcia = cat.idcia
-                                                 WHERE cat.idcia like '$idcia'"
-                        );    
+                                                 WHERE cat.idcia like :IDCIA",
+                                                 array(":IDCIA" => $idcia));
 
 
 else:
@@ -60,10 +58,8 @@ else:
                                                     ON cat.idcat=db.idcat
                                                  INNER JOIN adm_cias cia
                                                     ON cia.idcia = cat.idcia
-                                                 WHERE cat.idcia like '$idcia'"
-                                                   //AND db.iddb <> $iddb"
-                        );    
-
+                                                 WHERE cat.idcia like :IDCIA",
+					                             array(":IDCIA" => $idcia));
                       
 endif;
 

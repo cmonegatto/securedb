@@ -12,7 +12,8 @@ $conn=new Sql();
 
 $result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
 											FROM adm_databases
-										   WHERE iddb = $iddb");
+										   WHERE iddb = :IDDB",
+										   array(":IDDB" => $iddb));
 
 $localhost	= $result[0]['hostname'];
 $user	    = $result[0]['username'];
@@ -30,7 +31,9 @@ if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
 endif;
 
 $result= $conn->sql(basename(__FILE__), 
-					"delete from adm_logins where id_login=$id");
+					"DELETE FROM adm_logins 
+					  WHERE id_login = :ID",
+					array(":ID" => $id));
 
 
 header("Location: \admlogins");

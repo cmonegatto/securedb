@@ -37,8 +37,8 @@ if ($idcat == 0): /* inclusão*/
                                                     ON cat.idcat=db.idcat
                                                  INNER JOIN adm_cias cia
                                                     ON cia.idcia = cat.idcia
-                                                 WHERE cat.idcia like '$idcia'"
-                        );    
+                                                 WHERE cat.idcia like :IDCIA",
+                                                 array(":IDCIA" => $idcia ));
 
 else:
 
@@ -48,7 +48,7 @@ else:
                                                     ON cat.idcat=db.idcat   
                                                  INNER JOIN adm_cias cia                                                 
                                                     ON cia.idcia = cat.idcia
-                                                 WHERE cat.idcat = $idcat                                                   
+                                                 WHERE cat.idcat = :IDCAT                                                   
                                                  UNION 
                                                  SELECT DISTINCT cat.idcat
                                                  t, cat.category, cat.idcia, cia.cianame
@@ -57,9 +57,9 @@ else:
                                                     ON cat.idcat=db.idcat
                                                  INNER JOIN adm_cias cia
                                                     ON cia.idcia = cat.idcia
-                                                 WHERE cat.idcia like '$idcia'"
-                                                   //AND db.iddb <> $iddb"
-                        );    
+                                                 WHERE cat.idcia like :IDCIA",
+                                                 array(":IDCAT" => $idcat, ":IDCIA" => $idcia));
+
 
                       
 endif;
@@ -79,7 +79,6 @@ foreach ($result as $key => $value) {
 
 };
 
-//echo "</select>";
 
 ?>
 

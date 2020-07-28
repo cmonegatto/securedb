@@ -12,7 +12,9 @@ $conn=new Sql();
 
 $result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
 											FROM adm_databases
-										   WHERE iddb = $iddb");
+                                           WHERE iddb = :IDDB",
+                                           array(":IDDB" => $iddb));
+                                           
 
 $localhost	= $result[0]['hostname'];
 $user	    = $result[0]['username'];
@@ -30,14 +32,14 @@ if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
 endif;
 
 $result= $conn->sql(basename(__FILE__), 
-					"SELECT count(*) as qtd FROM adm_logins_to_kill WHERE username ='$user_name'");
+					"SELECT count(*) as qtd FROM adm_logins_to_kill WHERE username = :USERNAME", array(":USERNAME" => $user_name));
 
 if ($result[0]['QTD']>0):
     $result= $conn->sql(basename(__FILE__), 
-                        "DELETE FROM adm_logins_to_kill WHERE username ='$user_name'");
+                        "DELETE FROM adm_logins_to_kill WHERE username = :USERNAME", array(":USERNAME" => $user_name));
 else:
     $result= $conn->sql(basename(__FILE__), 
-                        "INSERT INTO adm_logins_to_kill values ('$user_name')");
+                        "INSERT INTO adm_logins_to_kill values (:USERNAME)", array(":USERNAME" => $user_name));
 
 endif;
 

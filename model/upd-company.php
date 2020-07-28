@@ -23,8 +23,10 @@ $result= $conn->select("UPDATE adm_cias
 
 $result= $conn->sql( basename(__FILE__),
 					 "UPDATE adm_cias 
-						 SET cianame = '$cianame', respname = '$respname', email = '$email', celphone = $celphone, status = $status
-					   WHERE idcia=:IDCIA", array(":IDCIA"=>$idcia));
+						 SET cianame = :CIANAME, respname = :RESPNAME, email = :EMAIL, celphone = :CELPHONE, status = :STATUS
+					   WHERE idcia=:IDCIA", 
+					   array(":IDCIA"=>$idcia, ":CIANAME"=>$cianame, ":RESPNAME"=>$respname, ":EMAIL"=>$email, ":CELPHONE"=>$celphone, ":STATUS"=>$status)
+				   );
 
 
 header("Location: \company");

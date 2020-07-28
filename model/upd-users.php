@@ -4,6 +4,7 @@ session_start();
 
 include "../class/Sql.php";
 
+
 $idcia		= $_POST["idcia"];
 $nome 		= $_POST["nome"];
 $login		= $_POST["login"];
@@ -22,7 +23,9 @@ $conn=new Sql();
 $result= $conn->sql( basename(__FILE__),
 					"UPDATE adm_users 
 					    SET idcia = $idcia, name = '$nome', login = '$login', email = '$email', celphone = $telefone, status = $status, admin = $admin, superuser = $superuser
-					  WHERE iduser=$iduser");
+					  WHERE iduser = :IDUSER",
+					  array(":IDUSER"=> $iduser));
+
 
 header("Location: \users");
 

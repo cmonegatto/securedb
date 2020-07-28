@@ -14,7 +14,9 @@ $result= $conn->sql(basename(__FILE__),
 					"SELECT u.*, c.cianame 
 					   FROM adm_users u, adm_cias c
 					  WHERE u.idcia = c.idcia
-					    AND u.idcia like '$idcia'");
+						AND u.idcia like :IDCIA",
+                      array(":IDCIA" => $idcia));
+						
 			  
 
 foreach ($result as $key => $value) {
@@ -27,8 +29,6 @@ foreach ($result as $key => $value) {
 
 	echo 
 	"<tr>";
-//		echo "<td>".$result[$key]['iduser']."</td>";		
-//		echo "<td>".$result[$key]['name']."</td>";
 
 		$id = $result[$key]["iduser"];
 

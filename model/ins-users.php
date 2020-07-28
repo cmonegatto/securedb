@@ -38,5 +38,4 @@ $result= $conn->sql( basename(__FILE__),
 header("Location: \users/insert");
 exit;	
 
-
 ?>
