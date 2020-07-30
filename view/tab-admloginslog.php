@@ -17,7 +17,9 @@ $_SESSION['idcat'] = $data['idcat'];
             <form method="post" action="\admlogins">
 
 
-                <h3>Lista de acessos ao banco de dados</h3>  
+                <!-- <h3>Lista de acessos ao banco de dados</h3>  -->
+
+                <h3>Gestão de Acessos</h3>
 
                 <hr />
 
@@ -66,13 +68,13 @@ $_SESSION['idcat'] = $data['idcat'];
 <!--                        <th scope="col">#</th> -->
                             <th scope="col"></th>                            
                             <th scope="col"></th>
+                            <th scope="col"></th>
                             <th scope="col">Qtd</th>
                             <th scope="col">Username</th>
                             <th scope="col">OsUser</th>
                             <th scope="col">Machine</th>
                             <th scope="col">Program</th>
                             <th scope="col">Module</th>
-                            <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,11 +89,14 @@ $_SESSION['idcat'] = $data['idcat'];
 
                 </table>
                 <button type="submit" class="btn btn-primary">Gestão das Regras</button>
-                <!-- <button type="submit" class="btn btn-danger">Ativar bloqueio por usuário</button>
-                <button type="submit" class="btn btn-warning">Aplicações proibidas</button> -->
 
+                <span class="fa fa-square" style="color:yellow; padding-left:50px"></span>                
+                Sem Regra
+                <span class="fa fa-square" style="color:red"></span>
+                Bloquear
+                <span class="fa fa-square" style="color:green"></span>
+                Liberar
 
-                <!-- <a href="https://wipsites.com.br"><button class="btn btn-danger">Meu Botão</button></a> -->
 
                 <?php
                     if(isset($_SESSION['msg'])):

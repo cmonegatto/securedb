@@ -26,8 +26,6 @@ hr {
 
 body {
 	background: rgba(47, 0, 235, 0.197); 
-
-
 }
 
 /* Posiciona os itens do menu mais a direita*/
@@ -71,10 +69,10 @@ table {
 	background-repeat: no-repeat;
 	background-size: cover;
 
-	opacity: 0.8;
-	
+	/*opacity: 0.8;*/
+*/	
 }
-*/
+
 
 
 table#alter tr td { /* Toda a tabela com fundo creme */
@@ -166,13 +164,17 @@ table.tab-loginstokill tr.admtrigger td {
 	color:red;
 }
 
+.fa-thumbs-up:before{
+	/*color: lightgreen;*/
+}
 
 
-
+/* lista da grid de conexões bloqueadas para pautar*/
 table#myTable tr.corsim td {
 	background: rgba(221, 221, 221, 0.500);
 }
 
+/* lista da grid de conexões bloqueadas para pautar*/
 table#myTable tr.cornao td {
 	/*background: rgba(221, 221, 221, 0.693);*/
 	background: white;

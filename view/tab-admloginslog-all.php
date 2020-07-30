@@ -29,7 +29,7 @@ $days = $data['days'];
                     </div>
 
 
-                    <select class="col-md-4 input-large form-control" id="idcat" name="idcat" style="margin-bottom: 15px; margin-left:15px"  autofocus required>'
+                    <select class="col-md-4 input-large form-control" id="idcat" name="idcat" style="margin-bottom: 15px; margin-left:15px; margin-right:15px"  autofocus required>'
                         <?php 
                             include_once 'model/list-cat-combo-all.php';
                         ?>

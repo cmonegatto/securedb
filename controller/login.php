@@ -3,6 +3,32 @@
 session_start();
 
 include "../class/Sql.php";
+include "../function/Utils.php";
+
+if (! file_exists("..\config.ini")):
+	//echo "O arquivo config.ini não foi encontrado!";
+	$_SESSION['msg'] ='O arquivo de parâmetros não foi encontrado!';	
+	header("Location: /");
+else:
+
+$ini = parse_ini_file('..\config.ini', true);
+
+/*
+	$_SESSION['s_hostname'] = $ini['database']['hostname'];
+	$_SESSION['s_username'] = encrypt_decrypt('decrypt', $ini['database']['username']);
+	$_SESSION['s_password'] = encrypt_decrypt('decrypt', $ini['database']['password']);
+	$_SESSION['s_dbname'] 	= encrypt_decrypt('decrypt', $ini['database']['dbname']);
+	$_SESSION['s_db'] 		= $ini['database']['db'];
+*/
+
+	$_SESSION['s_hostname'] = $ini['database']['hostname'];
+	$_SESSION['s_username'] = $ini['database']['username'];
+	$_SESSION['s_password'] = $ini['database']['password'];
+	$_SESSION['s_dbname'] 	= $ini['database']['dbname'];
+	$_SESSION['s_db'] 		= $ini['database']['db'];
+
+endif;	
+
 
 $email = $_POST["email"];
 $senha = md5($_POST["senha"]);
@@ -36,7 +62,6 @@ if (isset($result[0]['email']) && $result[0]['status']):
 	endif;
 
 	$_SESSION['s_nameuser'] = substr($result[0]['name'], 0, strpos($result[0]['name'], ' ')) . $role; //primeiro nome
-
 
 elseif (isset($result[0]['email']) && !$result[0]['status']):
 	$_SESSION['msg'] ='Esse usuário está inativo!';

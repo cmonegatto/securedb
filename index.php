@@ -216,6 +216,19 @@ $app->get('/admloginslog/detail/:username/:osuser/:machine/:program/:module', fu
 });
 
 
+$app->get('/admloginslog/:username/:osuser/:machine/:program/:module', function ($username, $osuser, $machine, $program, $module) use ($app){      
+    $data = array("data"=>array
+                        ( "username"=> $username,
+                          "osuser"  => $osuser,
+                          "machine" => $machine,
+                          "program" => $program,
+                          "module" => $module
+                         )
+                  );
+
+    $app->render('\../model/ins-admlogins-click.php', $data, 200);
+});
+
 
 /* ---------------------------------------------------------------------------
 *  ROTAS PARA CRUD (tela de CRUD LOGINSLOGINS)

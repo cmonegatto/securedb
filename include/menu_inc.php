@@ -22,7 +22,6 @@ endif;
 
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
 	<h2><a class="navbar-brand btn btn-warning" href="\">2Now Consulting</a></h2>
-		
 
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>

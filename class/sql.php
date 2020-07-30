@@ -10,11 +10,11 @@ class Sql {
 	public function __construct($db="", $hostname="", $username="", $password="", $dbname="", $port="")
 	{
 		if ($db.$hostname.$username.$password.$dbname == ""):
-			$hostname	= "localhost";
-			$username	= "root";
-			$password	= "";
-			$dbname		= "securedb";
-			$db			= "mysql";
+			$hostname	= $_SESSION['s_hostname'];
+			$username	= $_SESSION['s_username'];
+			$password	= $_SESSION['s_password'];
+			$dbname		= $_SESSION['s_dbname'];
+			$db			= $_SESSION['s_db'];
 
 			$this->conn = new \PDO(
 				"{$db}:dbname={$dbname};host={$hostname}", $username, $password
