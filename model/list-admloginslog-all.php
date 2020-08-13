@@ -38,14 +38,29 @@ foreach ($result1 as $key1 => $value) {
 
 	if (strlen($_SESSION['msg']) == 0 ):
 
-		$result2= $conn2->sql( basename(__FILE__), 
-							"SELECT count(*) as qtd, ll.username, ll.osuser, ll.machine, ll.program, ll.module, ll.killed
-								FROM adm_logins_log ll
-								WHERE killed is not null
-								  AND datetime >= trunc(sysdate-$days)
-								GROUP BY ll.username, ll.osuser, ll.machine, ll.program, ll.module, ll.killed
-								ORDER BY 1 DESC"
-							);
+
+		if ($player == 'OCI'):
+
+			$result2= $conn2->sql( basename(__FILE__), 
+								"SELECT count(*) as qtd, ll.username, ll.osuser, ll.machine, ll.program, ll.module, ll.killed
+									FROM adm_logins_log ll
+									WHERE killed is not null
+									AND datetime >=trunc(sysdate-$days)
+									GROUP BY ll.username, ll.osuser, ll.machine, ll.program, ll.module, ll.killed
+									ORDER BY 1 DESC"
+								);
+
+		elseif ($player == 'SQLSRV'):
+
+			$result2= $conn2->sql( basename(__FILE__), 
+								"SELECT count(*) as QTD, ll.USERNAME, ll.OSUSER, ll.MACHINE, ll.PROGRAM, ll.MODULE, ll.KILLED
+									FROM adm_logins_log ll
+									WHERE killed is not null
+									AND datetime >= cast(GETDATE()-$days as date)
+									GROUP BY ll.username, ll.osuser, ll.machine, ll.program, ll.module, ll.killed
+									ORDER BY 1 DESC"
+								);
+		endif;
 
 		if (strlen($_SESSION['msg']) > 0 ):
 			echo "<tr class='$pauta'>";

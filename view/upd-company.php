@@ -50,8 +50,7 @@ $status = $result[0]['status'];
 
                 <div class="form-group">
                     <label for="celphone">Número telefone celular</label>
-                    <input type="tel" class="form-control" name="celphone" id="celphone" maxlength="20" value="<?php echo $celphone?>" required>
-
+                    <input type="text" class="form-control" name="celphone" id="celphone" maxlength="20" placeholder="(99) 9999-9999" data-mask="(00) 00000-0000" value="<?php echo $celphone?>" required>
                 </div>          
 
 <!--
@@ -85,4 +84,8 @@ $status = $result[0]['status'];
     </div>
 </div>
 
+
+
 <?php include_once 'include/footer_inc.php' ?>
+
+

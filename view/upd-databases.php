@@ -78,7 +78,7 @@ $password	= encrypt_decrypt('decrypt', $result[0]["password"]);
 
             <div class="form-group col-md-4">
                 <label  for="password">Senha</label>
-                <input type="text" name="password" class="form-control" id="password" value="<?php echo $password ?>"  required>
+                <input type="password" name="password" class="form-control" id="password" value="<?php echo $password ?>"  required>
             </div>          
 
         </div>

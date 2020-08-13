@@ -76,7 +76,7 @@ $_SESSION['idcia'] = $idcia;
 
             <div class="form-group col-md-4">
                 <label  for="telefone">Telefone</label>
-                <input type="tel" name="telefone" class="form-control" id="telefone" value="<?php echo $telefone?>" required>
+                <input type="tel" name="telefone" class="form-control" id="telefone" placeholder="(99) 9999-9999" data-mask="(00) 00000-0000" value="<?php echo $telefone?>" required>
             </div>
         </div>     
 

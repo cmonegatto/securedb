@@ -34,7 +34,7 @@ include_once 'include/menu_inc.php';
 
                 <div class="form-group">
                     <label for="celphone">Número telefone celular</label>
-                    <input type="tel" placeholder="(11) 9999-9999" class="form-control" name="celphone" id="celphone" maxlength="20" required>
+                    <input type="tel" placeholder="(99) 9999-9999" class="form-control" name="celphone" id="celphone" data-mask="(00) 00000-0000" maxlength="20" required>
                 </div>          
 
 

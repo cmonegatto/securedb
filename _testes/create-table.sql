@@ -1,3 +1,7 @@
+-----------------------------------------------------------------------------
+-- Tabelas do mysql controle da instância
+-----------------------------------------------------------------------------
+
 CREATE TABLE `adm_users` (
   `iduser` int(11) NOT NULL AUTO_INCREMENT,
   `idcia` int(11) NOT NULL,
@@ -5,7 +9,7 @@ CREATE TABLE `adm_users` (
   `login` varchar(50) NOT NULL,
   `password` varchar(256) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `celphone` tinyint(20) DEFAULT 0,
+  `celphone` varchar(20) DEFAULT 0,
   `status` tinyint(1) NOT NULL DEFAULT 0,
   `admin` tinyint(1) NOT NULL DEFAULT 0,
   `superuser` tinyint(1) NOT NULL DEFAULT 0,
@@ -82,7 +86,7 @@ CREATE TABLE `adm_errors` (
 
 
 -----------------------------------------------------------------------------
-Tabelas de backup 
+-- Tabelas de backup 
 -----------------------------------------------------------------------------
 
 CREATE TABLE ADM_LOGINS
@@ -139,4 +143,7 @@ CREATE TABLE ADM_LOGINS_LOCKED_BKP
   BACKUP_DATE timestamp DEFAULT current_timestamp(),
   KEY adm_logins_idx1 (iddb, idcat)
 );
+
+
+----------------------------------------------------------------------------------------------------
 

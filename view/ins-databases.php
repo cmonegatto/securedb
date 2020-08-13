@@ -57,7 +57,7 @@ include_once 'include/menu_inc.php';
 
             <div class="form-group col-md-4">
                 <label  for="password">Senha</label>
-                <input type="text" name="password" class="form-control" id="password" required>
+                <input type="password" name="password" class="form-control" id="password" required>
             </div>          
 
         </div>

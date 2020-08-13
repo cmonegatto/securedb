@@ -22,10 +22,20 @@ $conn=new Sql();
 
 $result= $conn->sql( basename(__FILE__),
 					"UPDATE adm_users 
-					    SET idcia = $idcia, name = '$nome', login = '$login', email = '$email', celphone = $telefone, status = $status, admin = $admin, superuser = $superuser
+					    SET idcia = :IDCIA, name = :NOME, login = :LOGIN, email = :EMAIL, celphone = :TELEFONE, status = :STATUS, admin = :ADMIN, superuser = :SUPERUSER
 					  WHERE iduser = :IDUSER",
-					  array(":IDUSER"=> $iduser));
-
+					  array(":IDUSER"=> $iduser,
+					  		":IDCIA"=> $idcia,
+					  		":NOME"=> $nome,
+							":LOGIN"=> $login,
+							":EMAIL"=> $email,
+							":TELEFONE"=> $telefone,
+							":STATUS"=> $status,
+							":ADMIN"=> $admin,
+							":SUPERUSER"=> $superuser
+							)
+					);
+	 
 
 header("Location: \users");
 

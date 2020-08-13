@@ -9,6 +9,7 @@ class Sql {
 
 	public function __construct($db="", $hostname="", $username="", $password="", $dbname="", $port="")
 	{
+
 		if ($db.$hostname.$username.$password.$dbname == ""):
 			$hostname	= $_SESSION['s_hostname'];
 			$username	= $_SESSION['s_username'];
@@ -20,7 +21,7 @@ class Sql {
 				"{$db}:dbname={$dbname};host={$hostname}", $username, $password
 			);
 	
-		else:
+		elseif ($db=='OCI'):
 
 			$tns = " (DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP) (HOST = ".$hostname.")(PORT = ".$port.")))(CONNECT_DATA = (SID=".$dbname.")))";
 
@@ -35,10 +36,27 @@ class Sql {
 				$_SESSION['msg'] = "Ocorreu um erro na conexão com banco de dados. Verifique os dados de conexão - " . ($e->getMessage());
 				$_SESSION['msg'] = $_SESSION['msg']."$db:dbname=".$tns .'/'. $username .'/**************';
 			}
+
+		elseif ($db=='SQLSRV'):
+
+			$db = strtolower($db);
+			try{
+				$this->conn = new \PDO(
+					"$db:Database=$dbname;server=$hostname\SQLEXPRESS;ConnectionPooling=0", $username, $password
+//					"sqlsrv:Database=dbphp7;server=localhost\SQLEXPRESS;ConnectionPooling=0", "sa", "root"					
+				);
+			}catch(PDOException $e){
+				//echo ($e->getMessage());
+				$_SESSION['msg'] = "Ocorreu um erro na conexão com banco de dados. Verifique os dados de conexão - " . ($e->getMessage());
+				$_SESSION['msg'] = $_SESSION['msg']."$db:dbname=".$dbname .'/'. $username .'/**************';
+
+			}
 			
+
 
 		endif;
 
+		//$conn = new PDO("sqlsrv:Database=dbphp7;server=localhost\SQLEXPRESS;ConnectionPooling=0", "sa", "root");
 
 		
 
