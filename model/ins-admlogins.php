@@ -48,24 +48,66 @@ $player		= $result[0]['player'];
 
 $conn=new Sql($player, $localhost, $user, $password, $dbname, $port);
 
+if ($player == 'OCI'):
 
-$result= $conn->sql( basename(__FILE__), 
-					 "INSERT INTO adm_logins (username, osuser, machine, begin_date, end_date, freetools, sessions_per_user, log_logon, trace, cursor_sharing, init_plsql, comments)
-					  VALUES (:USERNAME, :OSUSER, :MACHINE, to_date(:BEGIN_DATE, 'yyyy-mm-dd hh24:mi'), to_date(:END_DATE, 'yyyy-mm-dd hh24:mi'), :FREETOOLS, :SESSIONS_PER_USER, :LOG_LOGON, :TRACE, :CURSOR_SHARING, :INIT_PLSQL, :COMMENTS)",
-					  array(":USERNAME"=> $username,
-					  		":OSUSER"=> $osuser,
-					  		":MACHINE"=> $machine,
-					  		":BEGIN_DATE"=> $begindate,
-					  		":END_DATE"=> $enddate,
-					  		":FREETOOLS"=> $freetools,
-					  		":SESSIONS_PER_USER"=> $sessionsperuser,
-					  		":LOG_LOGON"=> $loglogon,
-					  		":TRACE"=> $trace,
-					  		":CURSOR_SHARING"=> $cursorsharing,
-					  		":INIT_PLSQL"=> $initplsql,
-					  		":COMMENTS"=> $comments
-					  		)
-				   );
+	$result= $conn->sql( basename(__FILE__), 
+						"INSERT INTO adm_logins (username, osuser, machine, begin_date, end_date, freetools, sessions_per_user, log_logon, trace, cursor_sharing, init_plsql, comments)
+						VALUES (:USERNAME, :OSUSER, :MACHINE, to_date(:BEGIN_DATE, 'yyyy-mm-dd hh24:mi'), to_date(:END_DATE, 'yyyy-mm-dd hh24:mi'), :FREETOOLS, :SESSIONS_PER_USER, :LOG_LOGON, :TRACE, :CURSOR_SHARING, :INIT_PLSQL, :COMMENTS)",
+						array(":USERNAME"=> $username,
+								":OSUSER"=> $osuser,
+								":MACHINE"=> $machine,
+								":BEGIN_DATE"=> $begindate,
+								":END_DATE"=> $enddate,
+								":FREETOOLS"=> $freetools,
+								":SESSIONS_PER_USER"=> $sessionsperuser,
+								":LOG_LOGON"=> $loglogon,
+								":TRACE"=> $trace,
+								":CURSOR_SHARING"=> $cursorsharing,
+								":INIT_PLSQL"=> $initplsql,
+								":COMMENTS"=> $comments
+								)
+					);
+
+elseif ($player == 'SQLSRV'):
+
+	if ( empty($enddate) ):
+		$xenddate = 1;
+	else:
+		$xenddate = 0;
+	endif;
+
+	$osuser			= (empty($osuser)) 			?NULL:$osuser;
+	$machine   		= (empty($machine))			?NULL:$machine;
+	$freetools 		= (empty($freetools))		?NULL:$freetools;
+	$sessionsperuser= (empty($sessionsperuser))	?NULL:$sessionsperuser;
+	$initplsql		= (empty($initplsql))		?NULL:$initplsql;
+	$comments		= (empty($comments))		?NULL:$comments;
+
+
+
+	$result= $conn->sql( basename(__FILE__), 
+						"INSERT INTO adm_logins (username, osuser, machine, begin_date, end_date, freetools, sessions_per_user, log_logon, trace, cursor_sharing, init_plsql, comments)
+						VALUES (:USERNAME, :OSUSER, :MACHINE, CONVERT(DATETIME, :BEGIN_DATE, 20), iif( $xenddate=0, CONVERT(DATETIME, :END_DATE, 20),NULL)
+						, :FREETOOLS, :SESSIONS_PER_USER, :LOG_LOGON, :TRACE, :CURSOR_SHARING, :INIT_PLSQL, :COMMENTS)",
+						array(":USERNAME"=> $username,
+								":OSUSER"=> $osuser,
+								":MACHINE"=> $machine,
+								":BEGIN_DATE"=> $begindate,
+								":END_DATE"=> $enddate,
+								":FREETOOLS"=> $freetools,
+								":SESSIONS_PER_USER"=> $sessionsperuser,
+								":LOG_LOGON"=> $loglogon,
+								":TRACE"=> $trace,
+								":CURSOR_SHARING"=> $cursorsharing,
+								":INIT_PLSQL"=> $initplsql,
+								":COMMENTS"=> $comments
+								)
+					);
+
+
+endif;
+
+
 
 
     header("Location: \admlogins");

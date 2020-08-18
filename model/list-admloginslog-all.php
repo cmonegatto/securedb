@@ -10,6 +10,8 @@ $days  = $data['days'] * -1;
 $conn1=new Sql();
 $conn2=new Sql();
 
+$vBanco = "";
+
 
 $result1 = $conn1->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
 											  FROM adm_databases
@@ -18,8 +20,9 @@ $result1 = $conn1->sql( basename(__FILE__), "SELECT hostname, username, password
 											 array(":IDCAT" => $idcat));
 
 
-foreach ($result1 as $key1 => $value) {
 
+foreach ($result1 as $key1 => $value) {
+	
 
 	$localhost	= $result1[$key1]['hostname'];
 	$username	= $result1[$key1]['username'];
@@ -32,8 +35,6 @@ foreach ($result1 as $key1 => $value) {
 	$_SESSION['msg'] = '';
 	
 	$conn2=new Sql($player, $localhost, $username, $password, $dbname, $port);
-
-	$pauta = ($key1 % 2)?"corsim":"cornao";
 
 
 	if (strlen($_SESSION['msg']) == 0 ):
@@ -62,6 +63,7 @@ foreach ($result1 as $key1 => $value) {
 								);
 		endif;
 
+
 		if (strlen($_SESSION['msg']) > 0 ):
 			echo "<tr class='$pauta'>";
 			echo "<td style='text-align:center'>".$dbname."</td>";
@@ -86,6 +88,10 @@ foreach ($result1 as $key1 => $value) {
 			$module		= $result2[$key2]['MODULE'];
 			$killed		= $result2[$key2]['KILLED'];
 
+			$pauta = ($vBanco!==$dbname)?"corsim":"cornao";
+			$vBanco=$dbname;
+		
+
 			echo "<tr class='$pauta'>";
 			echo "<td style='text-align:center; font-weight:bolder'>".$dbname."</td>";
 			echo "<td style='text-align:center'>".$result2[$key2]['QTD']."</td>";
@@ -106,7 +112,6 @@ foreach ($result1 as $key1 => $value) {
 			echo "</tr>";
 
 		};
-
 	else:
 		echo "<tr class='$pauta'>";
 		echo "<td style='text-align:center'>".$dbname."</td>";

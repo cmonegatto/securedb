@@ -41,10 +41,46 @@ if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
 	exit;	
 endif;
 
-$result= $conn->sql(basename(__FILE__), 
-                    "SELECT id_login, username, osuser, machine, to_char(begin_date, 'yyyy-mm-dd hh24:mi') as begin_date, to_char(end_date, 'yyyy-mm-dd hh24:mi') as end_date, freetools, sessions_per_user, init_plsql, comments, log_logon, trace, cursor_sharing 
-                       FROM adm_logins 
-                      WHERE id_login=$id_login");
+
+if ($player == 'OCI'):
+
+    $result= $conn->sql(basename(__FILE__), 
+                        "SELECT l.ID_LOGIN
+                              , l.USERNAME    AS USERNAME
+                              , l.OSUSER
+                              , l.MACHINE
+                              , to_char(l.BEGIN_DATE, 'yyyy-mm-dd hh24:mi') as BEGIN_DATE
+                              , to_char(l.END_DATE, 'yyyy-mm-dd hh24:mi')   as END_DATE
+                              , l.FREETOOLS
+                              , l.SESSIONS_PER_USER
+                              , l.INIT_PLSQL
+                              , l.COMMENTS
+                              , l.LOG_LOGON
+                              , l.TRACE
+                              , l.CURSOR_SHARING
+                        FROM adm_logins l
+                        WHERE id_login=$id_login");
+
+elseif ($player == 'SQLSRV'):
+
+    $result= $conn->sql(basename(__FILE__), 
+                        "SELECT l.ID_LOGIN
+                              , l.USERNAME    AS USERNAME
+                              , l.OSUSER
+                              , l.MACHINE
+                              , format(l.BEGIN_DATE,'dd/MM/yyyy HH:mm:ss')  as BEGIN_DATE
+							  , format(l.END_DATE,'dd/MM/yyyy HH:mm:ss')	as END_DATE
+                              , l.FREETOOLS
+                              , l.SESSIONS_PER_USER
+                              , l.INIT_PLSQL
+                              , l.COMMENTS
+                              , l.LOG_LOGON
+                              , l.TRACE
+                              , l.CURSOR_SHARING
+                        FROM adm_logins l
+                        WHERE id_login=$id_login");
+    
+endif;
 
 
 $username		    = $result[0]["USERNAME"];

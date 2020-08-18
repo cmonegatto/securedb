@@ -52,7 +52,8 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 							FROM adm_logins_log ll
 							LEFT JOIN adm_logins_to_kill tk
 								ON ll.username = tk.username
-							GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, iif(tk.username IS NULL,'N','S')"
+							GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, iif(tk.username IS NULL,'N','S')
+							ORDER BY iif(tk.USERNAME IS NULL,'N','S'), 1 DESC"
 							);
 
 	endif;

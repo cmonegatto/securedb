@@ -37,14 +37,53 @@ endif;
 
 //if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 
-	$result= $conn->sql( basename(__FILE__), 
-						"SELECT l.id_login, l.username, l.osuser, l.machine, to_char(l.begin_date, 'dd/mm/yy hh24:mi') as begin_date, to_char(l.end_date, 'dd/mm/yy hh24:mi') as end_date, l.freetools, l.sessions_per_user, 
-								l.log_logon, l.trace, l.cursor_sharing, l.init_plsql, l.comments, decode(tk.username,'','N','S') as to_kill
-						   FROM adm_logins l
-						   LEFT JOIN adm_logins_to_kill tk
-							 ON l.username = tk.username
-						  ORDER BY id_login desc"
-						);
+
+	if ($player == 'OCI'):
+
+		$result= $conn->sql( basename(__FILE__), 
+							"SELECT l.ID_LOGIN
+								  , l.USERNAME
+								  , l.OSUSER
+								  , l.MACHINE
+								  , to_char(l.begin_date, 'dd/mm/yy hh24:mi') as BEGIN_DATE
+								  , to_char(l.end_date, 'dd/mm/yy hh24:mi')   as END_DATE
+								  , l.FREETOOLS
+								  , l.SESSIONS_PER_USER
+								  , l.LOG_LOGON
+								  , l.TRACE
+								  , l.CURSOR_SHARING
+								  , l.INIT_PLSQL
+								  , l.COMMENTS
+								  , decode(tk.USERNAME,'','N','S') as TO_KILL
+							FROM adm_logins l
+							LEFT JOIN adm_logins_to_kill tk
+								ON l.username = tk.username
+							ORDER BY id_login desc"
+							);
+
+	elseif ($player == 'SQLSRV'):
+		$result= $conn->sql( basename(__FILE__), 
+							"SELECT l.ID_LOGIN
+								  , l.USERNAME
+								  , l.OSUSER
+								  , l.MACHINE
+								  , format(l.BEGIN_DATE,'dd/MM/yyyy HH:mm:ss')  as BEGIN_DATE
+								  , format(l.END_DATE,'dd/MM/yyyy HH:mm:ss')	as END_DATE
+								  , l.FREETOOLS
+								  , l.SESSIONS_PER_USER
+								  , l.LOG_LOGON
+								  , l.TRACE
+								  , l.CURSOR_SHARING
+								  , l.INIT_PLSQL
+								  , l.COMMENTS
+								  , iif(tk.USERNAME is null,'N','S') as TO_KILL
+							FROM adm_logins l
+							LEFT JOIN adm_logins_to_kill tk
+								ON l.username = tk.username
+							ORDER BY id_login desc"
+							);
+	endif;
+
 			  
 
 
