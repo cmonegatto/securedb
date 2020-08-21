@@ -52,36 +52,85 @@ $player		= $result[0]['player'];
 
 $conn=new Sql($player, $localhost, $user, $password, $dbname, $port);
 
+if ($player == 'OCI'):
 
-$result= $conn->sql( basename(__FILE__), 
-					 "UPDATE adm_logins 
-                         SET username           = :USERNAME, 
-                             osuser             = :OSUSER, 
-                             machine            = :MACHINE, 
-                             begin_date         = to_date(:BEGIN_DATE, 'yyyy-mm-dd hh24:mi'),
-                             end_date           = to_date(:END_DATE, 'yyyy-mm-dd hh24:mi'),
-                             freetools          = :FREETOOLS, 
-                             sessions_per_user  = :SESSIONS_PER_USER, 
-                             log_logon          = :LOG_LOGON, 
-                             trace              = :TRACE, 
-                             cursor_sharing     = :CURSOR_SHARING, 
-                             init_plsql         = :INIT_PLSQL, 
-                             comments           = :COMMENTS
-                       WHERE id_login = $id_login",
-					  array(":USERNAME"         => $username,
-					  		":OSUSER"           => $osuser,
-					  		":MACHINE"          => $machine,
-					  		":BEGIN_DATE"       => $begindate,
-					  		":END_DATE"         => $enddate,
-					  		":FREETOOLS"        => $freetools,
-					  		":SESSIONS_PER_USER"=> $sessionsperuser,
-					  		":LOG_LOGON"        => $loglogon,
-					  		":TRACE"            => $trace,
-					  		":CURSOR_SHARING"   => $cursorsharing,
-					  		":INIT_PLSQL"       => $initplsql,
-					  		":COMMENTS"         => $comments
-					  		)
-				   );
+	$result= $conn->sql( basename(__FILE__), 
+						"UPDATE adm_logins 
+							SET username           = :USERNAME, 
+								osuser             = :OSUSER, 
+								machine            = :MACHINE, 
+								begin_date         = to_date(:BEGIN_DATE, 'yyyy-mm-dd hh24:mi'),
+								end_date           = to_date(:END_DATE, 'yyyy-mm-dd hh24:mi'),
+								freetools          = :FREETOOLS, 
+								sessions_per_user  = :SESSIONS_PER_USER, 
+								log_logon          = :LOG_LOGON, 
+								trace              = :TRACE, 
+								cursor_sharing     = :CURSOR_SHARING, 
+								init_plsql         = :INIT_PLSQL, 
+								comments           = :COMMENTS
+						WHERE id_login = $id_login",
+						array(":USERNAME"         => $username,
+								":OSUSER"           => $osuser,
+								":MACHINE"          => $machine,
+								":BEGIN_DATE"       => $begindate,
+								":END_DATE"         => $enddate,
+								":FREETOOLS"        => $freetools,
+								":SESSIONS_PER_USER"=> $sessionsperuser,
+								":LOG_LOGON"        => $loglogon,
+								":TRACE"            => $trace,
+								":CURSOR_SHARING"   => $cursorsharing,
+								":INIT_PLSQL"       => $initplsql,
+								":COMMENTS"         => $comments
+								)
+					);
+
+elseif ($player == 'SQLSRV'):
+
+
+	$username		= (empty($username)) 		?NULL:$username;
+	$osuser			= (empty($osuser)) 			?NULL:$osuser;
+	$machine   		= (empty($machine))			?NULL:$machine;
+	$freetools 		= (empty($freetools))		?NULL:$freetools;
+	$sessionsperuser= (empty($sessionsperuser))	?NULL:$sessionsperuser;
+	$initplsql		= (empty($initplsql))		?NULL:$initplsql;
+	$comments		= (empty($comments))		?NULL:$comments;
+
+
+	$xenddate = empty($enddate)? 1 : 0;
+
+
+	$result= $conn->sql( basename(__FILE__), 
+						"UPDATE adm_logins 
+							SET username           = :USERNAME, 
+								osuser             = :OSUSER, 
+								machine            = :MACHINE, 
+								begin_date		   = CONVERT(DATETIME, :BEGIN_DATE, 20),
+							    end_date		   = iif( $xenddate=0, CONVERT(DATETIME, :END_DATE, 20),NULL),
+								freetools          = :FREETOOLS, 
+								sessions_per_user  = :SESSIONS_PER_USER, 
+								log_logon          = :LOG_LOGON, 
+								trace              = :TRACE, 
+								cursor_sharing     = :CURSOR_SHARING, 
+								init_plsql         = :INIT_PLSQL, 
+								comments           = :COMMENTS
+						WHERE id_login = $id_login",
+						array(":USERNAME"         => $username,
+								":OSUSER"           => $osuser,
+								":MACHINE"          => $machine,
+								":BEGIN_DATE"       => $begindate,
+								":END_DATE"         => $enddate,
+								":FREETOOLS"        => $freetools,
+								":SESSIONS_PER_USER"=> $sessionsperuser,
+								":LOG_LOGON"        => $loglogon,
+								":TRACE"            => $trace,
+								":CURSOR_SHARING"   => $cursorsharing,
+								":INIT_PLSQL"       => $initplsql,
+								":COMMENTS"         => $comments
+								)
+					);
+
+endif;
+
 
 
     header("Location: \admlogins");

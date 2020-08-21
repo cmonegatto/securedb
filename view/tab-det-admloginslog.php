@@ -9,12 +9,17 @@ $idcat	= (!isset($_POST['idcat']))?$_SESSION['idcat']:$_POST['idcat'];
 $_SESSION['iddb']   = $iddb;
 $_SESSION['idcat']  = $idcat;
 
+
+$_SESSION['id_log']   = $data['id_log'];
+
+
+/*
 $_SESSION['username']   = $data['username'];
 $_SESSION['osuser']     = str_replace('*', '%', $data['osuser']);
 $_SESSION['machine']    = str_replace('*', '%', $data['machine']);
 $_SESSION['program']    = str_replace('*', '%', $data['program']);
 $_SESSION['module']     = str_replace('*', '%', $data['module']);
-
+*/
 
 ?>
    

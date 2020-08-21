@@ -70,12 +70,10 @@ if ($player == 'OCI'):
 
 elseif ($player == 'SQLSRV'):
 
-	if ( empty($enddate) ):
-		$xenddate = 1;
-	else:
-		$xenddate = 0;
-	endif;
+	$xenddate = empty($enddate)? 1 : 0;
 
+
+	$username		= (empty($username)) 		?NULL:$username;
 	$osuser			= (empty($osuser)) 			?NULL:$osuser;
 	$machine   		= (empty($machine))			?NULL:$machine;
 	$freetools 		= (empty($freetools))		?NULL:$freetools;

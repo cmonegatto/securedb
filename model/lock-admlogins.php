@@ -32,7 +32,7 @@ if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
 endif;
 
 $result= $conn->sql(basename(__FILE__), 
-					"SELECT count(*) as qtd FROM adm_logins_to_kill WHERE username = :USERNAME", array(":USERNAME" => $user_name));
+					"SELECT count(*) as QTD FROM adm_logins_to_kill WHERE username = :USERNAME", array(":USERNAME" => $user_name));
 
 if ($result[0]['QTD']>0):
     $result= $conn->sql(basename(__FILE__), 

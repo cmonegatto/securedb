@@ -68,8 +68,8 @@ elseif ($player == 'SQLSRV'):
                               , l.USERNAME    AS USERNAME
                               , l.OSUSER
                               , l.MACHINE
-                              , format(l.BEGIN_DATE,'dd/MM/yyyy HH:mm:ss')  as BEGIN_DATE
-							  , format(l.END_DATE,'dd/MM/yyyy HH:mm:ss')	as END_DATE
+                              , format(l.BEGIN_DATE,'yyyy/MM/dd HH:mm:ss')  as BEGIN_DATE
+							  , format(l.END_DATE,'yyyy/MM/dd HH:mm:ss')	as END_DATE
                               , l.FREETOOLS
                               , l.SESSIONS_PER_USER
                               , l.INIT_PLSQL
@@ -193,7 +193,7 @@ endif;
 
                     <div class="form-group col-md-2">
                         <label  for="sessionsperuser">Sessões</label>
-                        <input type="text" value="<?php echo $sessionsperuser ?>" name="sessionsperuser" class="form-control" id="sessionsperuser" maxlength="2">
+                        <input type="text" value="<?php echo $sessionsperuser ?>" name="sessionsperuser" class="form-control" id="sessionsperuser" data-mask="99" maxlength="2">
                     </div>             
 
                 </div>

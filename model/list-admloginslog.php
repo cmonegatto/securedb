@@ -36,8 +36,15 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 	if ($player == 'OCI'):
 
 		$result= $conn->sql( basename(__FILE__), 
-							"SELECT count(*) as qtd, ll.username, ll.osuser, ll.machine, ll.program, ll.module, decode(tk.username,'','N','S') as to_kill,
-									adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) as REGRA
+							"SELECT count(*) as qtd
+								  , ll.username
+								  , ll.osuser
+								  , ll.machine
+								  , ll.program
+								  , ll.module
+								  , decode(tk.username,'','N','S') as to_kill
+								  , adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) as REGRA
+								  , max(id_log) as ID_LOG
 							FROM adm_logins_log ll
 							LEFT JOIN adm_logins_to_kill tk
 								ON ll.username = tk.username
@@ -47,15 +54,23 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 
 	elseif ($player == 'SQLSRV'):
 
-		$result= $conn->sql( basename(__FILE__), 
-							"SELECT count(*) as QTD, ll.USERNAME, ll.OSUSER, ll.MACHINE, ll.PROGRAM, ll.MODULE, iif(tk.USERNAME IS NULL,'N','S') as TO_KILL, 1 as REGRA
-							FROM adm_logins_log ll
-							LEFT JOIN adm_logins_to_kill tk
-								ON ll.username = tk.username
-							GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, iif(tk.username IS NULL,'N','S')
-							ORDER BY iif(tk.USERNAME IS NULL,'N','S'), 1 DESC"
-							);
 
+		$result= $conn->sql( basename(__FILE__), 
+							"SELECT count(*) as QTD
+								  , ll.USERNAME
+								  , ll.OSUSER
+								  , ll.MACHINE
+								  , ll.PROGRAM
+								  , ll.MODULE
+								  , iif(tk.USERNAME IS NULL,'N','S') as TO_KILL
+								  , iif(securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine)<=0,1,0) as REGRA
+								  , max(id_log) as ID_LOG
+							  FROM adm_logins_log ll
+							  LEFT JOIN adm_logins_to_kill tk
+							    ON ll.username = tk.username
+							 GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, iif(tk.username IS NULL,'N','S')
+							 ORDER BY iif(securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine)<=0,1,0) DESC, iif(tk.USERNAME IS NULL,'N','S'), 1 DESC"
+							);
 	endif;
 							
 	foreach ($result as $key => $value) {
@@ -70,6 +85,7 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 			echo "<tr class='rule'>";
 		endif;
 
+		$id_log		= $result[$key]['ID_LOG'];
 		$username	= $result[$key]['USERNAME'];
 		$osuser		= $result[$key]['OSUSER'];
 		$machine	= $result[$key]['MACHINE'];
@@ -89,16 +105,15 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 		endif;
 
 
-		$id = $username . '/' . str_replace('\\','*',$osuser) .'/'. str_replace('\\','*',$machine) .'/'. str_replace('\\','*',$program) .'/'. str_replace('\\','*',$module);
-
+		//$id = $username . '/' . str_replace('\\','*',$osuser) .'/'. str_replace('\\','*',$machine) .'/'. str_replace('\\','*',$program) .'/'. str_replace('\\','*',$module);
 
 
 		//echo "<td><a href='\admloginslog/detail/$username/$osuser/$machine/$program/$module/$killed'><i class='fa fa-search'></i></a></td>";
 
-		echo "<td style='text-align:center'><a href='\admloginslog/detail/$id'><i class='fa fa-search'></i></a></td>";
+		echo "<td style='text-align:center'><a href='\admloginslog/detail/$id_log'><i class='fa fa-search'></i></a></td>";
 
 		if ($result[$key]['REGRA'] ):
-			echo "<td style='text-align:center'><a href='\admloginslog/$id'><i class='fa fa-thumbs-up'></i></a></td>";
+			echo "<td style='text-align:center'><a href='\admloginslog/insclick/$id_log'><i class='fa fa-thumbs-up'></i></a></td>";
 		else:
 			echo "<td></td>";			
 		endif;

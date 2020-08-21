@@ -13,13 +13,16 @@ include "function/utils.php";
 $iddb	= (!isset($_POST['iddb']))?$_SESSION['iddb']:$_POST['iddb'];
 $idcat	= (!isset($_POST['idcat']))?$_SESSION['idcat']:$_POST['idcat'];
 
+$_SESSION['id_log']   = $data['id_log'];
+$id_log = $data['id_log'];
 
+/*
 $username   = $_SESSION['username'];
 $osuser     = $_SESSION['osuser'];
 $machine    = $_SESSION['machine'];
 $program    = $_SESSION['program'];
 $module     = $_SESSION['module'];
-
+*/
 
 $conn=new Sql();
 
@@ -45,30 +48,58 @@ if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
 	exit;	
 endif;
 
+if ($player == 'OCI'):
 
-
-
-$result= $conn->sql( basename(__FILE__), 
-					"SELECT id, to_char(datetime, 'dd-mm-yy hh24:mi:ss') datetime, username, osuser, machine, terminal, program, module, killed								
-						FROM adm_logins_log
-						WHERE username = :USERNAME
-						AND osuser  like :OSUSER
-						AND machine like :MACHINE
-						AND program like :PROGRAM
-						AND module  like :MODULE
+	$result= $conn->sql( basename(__FILE__), 
+						"SELECT ID_LOG
+							, to_char(datetime, 'dd-mm-yy hh24:mi:ss') datetime
+							, ll1.USERNAME
+							, ll1.OSUSER
+							, ll1.MACHINE
+							, ll1.TERMINAL
+							, ll1.PROGRAM
+							, ll1.MODULE
+							, ll1.KILLED
+						FROM adm_logins_log ll1,
+						(select USERNAME, OSUSER, MACHINE, PROGRAM, MODULE from adm_logins_log ll2 where id_log=:ID_LOG) ll2
+						WHERE ll1.username = ll2.username
+						and ll1.osuser   = ll2.osuser
+						and ll1.machine  = ll2.machine
+						and ll1.program  = ll2.program
+						and ll1.module   = ll2.module
 						ORDER BY datetime desc",
-						array( ":USERNAME"=>$username,
-								":OSUSER"  =>$osuser,
-								":MACHINE" =>$machine,
-								":PROGRAM" =>$program,
-								":MODULE"  =>$module
-							)                          
-					);
-			
+						array( ":ID_LOG"=>$id_log)
+						);
+
+	
+
+elseif ($player == 'SQLSRV'):
+
+	$result= $conn->sql( basename(__FILE__), 
+						"SELECT ID_LOG
+							  , format(ll1.DATETIME,'dd/MM/yyyy HH:mm:ss')  as DATETIME
+							  , ll1.USERNAME
+							  , ll1.OSUSER
+							  , ll1.MACHINE
+							  , ll1.TERMINAL
+							  , ll1.PROGRAM
+							  , ll1.MODULE
+							  , ll1.KILLED
+						   FROM adm_logins_log ll1,
+						(select USERNAME, OSUSER, MACHINE, PROGRAM, MODULE from adm_logins_log ll2 where id_log=:ID_LOG) ll2
+						  WHERE ll1.username = ll2.username
+							and isnull(ll1.osuser,'')   = isnull(ll2.osuser,'')
+							and isnull(ll1.machine,'')  = isnull(ll2.machine,'')
+							and isnull(ll1.program,'')  = isnull(ll2.program,'')
+							and isnull(ll1.module,'')   = isnull(ll2.module,'')
+							ORDER BY datetime desc",
+							array( ":ID_LOG"=>$id_log)
+						);
+endif;
 
 foreach ($result as $key => $value) {
 	
-	echo "<td>".$result[$key]['ID']."</td>";
+	echo "<td>".$result[$key]['ID_LOG']."</td>";
 	echo "<td>".$result[$key]['DATETIME']."</td>";
 	echo "<td>".$result[$key]['USERNAME']."</td>";
 	echo "<td>".$result[$key]['OSUSER']."</td>";

@@ -197,37 +197,29 @@ $app->get('/admlogins/lockuser/:username', function ($username) use ($app) {
 *  ROTAS PARA CRUD (tela de log do logins)
 * --------------------------------------------------------------------------- */
 
-$app->get('/admloginslog/:iddb/:idcat', function ($iddb, $idcat) use ($app){      
-    $data = array("data"=>array("iddb"=>$iddb, "idcat"=>$idcat));
-    $app->render('tab-admloginslog.php', $data, 200);
-});
-
-$app->get('/admloginslog/detail/:username/:osuser/:machine/:program/:module', function ($username, $osuser, $machine, $program, $module) use ($app){      
+$app->get('/admloginslog/detail/:id_log', function ($id_log) use ($app){      
     $data = array("data"=>array
-                        ( "username"=> $username,
-                          "osuser"  => $osuser,
-                          "machine" => $machine,
-                          "program" => $program,
-                          "module"  => $module
-                         )
+                        ( "id_log"=> $id_log)
                   );
 
     $app->render('tab-det-admloginslog.php', $data, 200);
 });
 
-
-$app->get('/admloginslog/:username/:osuser/:machine/:program/:module', function ($username, $osuser, $machine, $program, $module) use ($app){      
+$app->get('/admloginslog/insclick/:id_log', function ($id_log) use ($app){     
     $data = array("data"=>array
-                        ( "username"=> $username,
-                          "osuser"  => $osuser,
-                          "machine" => $machine,
-                          "program" => $program,
-                          "module" => $module
-                         )
+                        ( "id_log"=> $id_log)
                   );
 
     $app->render('\../model/ins-admlogins-click.php', $data, 200);
 });
+
+
+$app->get('/admloginslog/:iddb/:idcat', function ($iddb, $idcat) use ($app){      
+    $data = array("data"=>array("iddb"=>$iddb, "idcat"=>$idcat));
+    $app->render('tab-admloginslog.php', $data, 200);
+});
+
+
 
 
 /* ---------------------------------------------------------------------------

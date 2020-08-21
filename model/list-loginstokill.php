@@ -38,46 +38,60 @@ if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
 endif;
 
 
-$result= $conn->sql( basename(__FILE__), 
-                    "SELECT u.username,0 as admtrigger, decode(k.username,null,0,1) as tokill
-                       FROM dba_users u
-                       LEFT JOIN adm_logins_to_kill k
-                         ON u.username = k.username
-                      WHERE account_status='OPEN'
-                      MINUS
-                    (
-                     SELECT grantee as username, 0 as admtrigger, 0 as tokill
-                       FROM dba_role_privs 
-                      WHERE granted_role = 'DBA'
-                      UNION
-                     SELECT u.username, 0 as admtrigger, 0 as tokill
-                       FROM dba_users u 
-                      WHERE u.account_status='OPEN'
+
+if ($player == 'OCI'):
+
+
+    $result= $conn->sql( basename(__FILE__), 
+                        "SELECT u.username,0 as admtrigger, decode(k.username,null,0,1) as tokill
+                        FROM dba_users u
+                        LEFT JOIN adm_logins_to_kill k
+                            ON u.username = k.username
+                        WHERE account_status='OPEN'
+                        MINUS
+                        (
+                        SELECT grantee as username, 0 as admtrigger, 0 as tokill
+                        FROM dba_role_privs 
+                        WHERE granted_role = 'DBA'
+                        UNION
+                        SELECT u.username, 0 as admtrigger, 0 as tokill
+                        FROM dba_users u 
+                        WHERE u.account_status='OPEN'
+                            AND EXISTS
+                                ( SELECT grantee 
+                                    FROM  dba_sys_privs 
+                                    WHERE privilege = 'ADMINISTER DATABASE TRIGGER'
+                                    AND grantee = u.username
+                                )
+                        )
+                        UNION
+                        SELECT grantee as username, 1 as admtrigger, 0 as tokill
+                        FROM dba_role_privs 
+                        WHERE granted_role = 'DBA'
+                        UNION
+                        SELECT u.username, 1 as admtrigger, 0 as tokill
+                        FROM dba_users u 
+                        WHERE u.account_status='OPEN'
                         AND EXISTS
                             ( SELECT grantee 
                                 FROM  dba_sys_privs 
                                 WHERE privilege = 'ADMINISTER DATABASE TRIGGER'
-                                  AND grantee = u.username
-                            )
-                    )
-                    UNION
-                    SELECT grantee as username, 1 as admtrigger, 0 as tokill
-                      FROM dba_role_privs 
-                     WHERE granted_role = 'DBA'
-                     UNION
-                    SELECT u.username, 1 as admtrigger, 0 as tokill
-                      FROM dba_users u 
-                     WHERE u.account_status='OPEN'
-                       AND EXISTS
-                           ( SELECT grantee 
-                               FROM  dba_sys_privs 
-                              WHERE privilege = 'ADMINISTER DATABASE TRIGGER'
-                                AND grantee = u.username
-                            )
-                     ORDER BY username"
-                    );
-            
+                                    AND grantee = u.username
+                                )
+                        ORDER BY username"
+                        );
 
+elseif ($player == 'SQLSRV'):
+
+    $result= $conn->sql( basename(__FILE__),                       
+                      "SELECT DISTINCT l.USERNAME, 0 as ADMTRIGGER,  iif(k.username is null,0,1) as TOKILL
+                      FROM adm_logins l
+                        LEFT JOIN adm_logins_to_kill k
+                            ON l.username = k.username"
+                        );
+
+endif;
+                    
 
 foreach ($result as $key => $value) {
     

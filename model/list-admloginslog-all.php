@@ -11,6 +11,7 @@ $conn1=new Sql();
 $conn2=new Sql();
 
 $vBanco = "";
+$pauta = "corsim";
 
 
 $result1 = $conn1->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
@@ -36,6 +37,10 @@ foreach ($result1 as $key1 => $value) {
 	
 	$conn2=new Sql($player, $localhost, $username, $password, $dbname, $port);
 
+
+	if ($vBanco<>$dbname):
+		$pauta = ($pauta=="corsim")?"cornao":"corsim";
+	endif;
 
 	if (strlen($_SESSION['msg']) == 0 ):
 
@@ -88,8 +93,8 @@ foreach ($result1 as $key1 => $value) {
 			$module		= $result2[$key2]['MODULE'];
 			$killed		= $result2[$key2]['KILLED'];
 
-			$pauta = ($vBanco!==$dbname)?"corsim":"cornao";
-			$vBanco=$dbname;
+			//$pauta = ($vBanco!==$dbname)?"corsim":"cornao";
+			//$vBanco=$dbname;
 		
 
 			echo "<tr class='$pauta'>";
@@ -125,6 +130,7 @@ foreach ($result1 as $key1 => $value) {
 		echo "</tr>";
 		$_SESSION['msg']='';
 	endif;
+
 
 };
 

@@ -108,7 +108,7 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
 
                     <div class="form-group col-md-2">
                         <label  for="sessionsperuser">Sessões</label>
-                        <input type="text" name="sessionsperuser" class="form-control" id="sessionsperuser" maxlength="2">
+                        <input type="text" name="sessionsperuser" class="form-control" id="sessionsperuser" data-mask="99" maxlength="2">
                     </div>             
 
                 </div>
