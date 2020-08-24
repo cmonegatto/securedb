@@ -3,6 +3,8 @@
 include_once "class/Sql.php";
 include "function/utils.php";
 
+//$id_log  = $data['id_log'];
+
 //$iddb  = $data['iddb'];
 //$idcat = $data['idcat'];
 
@@ -47,6 +49,10 @@ if ($player == 'OCI'):
                         FROM dba_users u
                         LEFT JOIN adm_logins_to_kill k
                             ON u.username = k.username
+                        -- teste
+                        inner join adm_logins l
+                            on u.username = l.username
+                        --
                         WHERE account_status='OPEN'
                         MINUS
                         (
@@ -96,16 +102,18 @@ endif;
 foreach ($result as $key => $value) {
     
     $username = $result[$key]['USERNAME'];
+    $user_name = str_replace('\\', '*', $result[$key]['USERNAME']);
+
     $msg = "";
 
     if ($result[$key]['TOKILL'] && !$result[$key]['ADMTRIGGER']):
         echo "<tr class='tokill'>";
-        echo "<td style='text-align:center'><a href='\admlogins/lockuser/$username'><i class='fa fa-lock'></i></a></td>";
+        echo "<td style='text-align:center'><a href='\admlogins/lockuser/$user_name'><i class='fa fa-lock'></i></a></td>";
         $msg = 'usuário HABILITADO para KILL SESSION';        
 
     elseif (!$result[$key]['TOKILL'] && !$result[$key]['ADMTRIGGER']):
         echo "<tr class='notokill'>";
-        echo "<td style='text-align:center'><a href='\admlogins/lockuser/$username'><i class='fa fa-unlock'></i></a></td>";
+        echo "<td style='text-align:center'><a href='\admlogins/lockuser/$user_name'><i class='fa fa-unlock'></i></a></td>";
         $msg = 'usuário DESABILITADO para kill session ';
 
     else:

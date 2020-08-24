@@ -63,13 +63,13 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 								  , ll.PROGRAM
 								  , ll.MODULE
 								  , iif(tk.USERNAME IS NULL,'N','S') as TO_KILL
-								  , iif(securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine)<=0,1,0) as REGRA
+								  , iif(securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0,1,0) as REGRA
 								  , max(id_log) as ID_LOG
 							  FROM adm_logins_log ll
 							  LEFT JOIN adm_logins_to_kill tk
 							    ON ll.username = tk.username
 							 GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, iif(tk.username IS NULL,'N','S')
-							 ORDER BY iif(securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine)<=0,1,0) DESC, iif(tk.USERNAME IS NULL,'N','S'), 1 DESC"
+							 ORDER BY iif(securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0,1,0) DESC, iif(tk.USERNAME IS NULL,'N','S'), 1 DESC"
 							);
 	endif;
 							
@@ -93,12 +93,14 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 		$module		= $result[$key]['MODULE'];
 		//$killed		= $result[$key]['KILLED'];
 
+		$user_name = str_replace('\\', '*', $result[$key]['USERNAME']);
+
 
 		if ($result[$key]['TO_KILL'] == "S" && $result[$key]['USERNAME']):
-			echo "<td style='text-align:center'><a href='\admlogins/lockuser/$username'><i class='fa fa-lock'></i></a></td>";
+			echo "<td style='text-align:center'><a href='\admlogins/lockuser/$user_name'><i class='fa fa-lock'></i></a></td>";
 			//echo "<td style='text-align:center'><i class='fa fa-lock'></i></a></td>";
 		elseif ($result[$key]['TO_KILL'] == "N" && $result[$key]['USERNAME']):
-			echo "<td style='text-align:center'><a href='\admlogins/lockuser/$username'><i class='fa fa-unlock'></i></a></td>";
+			echo "<td style='text-align:center'><a href='\admlogins/lockuser/$user_name'><i class='fa fa-unlock'></i></a></td>";
 			//echo "<td style='text-align:center'><i class='fa fa-unlock'></i></a></td>";
 		else:
 			echo "<td></td>";			

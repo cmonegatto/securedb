@@ -3,7 +3,8 @@
 include "class/Sql.php";
 include "function/utils.php";
 
-$user_name = $data['username'];
+
+$user_name = str_replace('*', '\\', $data["username"]);
 
 $iddb	= (!isset($_POST['iddb']))?$_SESSION['iddb']:$_POST['iddb'];
 $idcat	= (!isset($_POST['idcat']))?$_SESSION['idcat']:$_POST['idcat'];
@@ -42,6 +43,31 @@ else:
                         "INSERT INTO adm_logins_to_kill values (:USERNAME)", array(":USERNAME" => $user_name));
 
 endif;
+
+
+/*
+$result= $conn->sql(basename(__FILE__),                    
+                    "SELECT count(*) as QTD 
+                       FROM adm_logins_to_kill 
+                      WHERE username = (select username from adm_logins_log where id_log = :ID_LOG)", 
+                     array(":ID_LOG" => $id_log));
+                  
+
+
+if ($result[0]['QTD']>0):
+    $result= $conn->sql(basename(__FILE__),
+                        "DELETE FROM adm_logins_to_kill 
+                          WHERE username = (select username from adm_logins_log where id_log = :ID_LOG)",
+                          array(":ID_LOG" => $id_log));
+
+else:
+    $result= $conn->sql(basename(__FILE__), 
+                        "INSERT INTO adm_logins_to_kill 
+                         SELECT username from adm_logins_log where id_log = :ID_LOG",
+                          array(":ID_LOG" => $id_log));
+
+endif;
+*/
 
 //header("Location: \admlogins");
 header(sprintf('location: %s', $_SERVER['HTTP_REFERER']));
