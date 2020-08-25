@@ -171,8 +171,9 @@ table.tab-loginstokill tr.admtrigger td {
 
 /* lista da grid de conexões bloqueadas para pautar*/
 table#myTable tr.corsim td {
-	background: rgba(221, 221, 221, 0.500);
-
+	/* background: rgba(221, 221, 221, 0.500);
+	background: rgb(250, 237, 210);*/
+	background: rgba(173, 216, 230, 0.306);
 }
 
 /* lista da grid de conexões bloqueadas para pautar*/

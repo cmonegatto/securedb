@@ -38,13 +38,23 @@ if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
 endif;
 
 
-$result= $conn->sql( basename(__FILE__), 
-                    "SELECT id_login, to_char(datetime, 'dd/mm/yy hh24:mi:ss') as date_time, username, osuser, machine, terminal, program, module
-                        FROM adm_logins_logons ll
-                        ORDER BY datetime DESC"
-                    );
-            
+if ($player=='OCI'):
 
+    $result= $conn->sql( basename(__FILE__), 
+                        "SELECT id_login, to_char(datetime, 'dd/mm/yy hh24:mi:ss') as date_time, username, osuser, machine, terminal, program, module
+                            FROM adm_logins_logons ll
+                            ORDER BY datetime DESC"
+                        );
+            
+elseif ($player=='SQLSRV'):
+
+
+    $result= $conn->sql( basename(__FILE__), 
+                        "SELECT ID_LOGIN, format(DATETIME,'dd/MM/yyyy HH:mm:ss') as DATE_TIME, USERNAME, OSUSER, MACHINE, TERMINAL, PROGRAM, MODULE
+                            FROM adm_logins_logons ll
+                            ORDER BY datetime DESC"
+                        );
+endif;            
 
 foreach ($result as $key => $value) {
     
