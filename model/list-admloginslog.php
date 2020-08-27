@@ -20,6 +20,10 @@ $port		= $result[0]['port'];
 $player		= $result[0]['player'];
 
 
+//INSERIDO PARA PEGAR QUAL BANCO DE DADOS FOI ESCOLHIDO NO COMBO, E DESABILITAR ALGUNS INPUTS QUE SÃO SOMENTE PARA ORACLE
+$_SESSION['player'] = $player;
+
+
 $conn=new Sql($player, $localhost, $username, $password, $dbname, $port);
 
 
@@ -71,6 +75,7 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 							 GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, iif(tk.username IS NULL,'N','S')
 							 ORDER BY iif(securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0,1,0) DESC, iif(tk.USERNAME IS NULL,'N','S'), 1 DESC"
 							);
+							
 	endif;
 							
 	foreach ($result as $key => $value) {

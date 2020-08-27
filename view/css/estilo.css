@@ -81,9 +81,18 @@ table#alter tr td { /* Toda a tabela com fundo creme */
 
 
 /* colorindo registros da adm_logins_log que NÃO ATENDEM as regras */
-table#myTable tr.norule td {
+
+table#myTable tr.none td {
 	/*color: lightgray;*/
-	color: rgba(255, 255, 0, 0.952);
+	color:lightgray;
+/*	background: black;*/
+}
+
+
+table#myTable tr.norule td {
+	/*color: lightgray;
+	color: rgba(255, 255, 0, 0.952);*/
+	color: rgba(255, 255, 0, 0.800);
 	background: black;
 }
 
@@ -155,6 +164,11 @@ table.tab-loginstokill tr.admtrigger td {
 	color: lightyellow;
 }
 
+/* Cadeado da tela de REGRAS de todos bancos de dados da categoria
+.fa-unlock.x{
+	color: blue;
+}
+*/
 
 .fa-user-times:before{
 	color:red;
@@ -184,4 +198,18 @@ table#myTable tr.cornao td {
 	
 table.tab-admloginslog-all td {
 	font-size: smaller;
+}
+
+
+/* lista da grid de conexões bloqueadas para pautar*/
+table#myTable tr.corsim2 td {
+	/* background: rgba(221, 221, 221, 0.500);
+	background: rgb(250, 237, 210);*/
+	background: rgba(0, 0, 0, 0.920);
+}
+
+/* lista da grid de conexões bloqueadas para pautar*/
+table#myTable tr.cornao2 td {
+	/*background: rgba(221, 221, 221, 0.693);*/
+	background: red(0, 0, 0, 0.415);
 }

@@ -22,6 +22,10 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
 //$datetime = date("Y/m/d H:i", strtotime("now"));
 
 
+// Recuperando a variável global com o banco de dados escolhido no combo. Alimentada no programa list-admloginslog.php
+$player = $_SESSION['player'];
+
+
 ?>
    
 <div class="container" >
@@ -103,7 +107,7 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
 
                     <div class="form-group col-md-10">
                         <label for="freetools">Ferramentas autorizadas</label>
-                        <input type="text" name="freetools" class="form-control upper" value="*" id="freetools" maxlength="200"  >
+                        <input type="text" name="freetools" class="form-control upper" value="*" id="freetools" maxlength="500"  >
                     </div>
 
                     <div class="form-group col-md-2">
@@ -117,7 +121,7 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
                 <div class="row">   
                     <div class="form-group col-md-6">
                         <label for="initplsql">PL/SQL para inicialização</label>
-                        <textarea class="form-control" name="initplsql" id="initplsql" rows="3" maxlength="4000"></textarea>
+                        <textarea class="form-control" name="initplsql" id="initplsql" rows="3" maxlength="4000" <?php echo $player<>'OCI'?'disabled':'' ?> ></textarea>
                     </div>
 
                     <div class="form-group col-md-6">
@@ -136,12 +140,12 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
                     </div>
 
                     <div class="custom-control custom-checkbox col-md-4">
-                        <input type="checkbox" class="custom-control-input" name="trace" id="trace" >
+                        <input type="checkbox" class="custom-control-input" name="trace" id="trace" <?php echo $player<>'OCI'?'disabled':'' ?>>
                         <label class="custom-control-label" for="trace">Gerar trace</label>
                     </div>
 
                     <div class="custom-control custom-checkbox col-md-4">
-                        <input type="checkbox" class="custom-control-input" name="cursorsharing" id="cursorsharing" >
+                        <input type="checkbox" class="custom-control-input" name="cursorsharing" id="cursorsharing" <?php echo $player<>'OCI'?'disabled':'' ?>>
                         <label class="custom-control-label" for="cursorsharing">Ativar Cursor Sharing</label>
                     </div>
                 </div>
@@ -182,9 +186,9 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
                 <a href="\loginstokill" class="btn btn-danger   btn-custom"><span class="fa fa-lock img-circle  text-primary        btn-icon"></span> Ativar KILL por usuário</a>
                 <a href="\loginstools"  class="btn btn-danger   btn-custom"><span class="fa fa-times-circle img-circle text-primary btn-icon"></span> Aplicações proibidas</a>
                 <a href="\loginslogons" class="btn btn-light    btn-custom"><span class="fa fa-search img-circle text-primary       btn-icon"></span> Histórico de acessos</a>
-                <a href="\loginstrace"  class="btn btn-light    btn-custom"><span class="fa fa-search img-circle text-primary       btn-icon"></span> Traces gerados</a>
-                <a href="\backup"       class="btn btn-success  btn-custom"><span class="fa fa-clone img-circle text-primary        btn-icon"></span> Backup</a>
-                <a href="\restore"      class="btn btn-warning  btn-custom"><span class="fa fa-clipboard img-circle text-primary    btn-icon"></span> Restore</a>
+                <a href="\loginstrace"  class="btn btn-light    btn-custom <?php echo $player<>'OCI'?'disabled':'' ?>"><span class="fa fa-search img-circle text-primary       btn-icon"></span> Traces gerados</a>
+                <a href="\backup"       class="btn btn-success  btn-custom disabled"><span class="fa fa-clone img-circle text-primary        btn-icon"></span> Backup</a>
+                <a href="\restore"      class="btn btn-warning  btn-custom disabled"><span class="fa fa-clipboard img-circle text-primary    btn-icon"></span> Restore</a>
                 
                 <hr />
 

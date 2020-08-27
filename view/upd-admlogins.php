@@ -188,7 +188,7 @@ endif;
 
                     <div class="form-group col-md-10">
                         <label for="freetools">Ferramentas autorizadas</label>
-                        <input type="text" value="<?php echo $freetools ?>" name="freetools" class="form-control upper" value="*" id="freetools" maxlength="200"  >
+                        <input type="text" value="<?php echo $freetools ?>" name="freetools" class="form-control upper" value="*" id="freetools" maxlength="500"  >
                     </div>
 
                     <div class="form-group col-md-2">

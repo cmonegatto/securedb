@@ -271,6 +271,12 @@ $app->get('/loginstools/delete/:tool', function ($tool) use ($app){
 * --------------------------------------------------------------------------- */
 
 
+$app->get('/admloginslogall/:idcat', function ($idcat) use ($app){   
+    $data = array("data"=>array("idcat"=>$idcat));
+    $app->render('tab-admloginslog-all-logs.php', $data, 200);
+});
+
+
 $app->get('/admloginslogall/:idcat/:days', function ($idcat, $days) use ($app){      
     $data = array("data"=>array("idcat"=>$idcat, "days"=>$days));
     $app->render('tab-admloginslog-all.php', $data, 200);

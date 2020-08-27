@@ -4,7 +4,7 @@ include_once 'include/header_inc.php';
 include_once 'include/menu_inc.php';
 
 $_SESSION['idcat'] = $data['idcat'];
-$days = $data['days'];
+$days = -1; //$data['days'];
 
 ?>
    
@@ -17,8 +17,7 @@ $days = $data['days'];
             <form method="post" action="\admlogins">
 
 
-                <!-- <h3>Lista de conexões bloqueadas no banco de dados</h3>   -->
-                <h3>BLOQUEIOS em todos bancos de dados da categoria</h3>  
+                <h3>REGRAS de todos bancos de dados da categoria</h3>  
 
                 <hr />
 
@@ -37,12 +36,7 @@ $days = $data['days'];
                     </select>
 
 
-                    <div class="form-group row">
-                        <label style="padding-left:50px; padding-right:30px" for="days" class="col-md-1 col-form-label">Dias</label>
-                        <div class="col-md-6">
-                            <input class="form-control" type="number" <?php echo "value=$days"?>  id="days" min="-90" max="-1" require>
-                        </div>
-                    </div>
+
 
 
 
@@ -56,24 +50,26 @@ $days = $data['days'];
                 </div>
 
 
-                <table class="table tab-admloginslog-all table-bordered" id="myTable" style="width:100%"> 
+                <!--<table class="table tab-admloginslog-all table-bordered" id="myTable" style="width:100%"> -->
+                <table class="table table-dark  tab-admloginslog" id="myTable" style="width:100%"> 
+
                     <thead>
                         <tr>
                             <th scope="col">Instância</th>
                             <th scope="col">Qtd</th>
+                            <th scope="col"></th>
                             <th scope="col">Username</th>
                             <th scope="col">OsUser</th>
                             <th scope="col">Machine</th>
                             <th scope="col">Program</th>
                             <th scope="col">Module</th>
-                            <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         <?php 
                             if ($_SESSION['idcat'] <> 0):
-                                include_once 'model/list-admloginslog-all.php';                            
+                                include_once 'model/list-admloginslog-all-logs.php';                            
                             endif;
                         ?>
 
@@ -82,6 +78,12 @@ $days = $data['days'];
                 </table>
 
                 <!-- <button type="submit" class="btn btn-primary">Gestão das Regras</button> -->
+                <span class="fa fa-square" style="color:yellow; padding-left:0px"></span>                
+                Sem Regra
+                <span class="fa fa-square" style="color:red"></span>
+                Bloquear
+                <span class="fa fa-square" style="color:green"></span>
+                Liberar
 
                 <?php
                     if(isset($_SESSION['msg'])):
@@ -107,7 +109,7 @@ $days = $data['days'];
         //alert ("dias: " + days);
 
         if (idcat !== "") {
-            window.location=`\../../admloginslogall/${idcat}/${days}`;
+            window.location=`\../../admloginslogall/${idcat}`;
 
         };    
 
