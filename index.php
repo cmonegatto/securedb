@@ -197,9 +197,12 @@ $app->get('/admlogins/lockuser/:username', function ($username) use ($app) {
 *  ROTAS PARA CRUD (tela de log do logins)
 * --------------------------------------------------------------------------- */
 
-$app->get('/admloginslog/detail/:id_log', function ($id_log) use ($app){      
+$app->get('/admloginslog/detail/:id_log/:iddb/:killed', function ($id_log, $iddb, $killed) use ($app){      
     $data = array("data"=>array
-                        ( "id_log"=> $id_log)
+                        ( "id_log"=> $id_log, 
+                          "iddb"  => $iddb,
+                          "killed"  => $killed
+                        )
                   );
 
     $app->render('tab-det-admloginslog.php', $data, 200);

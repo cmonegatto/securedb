@@ -16,7 +16,7 @@ CREATE TABLE `adm_users` (
   `dtregister` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`iduser`),
   UNIQUE KEY `uc_users` (`idcia`,`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -30,7 +30,7 @@ CREATE TABLE `adm_cias` (
   `dtregister` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`idcia`),
   UNIQUE KEY `uc_cia` (`cianame`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -44,7 +44,7 @@ CREATE TABLE `adm_categories` (
   UNIQUE KEY `uc_categories` (`idcia`,`category`),
   KEY `FK_cat_cias_idx` (`idcia`),
   CONSTRAINT `fk_cat_cias` FOREIGN KEY (`idcia`) REFERENCES `adm_cias` (`idcia`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -62,7 +62,7 @@ CREATE TABLE `adm_databases` (
   UNIQUE KEY `uc_database` (`idcat`,`dbname`),
   KEY `FK_db_cat_idx` (`idcat`),
   CONSTRAINT `fk_db_cat` FOREIGN KEY (`idcat`) REFERENCES `adm_categories` (`idcat`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -83,6 +83,16 @@ CREATE TABLE `adm_errors` (
   `message` varchar(256) DEFAULT NULL,
   `dtregister` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+insert into adm_cias
+(cianame, respname, email, celphone, status, dtregister) values
+('2NOW Consulting', 'Cláudio Monegatto', 'claudiom@2now.com.br', '(11) 99200-5722', 1, now()) ;
+
+insert into adm_users (idcia, name, login, password, email, celphone, status, admin, superuser, dtregister)
+values
+(1, 'Cláudio Monegatto', 'claudiom', '9dd4e461268c8034f5c8564e155c67a6', 'claudiom@2now.com', '(11) 99200-5722', 1,0,1,now())
+
 
 
 -----------------------------------------------------------------------------

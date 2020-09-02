@@ -8,7 +8,7 @@ $idcat = $data['idcat'];
 
 $conn=new Sql();
 
-$result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
+$result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player, iddb
 											FROM adm_databases
 										   WHERE iddb = :IDDB", array(":IDDB" => $iddb));
 
@@ -18,6 +18,8 @@ $password	= encrypt_decrypt('decrypt', $result[0]['password']);
 $dbname		= $result[0]['dbname'];
 $port		= $result[0]['port'];
 $player		= $result[0]['player'];
+$iddb		= $result[0]['iddb'];
+
 
 
 //INSERIDO PARA PEGAR QUAL BANCO DE DADOS FOI ESCOLHIDO NO COMBO, E DESABILITAR ALGUNS INPUTS QUE SÃO SOMENTE PARA ORACLE
@@ -117,7 +119,7 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 
 		//echo "<td><a href='\admloginslog/detail/$username/$osuser/$machine/$program/$module/$killed'><i class='fa fa-search'></i></a></td>";
 
-		echo "<td style='text-align:center'><a href='\admloginslog/detail/$id_log'><i class='fa fa-search'></i></a></td>";
+		echo "<td style='text-align:center'><a href='\admloginslog/detail/$id_log/$iddb/0'><i class='fa fa-search'></i></a></td>";
 
 		if ($result[$key]['REGRA'] ):
 			echo "<td style='text-align:center'><a href='\admloginslog/insclick/$id_log'><i class='fa fa-thumbs-up'></i></a></td>";

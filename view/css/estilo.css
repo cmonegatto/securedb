@@ -164,11 +164,11 @@ table.tab-loginstokill tr.admtrigger td {
 	color: lightyellow;
 }
 
-/* Cadeado da tela de REGRAS de todos bancos de dados da categoria
+/* Cadeado da tela de REGRAS de todos bancos de dados da categoria*/
 .fa-unlock.x{
-	color: blue;
+	color: red;
 }
-*/
+
 
 .fa-user-times:before{
 	color:red;
@@ -185,15 +185,17 @@ table.tab-loginstokill tr.admtrigger td {
 
 /* lista da grid de conexões bloqueadas para pautar*/
 table#myTable tr.corsim td {
-	/* background: rgba(221, 221, 221, 0.500);
-	background: rgb(250, 237, 210);*/
-	background: rgba(173, 216, 230, 0.306);
+	/*background: rgba(173, 216, 230, 0.306);*/
+	color: rgba(211, 211, 211, 0.734);
+	background: rgba(0, 0, 0, 0.920);
 }
 
 /* lista da grid de conexões bloqueadas para pautar*/
 table#myTable tr.cornao td {
-	/*background: rgba(221, 221, 221, 0.693);*/
-	background: white;
+	/*background: white;*/
+	color: gray;	
+	background: red(0, 0, 0, 0.415);
+
 }
 	
 table.tab-admloginslog-all td {

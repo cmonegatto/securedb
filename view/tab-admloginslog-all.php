@@ -3,6 +3,7 @@
 include_once 'include/header_inc.php';
 include_once 'include/menu_inc.php';
 
+
 $_SESSION['idcat'] = $data['idcat'];
 $days = $data['days'];
 
@@ -40,7 +41,7 @@ $days = $data['days'];
                     <div class="form-group row">
                         <label style="padding-left:50px; padding-right:30px" for="days" class="col-md-1 col-form-label">Dias</label>
                         <div class="col-md-6">
-                            <input class="form-control" type="number" <?php echo "value=$days"?>  id="days" min="-90" max="-1" require>
+                            <input class="form-control" type="number" maxlength="3" <?php echo "value=$days"?>  id="days" min="-90" max="-1" require>
                         </div>
                     </div>
 
@@ -56,9 +57,12 @@ $days = $data['days'];
                 </div>
 
 
-                <table class="table tab-admloginslog-all table-bordered" id="myTable" style="width:100%"> 
+                <!-- <table class="table tab-admloginslog-all table-bordered" id="myTable" style="width:100%"> -->
+                <table class="table table-dark  tab-admloginslog" id="myTable" style="width:100%"> 
+
                     <thead>
                         <tr>
+                            <th scope="col"></th>
                             <th scope="col">Instância</th>
                             <th scope="col">Qtd</th>
                             <th scope="col">Username</th>

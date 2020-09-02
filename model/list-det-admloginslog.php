@@ -10,11 +10,14 @@ include "function/utils.php";
 //$idcat = $_SESSION['idcat'];
 
 
-$iddb	= (!isset($_POST['iddb']))?$_SESSION['iddb']:$_POST['iddb'];
+//$iddb	= (!isset($_POST['iddb']))?$_SESSION['iddb']:$_POST['iddb'];
 $idcat	= (!isset($_POST['idcat']))?$_SESSION['idcat']:$_POST['idcat'];
 
-$_SESSION['id_log']   = $data['id_log'];
+
+//$_SESSION['id_log']   = $data['id_log'];
 $id_log = $data['id_log'];
+$iddb   = $data['iddb'];
+$killed = $data['killed'];
 
 /*
 $username   = $_SESSION['username'];
@@ -25,6 +28,7 @@ $module     = $_SESSION['module'];
 */
 
 $conn=new Sql();
+
 
 
 $result= $conn->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
@@ -48,7 +52,14 @@ if (isset($_SESSION['msg']) && strlen($_SESSION['msg'])>0 ):
 	exit;	
 endif;
 
+if ($killed):
+	$whereclause = " and killed is not null ";
+else:
+	$whereclause = " and 1=1 "	; // mostra todos registros 
+endif;
+
 if ($player == 'OCI'):
+
 
 	$result= $conn->sql( basename(__FILE__), 
 						"SELECT ID_LOG
@@ -66,8 +77,9 @@ if ($player == 'OCI'):
 						and ll1.osuser   = ll2.osuser
 						and ll1.machine  = ll2.machine
 						and ll1.program  = ll2.program
-						and ll1.module   = ll2.module
-						ORDER BY datetime desc",
+						and ll1.module   = ll2.module" 
+						. $whereclause .
+						"ORDER BY datetime desc",
 						array( ":ID_LOG"=>$id_log)
 						);
 
@@ -91,11 +103,13 @@ elseif ($player == 'SQLSRV'):
 							and isnull(ll1.osuser,'')   = isnull(ll2.osuser,'')
 							and isnull(ll1.machine,'')  = isnull(ll2.machine,'')
 							and isnull(ll1.program,'')  = isnull(ll2.program,'')
-							and isnull(ll1.module,'')   = isnull(ll2.module,'')
-							ORDER BY datetime desc",
+							and isnull(ll1.module,'')   = isnull(ll2.module,'')"
+							. $whereclause .
+							"ORDER BY datetime desc",
 							array( ":ID_LOG"=>$id_log)
 						);
 endif;
+
 
 foreach ($result as $key => $value) {
 	

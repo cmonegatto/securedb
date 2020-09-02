@@ -54,7 +54,7 @@ foreach ($result1 as $key1 => $value) {
                                     , ll.module
                                     , decode(tk.username,'','N','S') as TO_KILL
                                     , adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) as REGRA
-                                    , max(id_log) as ID_LOG
+--                                    , max(id_log) as ID_LOG
                                 FROM adm_logins_log ll
                                 LEFT JOIN adm_logins_to_kill tk
                                     ON ll.username = tk.username
@@ -77,7 +77,7 @@ foreach ($result1 as $key1 => $value) {
                                     , ll.MODULE
                                     , iif(tk.USERNAME IS NULL,'N','S') as TO_KILL
                                     , iif(securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0,1,0) as REGRA
-                                    , max(id_log) as ID_LOG
+--                                    , max(id_log) as ID_LOG
                                    FROM adm_logins_log ll
                                    LEFT JOIN adm_logins_to_kill tk
                                      ON ll.username = tk.username

@@ -3,15 +3,15 @@
 session_start();
 
 include "../class/Sql.php";
-include "../function/Utils.php";
+include "../function/utils.php";
 
-if (! file_exists("..\config.ini")):
+if (! file_exists("../config.ini")):
 	//echo "O arquivo config.ini não foi encontrado!";
 	$_SESSION['msg'] ='O arquivo de parâmetros não foi encontrado!';	
 	header("Location: /");
 else:
 
-$ini = parse_ini_file('..\config.ini', true);
+$ini = parse_ini_file('../config.ini', true);
 
 /*
 	$_SESSION['s_hostname'] = $ini['database']['hostname'];
