@@ -13,7 +13,7 @@ $conn2=new Sql();
 $pauta = "corsim";
 
 
-$result1 = $conn1->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player, iddb
+$result1 = $conn1->sql( basename(__FILE__), "SELECT hostname, username, password, aliasdb, dbname, port, player, iddb
 											  FROM adm_databases
 											 WHERE idcat = :IDCAT
 											 ORDER BY dbname",
@@ -27,6 +27,7 @@ foreach ($result1 as $key1 => $value) {
 	$localhost	= $result1[$key1]['hostname'];
 	$username	= $result1[$key1]['username'];
 	$password	= encrypt_decrypt('decrypt', $result1[$key1]['password']);
+	$aliasdb	= strtoupper($result1[$key1]['aliasdb']);
 	$dbname		= strtoupper($result1[$key1]['dbname']);
 	$port		= $result1[$key1]['port'];
 	$player		= $result1[$key1]['player'];
@@ -71,7 +72,7 @@ foreach ($result1 as $key1 => $value) {
 		if (strlen($_SESSION['msg']) > 0 ):
 			echo "<tr class='$pauta'>";
 			echo "<td></td>";
-			echo "<td style='text-align:center'>".$dbname."</td>";
+			echo "<td style='text-align:center'>".$aliasdb."</td>";
 			echo "<td></td>";
 			echo "<td></td>";
 			echo "<td></td>";
@@ -102,7 +103,7 @@ foreach ($result1 as $key1 => $value) {
 
 			echo "<tr class='$pauta'>";
 			echo "<td style='text-align:center'><a href='\admloginslog/detail/$id_log/$iddb/1'><i class='fa fa-search'></i></a></td>";			
-			echo "<td style='text-align:center; font-weight:bolder'>".$dbname."</td>";
+			echo "<td style='text-align:center; font-weight:bolder'>".$aliasdb."</td>";
 			echo "<td style='text-align:center'>".$result2[$key2]['QTD']."</td>";
 			echo "<td>".$result2[$key2]['USERNAME']."</td>";
 			echo "<td>".$result2[$key2]['OSUSER']."</td>";
@@ -124,7 +125,7 @@ foreach ($result1 as $key1 => $value) {
 	else:
 		echo "<tr class='$pauta'>";
 		echo "<td></td>";		
-		echo "<td style='text-align:center'>".$dbname."</td>";
+		echo "<td style='text-align:center'>".$aliasdb."</td>";
 		echo "<td></td>";
 		echo "<td></td>";
 		echo "<td></td>";

@@ -25,8 +25,9 @@ hr {
 }
 
 body {
-	background: rgba(47, 0, 235, 0.197); 
+	background: rgba(47, 0, 235, 0.197);
 }
+
 
 /* Posiciona os itens do menu mais a direita*/
 .nav-item {
@@ -65,14 +66,14 @@ table {
 
 /*
 .imginicio {
-	padding-bottom: 640px;
+	padding-bottom: 640px; 
 	background-repeat: no-repeat;
 	background-size: cover;
 
 	/*opacity: 0.8;*/
-*/	
-}
 
+}
+*/
 
 
 table#alter tr td { /* Toda a tabela com fundo creme */

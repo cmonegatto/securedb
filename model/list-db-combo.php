@@ -4,6 +4,8 @@
 * Carrega o combo de empresas: para INSERT carrega todos, para UPDATE coloca a empresa selecionada em primeiro
 */
 
+echo 'ops';
+die();
 
 include_once "class/Sql.php";
 $conn=new Sql();
@@ -32,7 +34,7 @@ if ($iddb == 0): /* inclusão*/
     echo "<option value=''</option>";    
     
     
-    $result   = $conn->sql(basename(__FILE__), "SELECT DISTINCT db.iddb, db.dbname
+    $result   = $conn->sql(basename(__FILE__), "SELECT DISTINCT db.iddb, db.aliasdb, db.dbname
                                                   FROM adm_categories cat
                                                   LEFT JOIN adm_databases db
                                                     ON cat.idcat=db.idcat
@@ -44,7 +46,7 @@ if ($iddb == 0): /* inclusão*/
 
 else:
    
-    $result   = $conn->sql(basename(__FILE__), "SELECT DISTINCT db.iddb, db.dbname
+    $result   = $conn->sql(basename(__FILE__), "SELECT DISTINCT db.iddb, db.aliasdb, db.dbname
                                                   FROM adm_categories cat
                                                   LEFT JOIN adm_databases db
                                                     ON cat.idcat=db.idcat   
@@ -67,7 +69,7 @@ endif;
 foreach ($result as $key => $value) {
 
     echo "
-    <option value=".$result[$key]['iddb'].">".$result[$key]['dbname']."</option>";        
+    <option value=".$result[$key]['iddb'].">".$result[$key]['aliasdb']."</option>";        
 
 };
 

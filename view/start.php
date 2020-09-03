@@ -5,7 +5,7 @@ include_once 'include/menu_inc.php';
 
 ?>
 
-<section class="imginicio" style="background-image: url('/img/2now.png');">
+<section class="imginicio" style="background-image: url('/img/2Now.png');">
 </section>
 
 

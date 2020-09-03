@@ -18,17 +18,29 @@ include_once 'include/menu_inc.php';
     <form method="post" action="\model/ins-databases.php">
 
         <div class="row">
-            <div style="margin-left:2px" class="row col-md-12">   
-                <label for="idcat">Categoria DB</label>
+            <div style="margin-left:0px" class="row col-md-12">   
+
+                <label class="col-md-4 for=idcat">Categoria DB</label>
+                <label class="col-md-4 for=player">Database</label>
             </div>
+        </div>
 
-            <select class="col-md-4 input-large form-control" id="idcat" name="idcat" style="margin-bottom: 15px; margin-left:15px"  autofocus required>';
+        <div class="row">
+                <select class="col-md-3 input-large form-control" id="idcat" name="idcat" style="margin-bottom: 0px; margin-left:15px"  autofocus required>';
+                    <?php 
+                        //$_SESSION['idcia'] = 0;
+                        include_once 'model/list-cat-combo.php';
+                    ?>
+                </select>
 
-                <?php 
-                    //$_SESSION['idcia'] = 0;
-                    include_once 'model/list-cat-combo.php';
-                ?>
-            </select>
+
+                <select class="col-md-2 input-large form-control" id="player" name="player" style="margin-bottom: 15px; margin-left:90px" required>';
+
+                        <option value=""></option>
+                        <option value="OCI">Oracle</option>
+                        <option value="MYSQL">MYSQL</option>
+                        <option value="SQLSRV">SQL Server</option>
+                </select>
             
         </div>
 
@@ -36,14 +48,15 @@ include_once 'include/menu_inc.php';
         <div class="row">   
 
             <div class="form-group col-md-4">
-                <label for="dbname">Nome DB</label>
-                <input type="text" name="dbname" class="form-control" id="dbname" required>
+                <label for="aliasdb">Alias DB</label>
+                <input type="text" name="aliasdb" class="form-control" id="aliasdb" required>
             </div>
 
+
             <div class="form-group col-md-4">
-                <label  for="hostname">HOSTNAME</label>
-                <input type="text" name="hostname" class="form-control" id="hostname" required>
-            </div>          
+                <label for="dbname">SID/(dbname)</label>
+                <input type="text" name="dbname" class="form-control" id="dbname" required>
+            </div>
 
         </div>
 
@@ -64,23 +77,16 @@ include_once 'include/menu_inc.php';
 
 
         <div class="row">
+
             <div class="form-group col-md-4">
+                <label  for="hostname">Hostname</label>
+                <input type="text" name="hostname" class="form-control" id="hostname" required>
+            </div>          
+
+            <div class="form-group col-md-2">
                     <label  for="port">Porta</label>
                     <input type="text" name="port" class="form-control" id="port">
             </div>          
-
-
-            <div style="margin-left:0px" class="form-group col-md-4">   
-                <label for="player">Database</label>
-                <select class="col-md-5 input-large form-control" id="player" name="player" style="margin-bottom: 15px" required>';
-
-                        <option value=""></option>
-                        <option value="OCI">Oracle</option>
-                        <option value="MYSQL">MYSQL</option>
-                        <option value="SQLSRV">SQL Server</option>
-                </select>
-            </div>
-
 
         </div>
 
@@ -93,7 +99,7 @@ include_once 'include/menu_inc.php';
                 <a href="\databases" class="btn btn-secondary">Voltar</a>
                 <!--<input type="button" value="Voltar" class="btn btn-secondary" onClick="JavaScript: window.history.back();"> -->
             </div>
-        <div>
+</div>
 
 
         <?php

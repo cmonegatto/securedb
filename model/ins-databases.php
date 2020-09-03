@@ -6,6 +6,7 @@ include "../class/Sql.php";
 include "../function/utils.php";
 
 $idcat		= $_POST["idcat"];
+$aliasdb	= $_POST["aliasdb"];
 $dbname		= $_POST["dbname"];
 $hostname	= $_POST["hostname"];
 $port		= $_POST["port"];
@@ -15,11 +16,24 @@ $password	= encrypt_decrypt('encrypt', $_POST["password"]);
 
 $conn=new Sql();
 
+
 $result= $conn->sql( basename(__FILE__), 
-					 "INSERT INTO adm_databases (idcat, dbname, hostname, port, player, username, password)
-					  VALUES (:IDCAT, :DBNAME, :HOSTNAME, :PORT, :PLAYER, :USERNAME, :PASSWORD)",
+					 "SELECT IDCIA
+					    FROM ADM_CATEGORIES
+					   WHERE idcat = :IDCAT",
+					  array(":IDCAT"=> $idcat)
+				   );
+
+$idcia = $result[0]['IDCIA'];
+
+
+$result= $conn->sql( basename(__FILE__), 
+					 "INSERT INTO adm_databases (idcat, idcia, aliasdb, dbname, hostname, port, player, username, password)
+					  VALUES (:IDCAT, :IDCIA, :ALIASDB, :DBNAME, :HOSTNAME, :PORT, :PLAYER, :USERNAME, :PASSWORD)",
 					  array(":IDCAT"=> $idcat,
-					  		":DBNAME"=> $dbname,
+					  		":IDCIA"=> $idcia,
+							":ALIASDB"=> $aliasdb,
+							":DBNAME"=> $dbname,
 					  		":HOSTNAME"=> $hostname,
 					  		":PORT"=> $port,
 					  		":PLAYER"=> $player,

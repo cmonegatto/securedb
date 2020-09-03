@@ -48,7 +48,7 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 								  , ll.machine
 								  , ll.program
 								  , ll.module
-								  , decode(tk.username,'','N','S') as to_kill
+								  , decode(tk.username,'','N','S') as TO_KILL
 								  , adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) as REGRA
 								  , max(id_log) as ID_LOG
 							FROM adm_logins_log ll
@@ -82,7 +82,14 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 							
 	foreach ($result as $key => $value) {
 
-		
+		$id_log		= $result[$key]['ID_LOG'];
+		$username	= $result[$key]['USERNAME'];
+		$osuser		= $result[$key]['OSUSER'];
+		$machine	= $result[$key]['MACHINE'];
+		$program	= $result[$key]['PROGRAM'];
+		$module		= $result[$key]['MODULE'];
+
+		$cadeado = 0;
 
 		if ($result[$key]['REGRA'] && $result[$key]['TO_KILL']=='S'):
 			echo "<tr class='todie'>";
@@ -90,19 +97,19 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 			echo "<tr class='norule'>";
 		else: 
 			echo "<tr class='rule'>";
+			$cadeado = 1;
 		endif;
 
-		$id_log		= $result[$key]['ID_LOG'];
-		$username	= $result[$key]['USERNAME'];
-		$osuser		= $result[$key]['OSUSER'];
-		$machine	= $result[$key]['MACHINE'];
-		$program	= $result[$key]['PROGRAM'];
-		$module		= $result[$key]['MODULE'];
-		//$killed		= $result[$key]['KILLED'];
+		
+		if ($cadeado && $result[$key]['TO_KILL'] == "N"):
+			echo "<td style='text-align:center'><i class='fa fa-unlock x'></i></a></td>";
+		else:
+			echo "<td></td>";			                
+		endif;		
 
 		$user_name = str_replace('\\', '*', $result[$key]['USERNAME']);
 
-
+/*
 		if ($result[$key]['TO_KILL'] == "S" && $result[$key]['USERNAME']):
 			echo "<td style='text-align:center'><a href='\admlogins/lockuser/$user_name'><i class='fa fa-lock'></i></a></td>";
 			//echo "<td style='text-align:center'><i class='fa fa-lock'></i></a></td>";
@@ -112,7 +119,7 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 		else:
 			echo "<td></td>";			
 		endif;
-
+*/
 
 		//$id = $username . '/' . str_replace('\\','*',$osuser) .'/'. str_replace('\\','*',$machine) .'/'. str_replace('\\','*',$program) .'/'. str_replace('\\','*',$module);
 

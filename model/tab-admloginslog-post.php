@@ -28,7 +28,7 @@ if ($iddb  == "" ):
 else:
 */
     $result   = $conn->sql(basename(__FILE__), 
-                    "SELECT DISTINCT db.iddb, db.dbname
+                    "SELECT DISTINCT db.iddb, db.aliasdb, db.dbname
                        FROM adm_categories cat
                        LEFT JOIN adm_databases db
                          ON cat.idcat=db.idcat
@@ -37,7 +37,7 @@ else:
                       WHERE cat.idcat = :IDCAT
                         AND db.iddb = :IDDB
                       UNION 
-                     SELECT DISTINCT db.iddb, db.dbname
+                     SELECT DISTINCT db.iddb, db.aliasdb, db.dbname
                        FROM adm_categories cat
                        LEFT JOIN adm_databases db
                          ON cat.idcat=db.idcat
@@ -54,7 +54,7 @@ foreach ($result as $key => $value) {
 
     $iddb_post[] = array(
         'iddb'	 => $result[$key]['iddb'],
-        'dbname' => $result[$key]['dbname']);
+        'aliasdb' => $result[$key]['aliasdb']);
  
 };
 
@@ -62,7 +62,7 @@ foreach ($result as $key => $value) {
 if ( !isset($iddb_post) ) :
     $iddb_post[] = array(
         'iddb'	 => "",
-        'dbname' => "");
+        'aliasdb' => "");
 endif;
 
 echo(json_encode($iddb_post));

@@ -20,6 +20,7 @@ $result = $conn->select("SELECT * FROM adm_databases WHERE iddb={$iddb}");
 
 $idcat      = $result[0]["idcat"];
 $dbname		= $result[0]["dbname"];
+$aliasdb	= $result[0]["aliasdb"];
 $hostname	= $result[0]["hostname"];
 $port	    = $result[0]["port"];
 $player	    = $result[0]["player"];
@@ -37,34 +38,59 @@ $password	= encrypt_decrypt('decrypt', $result[0]["password"]);
 
     <form method="post" action="\model/upd-databases.php">
 
-    <div class="row">
-            <div style="margin-left:2px" class="row col-md-12">   
-                <label for="idcat">Categoria DB</label>
-            </div>
+        <div class="row">
+            <div style="margin-left:0px" class="row col-md-12">   
 
-            <select class="col-md-4 input-large form-control" id="idcat" name="idcat" style="margin-bottom: 15px; margin-left:15px"  autofocus required>';
+                <label class="col-md-4 for=idcat">Categoria DB</label>
+                <label class="col-md-4 for=player">Database</label>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <select class="col-md-3 input-large form-control" id="idcat" name="idcat" style="margin-bottom: 0px; margin-left:15px"  autofocus required>';
+
 
                 <?php 
                     //$_SESSION['idcia'] = 0;
                     include_once 'model/list-cat-combo.php';
                 ?>
-
             </select>
 
-        </div>
+            <select class="col-md-2 input-large form-control" id="player" name="player" style="margin-bottom: 15px; margin-left:90px" required>';
 
+                <?php
+                    if ($player == 'OCI'):
+                        echo "<option value='OCI'>Oracle</option>
+                                <option value='MYSQL'>MYSQL</option>
+                                <option value='SQLSRV'>SQL Server</option>";
+                    elseif ($player == 'MYSQL'):
+                        echo "<option value='MYSQL'>MYSQL</option>
+                                <option value='OCI'>Oracle</option>                            
+                                <option value='SQLSRV'>SQL Server</option>";
+                    else:
+                        echo "<option value='SQLSRV'>SQL Server</option>
+                                <option value='MYSQL'>MYSQL</option>
+                                <option value='OCI'>Oracle</option>";                        
+                    endif;
+                ?>
+            </select>            
+
+        </div>
+                    
 
         <div class="row">   
 
             <div class="form-group col-md-4">
-                <label for="dbname">Nome DB</label>
-                <input type="text" name="dbname" class="form-control" id="dbname" value="<?php echo $dbname ?>" required>
+                <label for="aliasdb">Alias DB</label>
+                <input type="text" name="aliasdb" class="form-control" id="aliasdb" value="<?php echo $aliasdb ?>" required>
             </div>
 
+
             <div class="form-group col-md-4">
-                <label  for="hostname">HOSTNAME</label>
-                <input type="text" name="hostname" class="form-control" id="hostname" value="<?php echo $hostname ?>" required>
-            </div>          
+                <label for="dbname">SID/(dbname)</label>
+                <input type="text" name="dbname" class="form-control" id="dbname" value="<?php echo $dbname ?>" required>
+            </div>
 
         </div>
 
@@ -78,40 +104,23 @@ $password	= encrypt_decrypt('decrypt', $result[0]["password"]);
 
             <div class="form-group col-md-4">
                 <label  for="password">Senha</label>
-                <input type="password" name="password" class="form-control" id="password" value="<?php echo $password ?>"  required>
+                <input type="password" name="password" class="form-control" id="password" value="<?php echo $password ?>" required>
             </div>          
 
         </div>
 
 
         <div class="row">
+
             <div class="form-group col-md-4">
-                    <label  for="port">Porta</label>
-                    <input type="text" name="port" class="form-control" id="port" value="<?php echo $port ?>" >
+                <label  for="hostname">Hostname</label>
+                <input type="text" name="hostname" class="form-control" id="hostname" value="<?php echo $hostname ?>" required>
             </div>          
 
-
-            <div style="margin-left:0px" class="form-group col-md-4">   
-                <label for="player">Database</label>
-                <select class="col-md-5 input-large form-control" id="player" name="player" style="margin-bottom: 15px" required>';
-                    <?php
-                        if ($player == 'OCI'):
-                            echo "<option value='OCI'>Oracle</option>
-                                  <option value='MYSQL'>MYSQL</option>
-                                  <option value='SQLSRV'>SQL Server</option>";
-                        elseif ($player == 'MYSQL'):
-                            echo "<option value='MYSQL'>MYSQL</option>
-                                  <option value='OCI'>Oracle</option>                            
-                                  <option value='SQLSRV'>SQL Server</option>";
-                        else:
-                            echo "<option value='SQLSRV'>SQL Server</option>
-                                  <option value='MYSQL'>MYSQL</option>
-                                  <option value='OCI'>Oracle</option>";                        
-                        endif;
-                    ?>
-                </select>
-            </div>
-
+            <div class="form-group col-md-2">
+                    <label  for="port">Porta</label>
+                    <input type="text" name="port" class="form-control" id="port" value="<?php echo $port ?>">
+            </div>          
 
         </div>
 
@@ -123,7 +132,7 @@ $password	= encrypt_decrypt('decrypt', $result[0]["password"]);
                 <input type="submit" value="Salvar" class="btn btn-primary">                
                 <a href="\databases" class="btn btn-secondary">Voltar</a>
             </div>
-        <div>
+        </div>
 
     </form>
 

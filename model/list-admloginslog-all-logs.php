@@ -13,7 +13,7 @@ $conn2=new Sql();
 $pauta = "corsim2";
 
 
-$result1 = $conn1->sql( basename(__FILE__), "SELECT hostname, username, password, dbname, port, player
+$result1 = $conn1->sql( basename(__FILE__), "SELECT hostname, username, password, aliasdb, dbname, port, player
 											  FROM adm_databases
 											 WHERE idcat = :IDCAT
 											 ORDER BY dbname",
@@ -28,6 +28,7 @@ foreach ($result1 as $key1 => $value) {
 	$username	= $result1[$key1]['username'];
 	$password	= encrypt_decrypt('decrypt', $result1[$key1]['password']);
 	$dbname		= strtoupper($result1[$key1]['dbname']);
+	$aliasdb	= strtoupper($result1[$key1]['aliasdb']);
 	$port		= $result1[$key1]['port'];
 	$player		= $result1[$key1]['player'];
 
@@ -94,7 +95,7 @@ foreach ($result1 as $key1 => $value) {
 
 		if (strlen($_SESSION['msg']) > 0 ):
 			echo "<tr class='$pauta none'>";
-			echo "<td style='text-align:center'>".$dbname."</td>";
+			echo "<td style='text-align:center'>".$aliasdb."</td>";
 			echo "<td></td>";
 			echo "<td></td>";
 			echo "<td></td>";
@@ -138,7 +139,7 @@ foreach ($result1 as $key1 => $value) {
             //echo "<td style='text-align:center; font-weight:bolder'>".$dbname."</td>";
             
 
-			echo "<td style='text-align:center'>".$dbname."</td>";
+			echo "<td style='text-align:center'>".$aliasdb."</td>";
             echo "<td style='text-align:center'>".$result2[$key2]['QTD']."</td>";
 
 /*            
@@ -178,7 +179,7 @@ foreach ($result1 as $key1 => $value) {
 		};
 	else:
 		echo "<tr class='$pauta none'>";
-		echo "<td style='text-align:center'>".$dbname."</td>";
+		echo "<td style='text-align:center'>".$aliasdb."</td>";
 		echo "<td></td>";
 		echo "<td></td>";
 		echo "<td></td>";

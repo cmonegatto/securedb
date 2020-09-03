@@ -64,6 +64,36 @@ CREATE TABLE `adm_databases` (
   CONSTRAINT `fk_db_cat` FOREIGN KEY (`idcat`) REFERENCES `adm_categories` (`idcat`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/* casos que necessitem de ALTER para incluir esse novo campo */
+
+ALTER TABLE `adm_databases` 
+ADD COLUMN `idcia` INT(11) NULL DEFAULT NULL AFTER `iddb`;
+
+ALTER TABLE `adm_databases` 
+ADD COLUMN `aliasdb` VARCHAR(50) NULL DEFAULT NULL AFTER `idcat`;
+
+ALTER TABLE `adm_databases` 
+DROP INDEX `uc_database` ;
+
+ALTER TABLE `adm_databases` 
+ADD UNIQUE INDEX `uc_aliasdb` (`idcia` ASC, `aliasdb` ASC);
+
+ALTER TABLE `adm_databases` 
+ADD UNIQUE INDEX `uc_idconnection` (`idcat` ASC, `dbname` ASC, `hostname` ASC);
+
+-- rcuperando o ID da Empresa
+update adm_databases
+set idcia = (select idcia from adm_categories c where c.idcat = adm_databases.idcat);
+
+-- Deletando a linha de duplicidade
+delete from adm_databases where iddb=17;
+
+-- REcuperando o nome do ALIASDB igual da Instancia para os registros existentes
+update adm_databases
+set aliasdb = dbname
+where aliasdb is null;
+
+
 
 
 CREATE TABLE `adm_login_activity` (

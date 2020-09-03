@@ -152,7 +152,7 @@ $(document).ready(function(){
             $.getJSON('../../../../../../model/tab-admloginslog-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
                 var options = ''; //'<option value="">Escolha o banco de dados</option>';	
                 for (var i = 0; i < j.length; i++) {
-                    options += '<option value="' + j[i].iddb + '">' + j[i].dbname + '</option>';
+                    options += '<option value="' + j[i].iddb + '">' + j[i].aliasdb + '</option>';
                 }	
                 $('#iddb').html(options).show();
                 //$('.carregando').hide();
@@ -172,7 +172,7 @@ $(document).ready(function(){
             $.getJSON('../../../../../../model/tab-admloginslog-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
                 var options = '<option value="">Escolha o banco de dados</option>';	
                 for (var i = 0; i < j.length; i++) {
-                    options += '<option value="' + j[i].iddb + '">' + j[i].dbname + '</option>';
+                    options += '<option value="' + j[i].iddb + '">' + j[i].aliasdb + '</option>';
                 }	
                 $('#iddb').html(options).show();
                 //$('.carregando').hide();

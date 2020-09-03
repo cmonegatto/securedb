@@ -25,6 +25,8 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
 // Recuperando a variável global com o banco de dados escolhido no combo. Alimentada no programa list-admloginslog.php
 $player = $_SESSION['player'];
 
+echo $player;
+
 
 ?>
    
@@ -262,7 +264,7 @@ $player = $_SESSION['player'];
             $.getJSON('../../model/tab-admloginslog-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
                 var options = ''; //'<option value="">Escolha o banco de dados</option>';	
                 for (var i = 0; i < j.length; i++) {
-                    options += '<option value="' + j[i].iddb + '">' + j[i].dbname + '</option>';
+                    options += '<option value="' + j[i].iddb + '">' + j[i].aliasdb + '</option>';
                 }	
                 $('#iddb').html(options).show();
                 //$('.carregando').hide();
@@ -282,7 +284,7 @@ $player = $_SESSION['player'];
             $.getJSON('../../model/tab-admloginslog-post.php?search=',{idcat: $(this).val(), ajax: 'true'}, function(j){
                 var options = '<option value="">Escolha o banco de dados</option>';	
                 for (var i = 0; i < j.length; i++) {
-                    options += '<option value="' + j[i].iddb + '">' + j[i].dbname + '</option>';
+                    options += '<option value="' + j[i].iddb + '">' + j[i].aliasdb + '</option>';
                 }	
                 $('#iddb').html(options).show();
                 //$('.carregando').hide();
