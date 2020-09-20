@@ -29,6 +29,24 @@
 		<link rel="stylesheet" href="\view/css/estilo.css">
 
 		<title>SecureDB</title>
+
+		<!--
+
+		<style>
+			body {
+				background-image:url("img/telaprincipal.jpg");
+				background-attachment: fixed;
+				background-size: 100%;
+				background-repeat: no-repeat;
+				background-color: black;
+				/*opacity: 0.3;*/
+				
+			}
+		</style>
+
+		-->
+
 	</head>
 
     <body>
+	

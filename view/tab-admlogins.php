@@ -25,8 +25,6 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
 // Recuperando a variável global com o banco de dados escolhido no combo. Alimentada no programa list-admloginslog.php
 $player = $_SESSION['player'];
 
-echo $player;
-
 
 ?>
    

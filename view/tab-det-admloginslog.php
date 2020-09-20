@@ -12,7 +12,7 @@ $killed = $data['killed'];
 $idcat	= (!isset($_POST['idcat']))?$_SESSION['idcat']:$_POST['idcat'];
 
 
-//$_SESSION['iddb']   = $iddb;
+$_SESSION['iddb']   = $iddb;
 //$_SESSION['idcat']  = $idcat;
 //$_SESSION['id_log']   = $data['id_log'];
 

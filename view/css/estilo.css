@@ -25,7 +25,9 @@ hr {
 }
 
 body {
-	background: rgba(47, 0, 235, 0.197);
+	/*background: rgba(47, 0, 235, 0.197);*/
+	background: whitesmoke;
+
 }
 
 
@@ -54,14 +56,14 @@ table {
 }
 
 
+
 .imglogin {
-	background-image: url(/img/login.png);
+	/*background-image: url(/img/login.png);*/
+	background-attachment: fixed;
+	background-size: 100%;	
 	background-repeat: no-repeat;
-	background-size: cover;
-	padding-bottom: 340px;
-	padding-top: 30px;
-	/*opacity: 0.5;*/
-	
+	/*background-size: cover;*/
+
 }
 
 /*
@@ -184,16 +186,21 @@ table.tab-loginstokill tr.admtrigger td {
 }
 
 
+/* Tela de bloqueios, os que estão somente logando e não cortando... */
+.fa-exclamation-triangle:before{
+	color:yellow;
+}
+
+
 /* lista da grid de conexões bloqueadas para pautar*/
 table#myTable tr.corsim td {
-	/*background: rgba(173, 216, 230, 0.306);*/
 	color: rgba(211, 211, 211, 0.734);
 	background: rgba(0, 0, 0, 0.920);
+
 }
 
 /* lista da grid de conexões bloqueadas para pautar*/
 table#myTable tr.cornao td {
-	/*background: white;*/
 	color: gray;	
 	background: red(0, 0, 0, 0.415);
 
@@ -215,4 +222,20 @@ table#myTable tr.corsim2 td {
 table#myTable tr.cornao2 td {
 	/*background: rgba(221, 221, 221, 0.693);*/
 	background: red(0, 0, 0, 0.415);
+}
+
+
+.login {
+	width: 400px;
+	height: 500px;
+	border: 2px solid #000;
+	border-radius: 20px 20px 20px 20px;
+	color: #fff;
+	background-color: rgba(0,0,5,0.7);
+	top: 50%;
+	left: 25%;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	box-sizing: border-box;
+	padding: 40px 50px;
 }

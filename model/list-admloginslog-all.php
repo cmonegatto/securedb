@@ -50,8 +50,8 @@ foreach ($result1 as $key1 => $value) {
 			$result2= $conn2->sql( basename(__FILE__), 
 								"SELECT max(id_log) ID_LOG, count(*) as qtd, ll.username, ll.osuser, ll.machine, ll.program, ll.module, ll.killed
 									FROM adm_logins_log ll
-									WHERE killed is not null
-									AND datetime >=trunc(sysdate-$days)
+									WHERE /* killed is not null
+									AND */ datetime >=trunc(sysdate-$days)
 									GROUP BY ll.username, ll.osuser, ll.machine, ll.program, ll.module, ll.killed
 									ORDER BY 2 DESC"
 								);
@@ -61,8 +61,8 @@ foreach ($result1 as $key1 => $value) {
 			$result2= $conn2->sql( basename(__FILE__), 
 								"SELECT max(id_log) ID_LOG, count(*) as QTD, ll.USERNAME, ll.OSUSER, ll.MACHINE, ll.PROGRAM, ll.MODULE, ll.KILLED
 									FROM adm_logins_log ll
-									WHERE killed is not null
-									AND datetime >= cast(GETDATE()-$days as date)
+									WHERE /* killed is not null
+									AND */ datetime >= cast(GETDATE()-$days as date)
 									GROUP BY ll.username, ll.osuser, ll.machine, ll.program, ll.module, ll.killed
 									ORDER BY 2 DESC"
 								);
@@ -99,9 +99,10 @@ foreach ($result1 as $key1 => $value) {
 			$program	= $result2[$key2]['PROGRAM'];
 			$module		= $result2[$key2]['MODULE'];
 			$killed		= $result2[$key2]['KILLED'];
+			$rule		= (is_null($killed))?"norule":"";
 
 
-			echo "<tr class='$pauta'>";
+			echo "<tr class='$pauta $rule'>";
 			echo "<td style='text-align:center'><a href='\admloginslog/detail/$id_log/$iddb/1'><i class='fa fa-search'></i></a></td>";			
 			echo "<td style='text-align:center; font-weight:bolder'>".$aliasdb."</td>";
 			echo "<td style='text-align:center'>".$result2[$key2]['QTD']."</td>";
@@ -116,7 +117,8 @@ foreach ($result1 as $key1 => $value) {
 			elseif ($result2[$key2]['KILLED'] == '#'):
 				echo "<td style='text-align:center'><i class='fa fa-clock-o'></i></a></td>";			
 			else:
-				echo "<td></td>";			
+				//echo "<td></td>";	
+				echo "<td style='text-align:center'><i class='fa fa-exclamation-triangle'></i></a></td>";
 			endif;
 
 			echo "</tr>";

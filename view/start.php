@@ -5,18 +5,8 @@ include_once 'include/menu_inc.php';
 
 ?>
 
-<section class="imginicio" style="background-image: url('/img/2Now.png');">
-</section>
-
-
 <!--
-<div class="container">
-			<div class="jumbotron">
-				<h1>BEM-VINDO!</h1>
-
-                <h2>sdsdsds</h2>
-			</div>
-</div>            
+<img src='/img/telaprincipal.jpg' class='telainicial' alt='SEM IMG' width=1530 height=680>
 -->
 
 <?php 

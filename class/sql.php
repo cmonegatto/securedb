@@ -10,7 +10,7 @@ class Sql {
 	public function __construct($db="", $hostname="", $username="", $password="", $dbname="", $port="")
 	{
 
-		if ($db.$hostname.$username.$password.$dbname == ""):
+		if ($db.$hostname.$username.$password.$dbname == "" ):
 			$hostname	= $_SESSION['s_hostname'];
 			$username	= $_SESSION['s_username'];
 			$password	= $_SESSION['s_password'];

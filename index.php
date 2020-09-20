@@ -1,3 +1,6 @@
+
+<link rel="shortcut icon" href="img/FaviconLogo.png" type="image/png" sizes="64x64"> 
+
 <?php
 
 session_start();

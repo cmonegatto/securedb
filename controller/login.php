@@ -20,13 +20,12 @@ $ini = parse_ini_file('../config.ini', true);
 	$_SESSION['s_dbname'] 	= encrypt_decrypt('decrypt', $ini['database']['dbname']);
 	$_SESSION['s_db'] 		= $ini['database']['db'];
 */
-
 	$_SESSION['s_hostname'] = $ini['database']['hostname'];
 	$_SESSION['s_username'] = $ini['database']['username'];
 	$_SESSION['s_password'] = $ini['database']['password'];
 	$_SESSION['s_dbname'] 	= $ini['database']['dbname'];
 	$_SESSION['s_db'] 		= $ini['database']['db'];
-
+	
 endif;	
 
 
@@ -77,6 +76,9 @@ $result= $conn->sql( basename(__FILE__),
 							 ":STATUS"=> (isset($_SESSION['msg']))?$_SESSION['msg']:"success"
 							)
 				   );
+
+//var_dump ($_SESSION);
+//die();
 
 header("Location: /");
 
