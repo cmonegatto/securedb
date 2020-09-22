@@ -88,7 +88,7 @@ $_SESSION['idcat'] = $data['idcat'];
                     </tbody>
 
                 </table>
-                <button type="submit" class="btn btn-primary">Gestão das Regras</button>
+                <button type="submit" class="btn btn-primary" <?php echo isset($_SESSION['player'])?"enabled":"disabled" ?> >Gestão das Regras</button>
 
                 <span class="fa fa-square" style="color:yellow; padding-left:50px"></span>                
                 Sem Regra

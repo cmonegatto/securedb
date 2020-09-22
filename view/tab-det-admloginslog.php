@@ -6,6 +6,7 @@ include_once 'include/menu_inc.php';
 $id_log = $data['id_log'];
 $iddb   = $data['iddb'];
 $killed = $data['killed'];
+$days   = $data['days'];
 
 
 //$iddb	= (!isset($_POST['iddb']))?$_SESSION['iddb']:$_POST['iddb'];

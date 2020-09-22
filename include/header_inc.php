@@ -30,21 +30,7 @@
 
 		<title>SecureDB</title>
 
-		<!--
-
-		<style>
-			body {
-				background-image:url("img/telaprincipal.jpg");
-				background-attachment: fixed;
-				background-size: 100%;
-				background-repeat: no-repeat;
-				background-color: black;
-				/*opacity: 0.3;*/
-				
-			}
-		</style>
-
-		-->
+		<link rel="shortcut icon" href="\img/faviconlogo.png" type="image/png">
 
 	</head>
 

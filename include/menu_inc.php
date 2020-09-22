@@ -20,8 +20,11 @@ endif;
 ?>
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-dark">
-	<h2><a class="navbar-brand btn btn-warning" href="\">2Now Consulting</a></h2>
+<nav class="navbar navbar-expand-lg navbar-light">
+	<!-- <h2><a class="navbar-brand btn btn-warning" href="\">2Now Consulting</a></h2> -->
+	<a href="\">
+		<img src="\img/400PngdpiLogoCropped.png" width="125" height="38">
+	</a>
 
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>

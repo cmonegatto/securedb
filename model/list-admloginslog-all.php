@@ -103,7 +103,7 @@ foreach ($result1 as $key1 => $value) {
 
 
 			echo "<tr class='$pauta $rule'>";
-			echo "<td style='text-align:center'><a href='\admloginslog/detail/$id_log/$iddb/1'><i class='fa fa-search'></i></a></td>";			
+			echo "<td style='text-align:center'><a href='\admloginslog/detail/$id_log/$iddb/1/$days'><i class='fa fa-search'></i></a></td>";			
 			echo "<td style='text-align:center; font-weight:bolder'>".$aliasdb."</td>";
 			echo "<td style='text-align:center'>".$result2[$key2]['QTD']."</td>";
 			echo "<td>".$result2[$key2]['USERNAME']."</td>";

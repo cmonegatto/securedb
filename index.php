@@ -1,6 +1,4 @@
 
-<link rel="shortcut icon" href="img/FaviconLogo.png" type="image/png" sizes="64x64"> 
-
 <?php
 
 session_start();
@@ -200,11 +198,12 @@ $app->get('/admlogins/lockuser/:username', function ($username) use ($app) {
 *  ROTAS PARA CRUD (tela de log do logins)
 * --------------------------------------------------------------------------- */
 
-$app->get('/admloginslog/detail/:id_log/:iddb/:killed', function ($id_log, $iddb, $killed) use ($app){      
+$app->get('/admloginslog/detail/:id_log/:iddb/:killed/:days', function ($id_log, $iddb, $killed, $days) use ($app){      
     $data = array("data"=>array
                         ( "id_log"=> $id_log, 
                           "iddb"  => $iddb,
-                          "killed"  => $killed
+                          "killed"  => $killed,
+                          "days"  => $days
                         )
                   );
 

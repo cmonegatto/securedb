@@ -18,6 +18,11 @@ $idcat	= (!isset($_POST['idcat']))?$_SESSION['idcat']:$_POST['idcat'];
 $id_log = $data['id_log'];
 $iddb   = $data['iddb'];
 $killed = $data['killed'];
+$days   = $data['days'];
+
+//se $days for 0 então pega tudo senão considera a quantidade de dias...
+$days = ($days==0)?$days=2000:$days;
+
 
 /*
 $username   = $_SESSION['username'];
@@ -77,9 +82,10 @@ if ($player == 'OCI'):
 						and ll1.osuser   = ll2.osuser
 						and ll1.machine  = ll2.machine
 						and ll1.program  = ll2.program
-						and ll1.module   = ll2.module" 
-						. $whereclause .
-						"ORDER BY datetime desc",
+						and ll1.module   = ll2.module
+						and datetime >=trunc(sysdate-$days) 
+						/* . $whereclause . */
+						ORDER BY datetime desc",
 						array( ":ID_LOG"=>$id_log)
 						);
 
@@ -103,9 +109,10 @@ elseif ($player == 'SQLSRV'):
 							and isnull(ll1.osuser,'')   = isnull(ll2.osuser,'')
 							and isnull(ll1.machine,'')  = isnull(ll2.machine,'')
 							and isnull(ll1.program,'')  = isnull(ll2.program,'')
-							and isnull(ll1.module,'')   = isnull(ll2.module,'')"
-							. $whereclause .
-							"ORDER BY datetime desc",
+							and isnull(ll1.module,'')   = isnull(ll2.module,'')
+							and datetime >= cast(GETDATE()-$days as date)
+							/* . $whereclause .*/
+							ORDER BY datetime desc",
 							array( ":ID_LOG"=>$id_log)
 						);
 endif;

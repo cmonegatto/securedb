@@ -7,10 +7,20 @@ include_once 'include/menu_inc.php';
 
 ?>
 
+<style>
+    body {
+            background-image:url("img/telaprincipal.jpg");
+            background-attachment: fixed;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-color: black;
+            /*opacity: 0.3;*/
+				
+		}
+</style>
 
-<!--
-<section class="imglogin" style="background-image: url('/img/telaprincipal.jpg');">
--->
+
+    <!-- css aplicado para classe .login -->
     <div class="container login">
         
 

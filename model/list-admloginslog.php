@@ -126,7 +126,7 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 
 		//echo "<td><a href='\admloginslog/detail/$username/$osuser/$machine/$program/$module/$killed'><i class='fa fa-search'></i></a></td>";
 
-		echo "<td style='text-align:center'><a href='\admloginslog/detail/$id_log/$iddb/0'><i class='fa fa-search'></i></a></td>";
+		echo "<td style='text-align:center'><a href='\admloginslog/detail/$id_log/$iddb/0/0'><i class='fa fa-search'></i></a></td>";
 
 		if ($result[$key]['REGRA'] ):
 			echo "<td style='text-align:center'><a href='\admloginslog/insclick/$id_log'><i class='fa fa-thumbs-up'></i></a></td>";
