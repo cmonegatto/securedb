@@ -5,6 +5,8 @@ session_start();
 include "../class/Sql.php";
 include "../function/utils.php";
 
+
+
 if (! file_exists("../config.ini")):
 	//echo "O arquivo config.ini não foi encontrado!";
 	$_SESSION['msg'] ='O arquivo de parâmetros não foi encontrado!';	
@@ -27,6 +29,7 @@ $ini = parse_ini_file('../config.ini', true);
 	$_SESSION['s_db'] 		= $ini['database']['db'];
 	
 endif;	
+
 
 
 $email = $_POST["email"];

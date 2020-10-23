@@ -20,7 +20,7 @@ $conn=new Sql();
 
 $result= $conn->sql( basename(__FILE__), 
 					 "SELECT IDCIA
-					    FROM ADM_CATEGORIES
+					    FROM adm_categories
 					   WHERE idcat = :IDCAT",
 					  array(":IDCAT"=> $idcat)
 				   );
