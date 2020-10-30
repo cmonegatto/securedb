@@ -69,7 +69,8 @@ $app->get('/company/update/:p', function ($p) use ($app) {
 
 $app->get('/company/delete/:p', function ($p) use ($app) {
     $data = array("data"=>array("idcia"=>$p));
-    $app->render('\../model/del-company.php', $data, 200);
+    $app->render('../model/del-company.php', $data, 200);
+    //$app->render('\../model/del-company.php', $data, 200);
 });
 
 
@@ -96,7 +97,8 @@ $app->get('/users/update/:p', function ($p) use ($app) {
 
 $app->get('/users/delete/:p', function ($p) use ($app) {
     $data = array("data"=>array("iduser"=>$p));
-    $app->render('\../model/del-users.php', $data, 200);
+    $app->render('../model/del-users.php', $data, 200);
+    //$app->render('\../model/del-users.php', $data, 200);
 });
 
 
@@ -124,7 +126,8 @@ $app->get('/categories/update/:p', function ($p) use ($app) {
 
 $app->get('/categories/delete/:p', function ($p) use ($app) {
     $data = array("data"=>array("idcat"=>$p));
-    $app->render('\../model/del-categories.php', $data, 200);
+    $app->render('../model/del-categories.php', $data, 200);
+    //$app->render('\../model/del-categories.php', $data, 200);
 });
 
 
@@ -152,7 +155,8 @@ $app->get('/databases/update/:p1/:p2', function ($iddb, $idcia) use ($app) {
 
 $app->get('/databases/delete/:p', function ($p) use ($app) {
     $data = array("data"=>array("iddb"=>$p));
-    $app->render('\../model/del-databases.php', $data, 200);
+    $app->render('../model/del-databases.php', $data, 200);
+    //$app->render('\../model/del-databases.php', $data, 200);
 });
 
 
@@ -184,12 +188,14 @@ $app->get('/admlogins/update/:id', function ($id) use ($app) {
 
 $app->get('/admlogins/delete/:id', function ($id) use ($app) {
     $data = array("data"=>array("id"=>$id));
-    $app->render('\../model/del-admlogins.php', $data, 200);
+    $app->render('../model/del-admlogins.php', $data, 200);
+    //$app->render('\../model/del-admlogins.php', $data, 200);
 });
 
 $app->get('/admlogins/lockuser/:username', function ($username) use ($app) {
     $data = array("data"=>array("username"=>$username));
-    $app->render('\../model/lock-admlogins.php', $data, 200);
+    $app->render('../model/lock-admlogins.php', $data, 200);
+    //$app->render('\../model/lock-admlogins.php', $data, 200);
 });
 
 
@@ -215,7 +221,8 @@ $app->get('/admloginslog/insclick/:id_log', function ($id_log) use ($app){
                         ( "id_log"=> $id_log)
                   );
 
-    $app->render('\../model/ins-admlogins-click.php', $data, 200);
+    $app->render('../model/ins-admlogins-click.php', $data, 200);
+    //$app->render('\../model/ins-admlogins-click.php', $data, 200);
 });
 
 
@@ -267,7 +274,8 @@ $app->get('/loginstools', function () use ($app){
 
 $app->get('/loginstools/delete/:tool', function ($tool) use ($app){      
     $data = array("data"=>array("tool"=>$tool));
-    $app->render('\../model/del-loginstools.php', $data, 200);
+    $app->render('../model/del-loginstools.php', $data, 200);
+    //$app->render('\../model/del-loginstools.php', $data, 200);
 });
 
 

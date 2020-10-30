@@ -42,7 +42,8 @@ class Sql {
 			$db = strtolower($db);
 			try{
 				$this->conn = new \PDO(
-					"$db:Database=$dbname;server=$hostname\SQLEXPRESS;ConnectionPooling=0", $username, $password
+					"$db:Database=$dbname;server=$hostname;ConnectionPooling=0", $username, $password
+//					"$db:Database=$dbname;server=$hostname\SQLEXPRESS;ConnectionPooling=0", $username, $password
 //					"sqlsrv:Database=dbphp7;server=localhost\SQLEXPRESS;ConnectionPooling=0", "sa", "root"					
 				);
 			}catch(PDOException $e){
