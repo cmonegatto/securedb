@@ -42,6 +42,12 @@ $role = "";
 
 $conn=new Sql();
 
+if (isset($_SESSION['msg'])):
+	header("Location: /");
+endif;	
+
+
+
 $result= $conn->sql( basename(__FILE__), 
 					 "SELECT * FROM adm_users
 					   WHERE email = :EMAIL and password = :PASSWORD",

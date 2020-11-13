@@ -17,10 +17,18 @@ class Sql {
 			$dbname		= $_SESSION['s_dbname'];
 			$db			= $_SESSION['s_db'];
 
-			$this->conn = new \PDO(
-				"{$db}:dbname={$dbname};host={$hostname}", $username, $password
-			);
-	
+
+			try{
+				$this->conn = new \PDO(
+					"{$db}:dbname={$dbname};host={$hostname}", $username, $password
+				);
+			}catch(PDOException $e){
+				$_SESSION['msg'] = "Ocorreu um erro na conexão com banco de dados. Verifique os dados de conexão - " . ($e->getMessage());
+				$_SESSION['msg'] = $_SESSION['msg']."$db:dbname=".$dbname .'/'. $username .'/**************';
+
+			}
+
+
 		elseif ($db=='OCI'):
 
 			$tns = " (DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP) (HOST = ".$hostname.")(PORT = ".$port.")))(CONNECT_DATA = (SID=".$dbname.")))";
