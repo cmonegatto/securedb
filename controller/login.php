@@ -64,6 +64,9 @@ if (isset($result[0]['email']) && $result[0]['status']):
 	$_SESSION['s_emailuser'] = $result[0]['email'];
 	$_SESSION['s_admin'] = $result[0]['admin'];
 	$_SESSION['s_superuser'] = $result[0]['superuser'];
+	$_SESSION['s_nameuser'] = $result[0]['name'];
+	$_SESSION['s_celphone'] = $result[0]['celphone'];
+	$_SESSION['s_login'] = $result[0]['login'];
 	
 	if ($result[0]['superuser']):
 		$role = "<span style='color:gray'> (Super)</span>";
@@ -72,7 +75,7 @@ if (isset($result[0]['email']) && $result[0]['status']):
 
 	endif;
 
-	$_SESSION['s_nameuser'] = substr($result[0]['name'], 0, strpos($result[0]['name'], ' ')) . $role; //primeiro nome
+	$_SESSION['s_shortnameuser'] = substr($result[0]['name'], 0, strpos($result[0]['name'], ' ')) . $role; //primeiro nome
 
 elseif (isset($result[0]['email']) && !$result[0]['status']):
 	$_SESSION['msg'] ='Esse usuário está inativo!';

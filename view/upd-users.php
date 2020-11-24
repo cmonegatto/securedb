@@ -121,13 +121,43 @@ $_SESSION['idcia'] = $idcia;
         <div class="row">       
             <div class="input-field col-md-4">
                 <input type="submit" value="Salvar" class="btn btn-primary">                
-                <a href="\users" class="btn btn-secondary">Voltar</a>
+                <a href="\users"   class="btn btn-secondary">Voltar</a>
+                <a     id="changepwd"  class="btn btn-danger">Redefinir Senha</a>
             </div>
         </div>
 
     </form>
 
 </div>
+
+
+<script>
+
+    $("#changepwd").click(function() {
+        var idb     =   $("#iddb").val();
+        var idcat   =   $("#idcat").val();
+
+        var iduser = "<?php echo $iduser; ?>";
+
+
+        if (window.confirm("A Senha será reiniciada! Deseja continuar?")) { 
+            //window.open("sair.html", "Obrigado pela visita!");
+            window.location=`\../../upd-changepwd/${iduser}`;
+
+}
+
+
+
+//        if (idb !== "" && idcat !== "") {
+//            window.location=`\../../admloginslog/${idb}/${idcat}`;
+//        };    
+
+    });
+
+
+</script>
+
+
 
 
 <?php include_once 'include/footer_inc.php' ?>

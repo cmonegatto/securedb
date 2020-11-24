@@ -43,7 +43,14 @@ $app->get('/logout', function () use ($app) {
     $app->render('login.php');        
 });
 
+$app->get('/changepwd', function () use ($app) {  
+    $app->render('changepwd.php');        
+});
 
+$app->get('/upd-changepwd/:iduser', function ($iduser) use ($app) {  
+    $data = array("data"=>array("iduser"=>$iduser));
+    $app->render('../model/reset-pwd.php', $data, 200);
+});
 
 /* ---------------------------------------------------------------------------
 *  ROTAS PARA CRUD EMPRESA/COMPANHIA

@@ -45,7 +45,7 @@ if ($player == 'OCI'):
 
 
     $result= $conn->sql( basename(__FILE__), 
-                        "SELECT u.username, adm.admtrigger, k.tokill, l.admlogins
+                     "SELECT DISTINCT u.username, adm.admtrigger, k.tokill, l.admlogins
                         FROM dba_users u, 
                             (select username, 1 tokill from adm_logins_to_kill) k,
                             (select username, 1 admlogins from adm_logins) l,
@@ -63,7 +63,7 @@ if ($player == 'OCI'):
                             WHERE u1.account_status='OPEN'
                                 and u1.username = x.username     
                                 ) adm
-                    WHERE u.account_status='OPEN'
+                      WHERE u.account_status='OPEN'
                         and u.username = adm.username(+)
                         and u.username = k.username(+)
                         and u.username = l.username(+)
@@ -73,6 +73,7 @@ if ($player == 'OCI'):
 elseif ($player == 'SQLSRV'):
 
     $result= $conn->sql( basename(__FILE__),  
+                    /*
                      "SELECT name USERNAME, 0 ADMTRIGGER, 0 TOKILL, 0 ADMLOGINS from sys.database_principals where type_desc='SQL_USER'
                       EXCEPT
                      (SELECT lower(username) username, 0 admtrigger, 0 tokill, 0 admlogins from adm_logins
@@ -85,6 +86,26 @@ elseif ($player == 'SQLSRV'):
                       SELECT lower(username) username, 0 admtrigger, 0 tokill, 1 admlogins from adm_logins
                       EXCEPT
                       SELECT lower(username) username, 0 admtrigger, 0 tokill, 1 admlogins from ADM_LOGINS_TO_KILL
+                     "
+                        );
+                    */
+
+                     "SELECT * FROM 
+                     (
+                        SELECT name USERNAME, 0 ADMTRIGGER, 0 TOKILL, 0 ADMLOGINS from sys.database_principals where type_desc='SQL_USER'
+                        EXCEPT
+                        (SELECT lower(username) username, 0 admtrigger, 0 tokill, 0 admlogins from adm_logins
+                        UNION
+                        SELECT lower(username) username, 0 admtrigger, 0 tokill, 0 admlogins from ADM_LOGINS_TO_KILL
+                        )
+                        UNION 
+                        SELECT lower(username) username, 0 admtrigger, 1 tokill, 0 admlogins from ADM_LOGINS_TO_KILL
+                        UNION
+                        SELECT lower(username) username, 0 admtrigger, 0 tokill, 1 admlogins from adm_logins
+                        EXCEPT
+                        SELECT lower(username) username, 0 admtrigger, 0 tokill, 1 admlogins from ADM_LOGINS_TO_KILL
+                     ) as x
+                      WHERE x.username is not null
                      "
                         );
 

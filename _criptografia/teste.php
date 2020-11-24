@@ -48,4 +48,12 @@ echo "<br/>";
 echo "<br/>";
 echo "MD5 =" . MD5($plain_txt);
 
-?>
+
+// Mistura os caracteres
+$str = 'SecureDb%20';
+$misturada = str_shuffle($str);
+
+// Isto exibirá algo como: bfdaec
+echo "<br>";
+echo "<br>";
+echo $misturada;

@@ -74,7 +74,11 @@ endif;
 		<form class="form-inline my-2 my-lg-0">
 			<?php
 				if (isset($_SESSION['s_nameuser'])):
-					echo "<span style='color:white'>Olá {$_SESSION['s_nameuser']} </span>";
+					#echo "<span style='color:white'>Olá {$_SESSION['s_nameuser']} </span>";
+					#echo "<span style='color:white'>Olá {$_SESSION['s_nameuser']} </span>";
+					echo "<a class='nav-link text-white-50' href='/changepwd'>Olá {$_SESSION['s_shortnameuser']}<span class='sr-only'>(current)</span></a>";
+
+
 				endif;
 			?>
 
