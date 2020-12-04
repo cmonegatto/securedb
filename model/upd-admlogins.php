@@ -105,7 +105,7 @@ elseif ($player == 'SQLSRV'):
 								osuser             = :OSUSER, 
 								machine            = :MACHINE, 
 								begin_date		   = CONVERT(DATETIME, :BEGIN_DATE, 20),
-							    end_date		   = iif( $xenddate=0, CONVERT(DATETIME, :END_DATE, 20),NULL),
+							    end_date		   = CASE WHEN $xenddate=0 THEN CONVERT(DATETIME, :END_DATE, 20) ELSE NULL END,
 								freetools          = :FREETOOLS, 
 								sessions_per_user  = :SESSIONS_PER_USER, 
 								log_logon          = :LOG_LOGON, 
@@ -129,6 +129,39 @@ elseif ($player == 'SQLSRV'):
 								)
 					);
 
+
+
+/*
+	$result= $conn->sql( basename(__FILE__), 
+						"UPDATE adm_logins 
+							SET username           = :USERNAME, 
+								osuser             = :OSUSER, 
+								machine            = :MACHINE, 
+								begin_date		   = CONVERT(DATETIME, :BEGIN_DATE, 20),
+							    end_date		   = iif( $xenddate=0, CONVERT(DATETIME, :END_DATE, 20),NULL),
+								freetools          = :FREETOOLS, 
+								sessions_per_user  = :SESSIONS_PER_USER, 
+								log_logon          = :LOG_LOGON, 
+								trace              = :TRACE, 
+								cursor_sharing     = :CURSOR_SHARING, 
+								init_plsql         = :INIT_PLSQL, 
+								comments           = :COMMENTS
+						WHERE id_login = $id_login",
+						array(":USERNAME"         => $username,
+								":OSUSER"           => $osuser,
+								":MACHINE"          => $machine,
+								":BEGIN_DATE"       => $begindate,
+								":END_DATE"         => $enddate,
+								":FREETOOLS"        => $freetools,
+								":SESSIONS_PER_USER"=> $sessionsperuser,
+								":LOG_LOGON"        => $loglogon,
+								":TRACE"            => $trace,
+								":CURSOR_SHARING"   => $cursorsharing,
+								":INIT_PLSQL"       => $initplsql,
+								":COMMENTS"         => $comments
+								)
+					);
+*/
 endif;
 
 

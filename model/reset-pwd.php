@@ -20,7 +20,7 @@ $result= $conn->sql( basename(__FILE__),
                             ":IDUSER"=> $iduser)
 					);
 	 
-$_SESSION['msg'] = 'A senha do usuário foi reinicializada para: ' . $pwd;
+$_SESSION['msg'] = 'A senha do usuário foi reinicializada para: "' . $pwd .'"';
 
 header("Location: /users");
 exit;

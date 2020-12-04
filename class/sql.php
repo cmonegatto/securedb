@@ -99,6 +99,13 @@ class Sql {
 
 		$result = $stmt->execute();
 
+		/*
+		if  (  strpos( strtoupper($rawQuery), "SELECT" ) === false ):
+			// Aqui poderia entrar com os inserts para registrar todo INSERT DELETE e UPDATE
+			// INSERT e DELETE só incluir o registro com os dados
+			// UPDATE precisa checar os campos alterados...
+		endif;
+		*/
 		
 		if (!$result): 	
 

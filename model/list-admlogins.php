@@ -62,6 +62,36 @@ endif;
 							);
 
 	elseif ($player == 'SQLSRV'):
+
+
+		$result= $conn->sql( basename(__FILE__), 
+							"SELECT l.ID_LOGIN
+								  , l.USERNAME
+								  , l.OSUSER
+								  , l.MACHINE
+								  , format(l.BEGIN_DATE,'dd/MM/yyyy HH:mm:ss')  as BEGIN_DATE
+								  , format(l.END_DATE,'dd/MM/yyyy HH:mm:ss')	as END_DATE
+								  , l.FREETOOLS
+								  , l.SESSIONS_PER_USER
+								  , l.LOG_LOGON
+								  , l.TRACE
+								  , l.CURSOR_SHARING
+								  , l.INIT_PLSQL
+								  , l.COMMENTS
+								,   CASE 
+										WHEN tk.USERNAME is null THEN 'N'
+										ELSE 'S'
+									END as TO_KILL
+							FROM adm_logins l
+							LEFT JOIN adm_logins_to_kill tk
+								ON l.username = tk.username
+							ORDER BY id_login desc"
+							);
+
+
+
+	/*
+	elseif ($player == 'SQLSRV'):
 		$result= $conn->sql( basename(__FILE__), 
 							"SELECT l.ID_LOGIN
 								  , l.USERNAME
@@ -82,6 +112,7 @@ endif;
 								ON l.username = tk.username
 							ORDER BY id_login desc"
 							);
+	*/
 	endif;
 
 			  

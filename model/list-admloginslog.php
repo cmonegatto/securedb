@@ -42,6 +42,34 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 	if ($player == 'OCI'):
 
 		$result= $conn->sql( basename(__FILE__), 
+
+							"SELECT count(*) as qtd
+								, ll.username
+								, ll.osuser
+								, ll.machine
+								, ll.program
+								, ll.module
+								, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S')) as TO_KILL
+								, adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) as REGRA
+								, max(id_log) as ID_LOG
+							   FROM adm_logins_log ll
+						  LEFT JOIN adm_logins_to_kill tk
+							     ON ll.username = tk.username                              
+							--
+						  LEFT JOIN adm_logins_locked lk
+							     ON ll.username LIKE decode(lk.username, NULL, '%', lk.username)
+							    AND ( ll.MACHINE  LIKE decode(lk.machine , NULL, '%', '%' || lk.machine)
+							     OR   decode(lk.machine , NULL, '%', lk.machine) LIKE ll.MACHINE
+							        )
+							    AND   ll.OSUSER   LIKE decode(lk.osuser  , NULL, '%', lk.osuser) 
+						   GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
+									, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S'))
+						   ORDER BY adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) DESC
+									, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S'))
+									, 1 DESC"
+
+
+/*		
 							"SELECT count(*) as qtd
 								  , ll.username
 								  , ll.osuser
@@ -56,11 +84,63 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 								ON ll.username = tk.username
 							GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, decode(tk.username,'','N','S')
 							ORDER BY adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) DESC, decode(tk.username,'','N','S'), 1 DESC"
+*/
 							);
 
 	elseif ($player == 'SQLSRV'):
 
+		$result= $conn->sql( basename(__FILE__), 
 
+					   "SELECT count(*) as QTD
+							, ll.USERNAME
+							, ll.OSUSER
+							, ll.MACHINE
+							, ll.PROGRAM
+							, ll.MODULE
+							, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END as TO_KILL
+							, CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0 THEN 1 ELSE 0 END as REGRA
+							, max(id_log) as ID_LOG
+						  FROM adm_logins_log ll
+					 LEFT JOIN adm_logins_to_kill tk
+							ON ll.username = tk.username
+					--
+					 LEFT JOIN adm_logins_locked lk
+							ON CASE WHEN ll.username IS NULL THEN '%' ELSE ll.username END LIKE CASE WHEN lk.username IS NULL THEN '%' ELSE lk.username END
+						   AND ( CASE WHEN ll.machine IS NULL THEN '%' ELSE ll.machine END  LIKE CASE WHEN lk.machine IS NULL THEN '%' ELSE '%' + lk.machine END
+							OR   CASE WHEN lk.machine IS NULL THEN '%' ELSE lk.machine END LIKE CASE WHEN ll.machine IS NULL THEN '%' ELSE ll.machine END
+							   )
+						   AND   CASE WHEN ll.osuser IS NULL THEN '%' ELSE ll.osuser END LIKE CASE WHEN lk.osuser IS NULL THEN '%' ELSE lk.osuser END
+					--
+					  GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
+								 , CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END
+					--
+							,CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END
+							,case when concat(lk.username,lk.machine,lk.osuser) IS NULL THEN 'N' ELSE 'S' END 
+						ORDER BY CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0 THEN 1 ELSE 0 END DESC
+								 , CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END
+								 , 1 DESC"
+
+/*
+							"SELECT count(*) as QTD
+								  , ll.USERNAME
+								  , ll.OSUSER
+								  , ll.MACHINE
+								  , ll.PROGRAM
+								  , ll.MODULE
+								  , CASE WHEN tk.USERNAME IS NULL THEN 'N' ELSE 'S' END as TO_KILL
+								  , CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0 THEN 1 ELSE 0 END as REGRA
+								  , max(id_log) as ID_LOG
+							  FROM adm_logins_log ll
+							  LEFT JOIN adm_logins_to_kill tk
+							    ON ll.username = tk.username
+							 GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END
+							 ORDER BY CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0 THEN 1 ELSE 0 END DESC, CASE WHEN tk.USERNAME IS NULL THEN 'N' ELSE 'S' END, 1 DESC"
+*/							 
+							);
+
+
+
+		/*
 		$result= $conn->sql( basename(__FILE__), 
 							"SELECT count(*) as QTD
 								  , ll.USERNAME
@@ -77,6 +157,7 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 							 GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, iif(tk.username IS NULL,'N','S')
 							 ORDER BY iif(securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0,1,0) DESC, iif(tk.USERNAME IS NULL,'N','S'), 1 DESC"
 							);
+		*/
 							
 	endif;
 							

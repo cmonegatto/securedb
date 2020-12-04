@@ -9,6 +9,7 @@ include "../function/utils.php";
 $iddb	= $_SESSION['iddb'];
 $idcat	= $_SESSION['idcat'];
 
+
 $username		    = $_POST["username"];
 $osuser		        = $_POST["osuser"];
 $machine		    = $_POST["machine"];
@@ -85,7 +86,11 @@ elseif ($player == 'SQLSRV'):
 
 	$result= $conn->sql( basename(__FILE__), 
 						"INSERT INTO adm_logins (username, osuser, machine, begin_date, end_date, freetools, sessions_per_user, log_logon, trace, cursor_sharing, init_plsql, comments)
-						VALUES (:USERNAME, :OSUSER, :MACHINE, CONVERT(DATETIME, :BEGIN_DATE, 20), iif( $xenddate=0, CONVERT(DATETIME, :END_DATE, 20),NULL)
+						VALUES (:USERNAME, :OSUSER, :MACHINE, CONVERT(DATETIME, :BEGIN_DATE, 20), 
+						CASE 
+							WHEN $xenddate=0 THEN CONVERT(DATETIME, :END_DATE, 20)
+							ELSE NULL
+						END
 						, :FREETOOLS, :SESSIONS_PER_USER, :LOG_LOGON, :TRACE, :CURSOR_SHARING, :INIT_PLSQL, :COMMENTS)",
 						array(":USERNAME"=> $username,
 								":OSUSER"=> $osuser,
@@ -102,6 +107,27 @@ elseif ($player == 'SQLSRV'):
 								)
 					);
 
+
+	/*
+	$result= $conn->sql( basename(__FILE__), 
+						"INSERT INTO adm_logins (username, osuser, machine, begin_date, end_date, freetools, sessions_per_user, log_logon, trace, cursor_sharing, init_plsql, comments)
+						VALUES (:USERNAME, :OSUSER, :MACHINE, CONVERT(DATETIME, :BEGIN_DATE, 20), iif( $xenddate=0, CONVERT(DATETIME, :END_DATE, 20),NULL)
+						, :FREETOOLS, :SESSIONS_PER_USER, :LOG_LOGON, :TRACE, :CURSOR_SHARING, :INIT_PLSQL, :COMMENTS)",
+						array(":USERNAME"=> $username,
+								":OSUSER"=> $osuser,
+								":MACHINE"=> $machine,
+								":BEGIN_DATE"=> $begindate,
+								":END_DATE"=> $enddate,
+								":FREETOOLS"=> $freetools,
+								":SESSIONS_PER_USER"=> $sessionsperuser,
+								":LOG_LOGON"=> $loglogon,
+								":TRACE"=> $trace,
+								":CURSOR_SHARING"=> $cursorsharing,
+								":INIT_PLSQL"=> $initplsql,
+								":COMMENTS"=> $comments
+								)
+					);
+	*/
 
 endif;
 
