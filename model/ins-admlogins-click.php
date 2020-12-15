@@ -47,7 +47,8 @@ if ($player == 'OCI'):
                             WHERE l.username = ll.username
                             and l.osuser     = ll.osuser
                             and l.machine    = ll.machine
---                          and l.freetools  = ll.program",
+--                          and l.freetools  = ll.program
+                            and instr(l.freetools, '%') =0",
                         array(":ID_LOG"=> $id_log)
                         );
 
@@ -60,7 +61,8 @@ elseif ($player == 'SQLSRV'):
                         WHERE l.username = ll.username
                         and isnull(l.osuser,'')     = isnull(ll.osuser,'')
                         and isnull(l.machine,'')    = isnull(ll.machine,'')
---                      and isnull(l.freetools,'')  = isnull(ll.program,'')",
+--                      and isnull(l.freetools,'')  = isnull(ll.program,'')
+                        and charindex('%', l.freetools)=0",
                         array(":ID_LOG"=> $id_log)
                         );
 
