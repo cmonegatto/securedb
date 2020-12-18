@@ -241,6 +241,28 @@ $app->get('/admloginslog/:iddb/:idcat', function ($iddb, $idcat) use ($app){
 
 
 
+
+
+/* ---------------------------------------------------------------------------
+*  ROTAS Arquivar registros da ADM_LOGINS_LOG
+* --------------------------------------------------------------------------- */
+
+$app->get('/admloginslog/archive/:id_log/:iddb', function ($id_log, $iddb) use ($app){      
+    $data = array("data"=>array
+                        ( "id_log"=> $id_log, 
+                          "iddb"  => $iddb
+                        )
+                  );
+
+    $app->render('../model/archive-admloginslog.php', $data, 200);
+});
+
+
+
+
+
+
+
 /* ---------------------------------------------------------------------------
 *  ROTAS PARA CRUD (tela de CRUD LOGINSLOGINS)
 * --------------------------------------------------------------------------- */

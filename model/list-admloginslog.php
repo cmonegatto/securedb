@@ -62,6 +62,7 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 							     OR   decode(lk.machine , NULL, '%', lk.machine) LIKE ll.MACHINE
 							        )
 							    AND   ll.OSUSER   LIKE decode(lk.osuser  , NULL, '%', lk.osuser) 
+							  WHERE  ll.archived is null
 						   GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
 									, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S'))
 						   ORDER BY adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) DESC
@@ -110,6 +111,8 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 							OR   CASE WHEN lk.machine IS NULL THEN '%' ELSE lk.machine END LIKE CASE WHEN ll.machine IS NULL THEN '%' ELSE ll.machine END
 							   )
 						   AND   CASE WHEN ll.osuser IS NULL THEN '%' ELSE ll.osuser END LIKE CASE WHEN lk.osuser IS NULL THEN '%' ELSE lk.osuser END
+						 WHERE  ll.archived is null
+
 					--
 					  GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
 								 , CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END
@@ -205,9 +208,8 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 		//$id = $username . '/' . str_replace('\\','*',$osuser) .'/'. str_replace('\\','*',$machine) .'/'. str_replace('\\','*',$program) .'/'. str_replace('\\','*',$module);
 
 
-		//echo "<td><a href='\admloginslog/detail/$username/$osuser/$machine/$program/$module/$killed'><i class='fa fa-search'></i></a></td>";
-
 		echo "<td style='text-align:center'><a href='\admloginslog/detail/$id_log/$iddb/0/0'><i class='fa fa-search'></i></a></td>";
+		
 
 		if ($result[$key]['REGRA'] ):
 			echo "<td style='text-align:center'><a href='\admloginslog/insclick/$id_log'><i class='fa fa-thumbs-up'></i></a></td>";
@@ -222,7 +224,14 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 		echo "<td>".$result[$key]['MACHINE']."</td>";
 		echo "<td>".$result[$key]['PROGRAM']."</td>";
 		echo "<td>".$result[$key]['MODULE']."</td>";
+
+		if ($result[$key]['REGRA'] ):
+			echo "<td style='text-align:center'><a href='\admloginslog/archive/$id_log/$iddb'><i class='fa fa-download'></i></a></td>";
+		else:
+			echo "<td></td>";			
+		endif;
 		
+
 /*		
 		if ($result[$key]['KILLED'] == '*'):
 			echo "<td style='text-align:center'><i class='fa fa-user-times'></i></a></td>";

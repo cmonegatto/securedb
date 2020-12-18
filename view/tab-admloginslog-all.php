@@ -64,13 +64,13 @@ $days = $data['days'];
                         <tr>
                             <th scope="col"></th>
                             <th scope="col">Instância</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Qtd</th>
                             <th scope="col">Username</th>
                             <th scope="col">OsUser</th>
                             <th scope="col">Machine</th>
                             <th scope="col">Program</th>
                             <th scope="col">Module</th>
-                            <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>

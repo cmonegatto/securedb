@@ -68,6 +68,7 @@ foreach ($result1 as $key1 => $value) {
 										OR   decode(lk.machine , NULL, '%', lk.machine) LIKE ll.MACHINE
 											)
 										AND   ll.OSUSER   LIKE decode(lk.osuser  , NULL, '%', lk.osuser) 
+									  WHERE archived is null
 								GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
 											, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S'))
 								ORDER BY adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) DESC
@@ -122,6 +123,7 @@ foreach ($result1 as $key1 => $value) {
 									OR   CASE WHEN lk.machine IS NULL THEN '%' ELSE lk.machine END LIKE CASE WHEN ll.machine IS NULL THEN '%' ELSE ll.machine END
 									)
 								AND   CASE WHEN ll.osuser IS NULL THEN '%' ELSE ll.osuser END LIKE CASE WHEN lk.osuser IS NULL THEN '%' ELSE lk.osuser END
+							  WHERE archived is null
 							--
 							GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
 										, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END

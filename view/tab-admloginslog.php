@@ -75,6 +75,7 @@ $_SESSION['idcat'] = $data['idcat'];
                             <th scope="col">Machine</th>
                             <th scope="col">Program</th>
                             <th scope="col">Module</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
