@@ -225,7 +225,8 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 		echo "<td>".$result[$key]['PROGRAM']."</td>";
 		echo "<td>".$result[$key]['MODULE']."</td>";
 
-		if ($result[$key]['REGRA'] ):
+		//if ($result[$key]['REGRA'] ):
+		if ($result[$key]['REGRA'] && $result[$key]['TO_KILL']!='S'):			
 			echo "<td style='text-align:center'><a href='\admloginslog/archive/$id_log/$iddb'><i class='fa fa-download'></i></a></td>";
 		else:
 			echo "<td></td>";			
