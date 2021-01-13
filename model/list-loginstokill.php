@@ -67,7 +67,7 @@ if ($player == 'OCI'):
                         and u.username = adm.username(+)
                         and u.username = k.username(+)
                         and u.username = l.username(+)
-                        order by 1"
+                        order by 4,3 desc,2,1"
                         );
 
 elseif ($player == 'SQLSRV'):
@@ -106,6 +106,7 @@ elseif ($player == 'SQLSRV'):
                         SELECT lower(username) username, 0 admtrigger, 0 tokill, 1 admlogins from ADM_LOGINS_TO_KILL
                      ) as x
                       WHERE x.username is not null
+                      ORDER by 4 desc,3 desc, 1
                      "
                         );
 

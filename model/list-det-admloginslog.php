@@ -69,6 +69,7 @@ if ($player == 'OCI'):
 	$result= $conn->sql( basename(__FILE__), 
 						"SELECT ID_LOG
 							, to_char(datetime, 'dd-mm-yy hh24:mi:ss') datetime
+							, datetime datetime2
 							, ll1.USERNAME
 							, ll1.OSUSER
 							, ll1.MACHINE
@@ -85,7 +86,7 @@ if ($player == 'OCI'):
 						and ll1.module   = ll2.module
 						and datetime >=trunc(sysdate-$days) 
 						/* . $whereclause . */
-						ORDER BY datetime desc",
+						ORDER BY datetime2 desc",
 						array( ":ID_LOG"=>$id_log)
 						);
 
@@ -96,6 +97,7 @@ elseif ($player == 'SQLSRV'):
 	$result= $conn->sql( basename(__FILE__), 
 						"SELECT ID_LOG
 							  , format(ll1.DATETIME,'dd/MM/yyyy HH:mm:ss')  as DATETIME
+							  , DATETIME as DATETIME2
 							  , ll1.USERNAME
 							  , ll1.OSUSER
 							  , ll1.MACHINE
@@ -112,7 +114,7 @@ elseif ($player == 'SQLSRV'):
 							and isnull(ll1.module,'')   = isnull(ll2.module,'')
 							and datetime >= cast(GETDATE()-$days as date)
 							/* . $whereclause .*/
-							ORDER BY datetime desc",
+							ORDER BY datetime2 desc",
 							array( ":ID_LOG"=>$id_log)
 						);
 endif;

@@ -21,7 +21,6 @@ $player		= $result[0]['player'];
 $iddb		= $result[0]['iddb'];
 
 
-
 //INSERIDO PARA PEGAR QUAL BANCO DE DADOS FOI ESCOLHIDO NO COMBO, E DESABILITAR ALGUNS INPUTS QUE SÃO SOMENTE PARA ORACLE
 $_SESSION['player'] = $player;
 

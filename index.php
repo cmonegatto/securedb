@@ -13,22 +13,22 @@ $app = new \Slim\Slim(array(
 ));
 
 
-/*
-$app->get('/hello/:name', function ($name) {
-    echo "Hello, " . $name;
-});
 
-*/
+if ( isset($_SESSION['s_time']) ):
 
-/*
-//Exemplo passagem parametros
-$app->get('/route/:parametro', function ($parametro) use ($app) {
+    if (time() - $_SESSION['s_time'] > $_SESSION['s_limite_session']):
+        session_unset();
+        $_SESSION['msg'] = "Sessão expirada por inatividade!";
+        //header("Location: \logout");
+        header("Location: /");
+        exit();
+    else:
+        $_SESSION['s_time'] = time();
+    endif;
 
-    $data = array("data"=>array("parametro"=>$parametro)); 
-    //set o arquivo de template
-    $app->render('arquivo.php', $data, 200); 
-});
-*/
+endif;
+
+
 
 $app->get('/', function () use ($app) {  
     if (isset($_SESSION['s_iduser'])):

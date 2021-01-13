@@ -29,7 +29,15 @@ $ini = parse_ini_file('../config.ini', true);
 //	$_SESSION['s_password'] = $ini['database']['password'];
 	$_SESSION['s_dbname'] 	= $ini['database']['dbname'];
 	$_SESSION['s_db'] 		= $ini['database']['db'];
-	
+
+	$expiration_time = $ini['session']['expiration_time'];
+
+	if (! $expiration_time):
+		$_SESSION['s_limite_session'] = 3600; // se não encontrar definição no INI padrão 1h
+	else:
+		$_SESSION['s_limite_session'] = $expiration_time;
+	endif;
+
 
 endif;	
 
@@ -67,6 +75,7 @@ if (isset($result[0]['email']) && $result[0]['status']):
 	$_SESSION['s_nameuser'] = $result[0]['name'];
 	$_SESSION['s_celphone'] = $result[0]['celphone'];
 	$_SESSION['s_login'] = $result[0]['login'];
+	$_SESSION['s_time'] = time();
 	
 	if ($result[0]['superuser']):
 		$role = "<span style='color:gray'> (Super)</span>";
