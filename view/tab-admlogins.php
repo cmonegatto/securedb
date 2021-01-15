@@ -183,12 +183,13 @@ $player = $_SESSION['player'];
                 <hr />
 
                 <!-- <a href="#" class="btn btn-danger   btn-custom"><span class="img-circle text-primary                btn-icon"></span>User Lock down</a> -->
-                <a href="\loginstokill" class="btn btn-danger   btn-custom"><span class="fa fa-lock img-circle  text-primary        btn-icon"></span> Ativar KILL por usuário</a>
-                <a href="\loginstools"  class="btn btn-danger   btn-custom"><span class="fa fa-times-circle img-circle text-primary btn-icon"></span> Aplicações proibidas</a>
-                <a href="\loginslogons" class="btn btn-light    btn-custom"><span class="fa fa-search img-circle text-primary       btn-icon"></span> Histórico de acessos</a>
-                <a href="\loginstrace"  class="btn btn-light    btn-custom <?php echo $player<>'OCI'?'disabled':'' ?>"><span class="fa fa-search img-circle text-primary       btn-icon"></span> Traces gerados</a>
-                <a href="\backup"       class="btn btn-success  btn-custom disabled"><span class="fa fa-clone img-circle text-primary        btn-icon"></span> Backup</a>
-                <a href="\restore"      class="btn btn-warning  btn-custom disabled"><span class="fa fa-clipboard img-circle text-primary    btn-icon"></span> Restore</a>
+                <a href="\loginstokill" class="btn btn-danger   btn-custom"><span class="fa fa-lock img-circle                                              text-primary btn-icon"></span> Ativar Bloqueio</a>
+                <a href="\blacklist"    class="btn btn-dark     btn-custom"><span class="fa fa-user-times black-list                                        text-primary btn-icon"></span> Black List</a>
+                <a href="\loginstools"  class="btn btn-secondary   btn-custom"><span class="fa fa-times-circle img-circle                                      text-primary btn-icon"></span> Aplicações proibidas</a>
+                <a href="\loginslogons" class="btn btn-secondary    btn-custom"><span class="fa fa-search img-circle                                            text-primary btn-icon"></span> Histórico de acessos</a>
+                <a href="\loginstrace"  class="btn btn-secondary    btn-custom <?php echo $player<>'OCI'?'disabled':'' ?>"><span class="fa fa-search img-circle text-primary btn-icon"></span> Traces gerados</a>
+                <a href="\backup"       class="btn btn-success  btn-custom disabled"><span class="fa fa-clone img-circle                                    text-primary btn-icon"></span> Backup</a>
+                <a href="\restore"      class="btn btn-warning  btn-custom disabled"><span class="fa fa-clipboard img-circle                                text-primary btn-icon"></span> Restore</a>
                 
                 <hr />
 

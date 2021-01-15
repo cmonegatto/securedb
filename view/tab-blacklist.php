@@ -31,10 +31,10 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
         <div class="col-md-12" >
 
             <!-- <form method="post" action="\admlogins/insert"> -->
-            <form method="post" action="../model/ins-loginstools.php">
+            <form method="post" action="../model/ins-blacklist.php">
 
 
-                <h3>Ferramentas não permitidas (new)</h3>  
+                <h3>Black List de usuários (new)</h3>  
 
                 <hr />
 
@@ -68,13 +68,23 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
 
 
 
-
                 <div class="row">
 
-                    <div class="form-group col-md-5">
-                        <label for="tools">Ferramenta</label>
-                        <input type="text" name="tools" class="form-control upper" id="tools" maxlength="100" required autofocus>
+                    <div class="form-group col-md-3">
+                        <label for="username">Usuário (username)</label>
+                        <input type="text" name="username" class="form-control upper" id="username" maxlength="30" autofocus>
                     </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="osuser">Usuário AD (osuser)</label>
+                        <input type="text" name="osuser" class="form-control upper" id="osuser" maxlength="30">
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="machine">Máquina (host/machine)</label>
+                        <input type="text" name="machine" class="form-control upper" id="machine" maxlength="64">
+                    </div>
+
 
 
                 </div>
@@ -111,13 +121,16 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
                     <thead>
                         <tr>
                             <th style='text-align:center width:50px' scope="col">Excluir</th>
-                            <th scope="col">Ferramentas</th>
+                            <th scope="col">Data inclusão</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Osuser</th>
+                            <th scope="col">Machine</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         <?php 
-                            include_once 'model/list-loginstools.php';
+                            include_once 'model/list-blacklist.php';
                         ?>
 
                     </tbody>

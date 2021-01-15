@@ -326,6 +326,23 @@ $app->get('/admloginslogall/:idcat/:days', function ($idcat, $days) use ($app){
 
 
 
+
+/* ---------------------------------------------------------------------------
+*  ROTAS PARA CRUD (tela de CRUD BLACKLIST)
+* --------------------------------------------------------------------------- */
+
+$app->get('/blacklist', function () use ($app){      
+    $app->render('tab-blacklist.php');
+});
+
+$app->get('/blacklist/delete/:id', function ($id) use ($app){      
+    $data = array("data"=>array("id"=>$id));
+    $app->render('../model/del-blacklist.php', $data, 200);
+});
+
+
+
+
 $app->run();
 
 

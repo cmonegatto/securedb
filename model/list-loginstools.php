@@ -47,7 +47,7 @@ foreach ($result as $key => $value) {
 	$id 	  = str_replace('%', '*', $program);
 
 	echo "</tr>";
-	echo "<td><a href='\loginstools/delete/$id'><i class='fa fa-trash'></i></a></td>";
+	echo "<td style='text-align:center'><a href='\loginstools/delete/$id'><i class='fa fa-trash'></i></a></td>";
 	echo "<td>".$program."</td>";
 	echo "</tr>";
 

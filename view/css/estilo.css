@@ -177,6 +177,11 @@ table.tab-loginstokill tr.admtrigger td {
 	color:red;
 }
 
+.fa-user-times.black-list.text-primary.btn-icon:before {
+	color:gray;
+}
+
+
 .fa-clock-o:before{
 	color:red;
 }
@@ -262,3 +267,4 @@ table#myTable tr.cornao2 td {
 color: red;
 font-weight: bolder;	
 }
+
