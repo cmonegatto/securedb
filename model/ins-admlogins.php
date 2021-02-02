@@ -26,6 +26,8 @@ $cursorsharing		= (isset($_POST["cursorsharing"])?'S':'N');
 $begindate  = str_replace("T", " ", $begindate);
 $enddate    = str_replace("T", " ", $enddate);
 
+$loginname = strtoupper($_SESSION['s_login']);
+
 if (!($username.$osuser.$machine)):
      $_SESSION['msg'] = 'Preencha ao menos um dos três primeiros campos!';
     header("Location: \admlogins");
@@ -52,8 +54,8 @@ $conn=new Sql($player, $localhost, $user, $password, $dbname, $port);
 if ($player == 'OCI'):
 
 	$result= $conn->sql( basename(__FILE__), 
-						"INSERT INTO adm_logins (username, osuser, machine, begin_date, end_date, freetools, sessions_per_user, log_logon, trace, cursor_sharing, init_plsql, comments)
-						VALUES (:USERNAME, :OSUSER, :MACHINE, to_date(:BEGIN_DATE, 'yyyy-mm-dd hh24:mi'), to_date(:END_DATE, 'yyyy-mm-dd hh24:mi'), :FREETOOLS, :SESSIONS_PER_USER, :LOG_LOGON, :TRACE, :CURSOR_SHARING, :INIT_PLSQL, :COMMENTS)",
+						"INSERT INTO adm_logins (username, osuser, machine, begin_date, end_date, freetools, sessions_per_user, log_logon, trace, cursor_sharing, init_plsql, comments, created_by, created_date)
+						VALUES (:USERNAME, :OSUSER, :MACHINE, to_date(:BEGIN_DATE, 'yyyy-mm-dd hh24:mi'), to_date(:END_DATE, 'yyyy-mm-dd hh24:mi'), :FREETOOLS, :SESSIONS_PER_USER, :LOG_LOGON, :TRACE, :CURSOR_SHARING, :INIT_PLSQL, :COMMENTS, :CREATED_BY, SYSDATE)",
 						array(":USERNAME"=> $username,
 								":OSUSER"=> $osuser,
 								":MACHINE"=> $machine,
@@ -65,7 +67,8 @@ if ($player == 'OCI'):
 								":TRACE"=> $trace,
 								":CURSOR_SHARING"=> $cursorsharing,
 								":INIT_PLSQL"=> $initplsql,
-								":COMMENTS"=> $comments
+								":COMMENTS"=> $comments,
+								":CREATED_BY"=> $loginname
 								)
 					);
 
@@ -85,13 +88,13 @@ elseif ($player == 'SQLSRV'):
 
 
 	$result= $conn->sql( basename(__FILE__), 
-						"INSERT INTO adm_logins (username, osuser, machine, begin_date, end_date, freetools, sessions_per_user, log_logon, trace, cursor_sharing, init_plsql, comments)
+						"INSERT INTO adm_logins (username, osuser, machine, begin_date, end_date, freetools, sessions_per_user, log_logon, trace, cursor_sharing, init_plsql, comments, created_by, created_date)
 						VALUES (:USERNAME, :OSUSER, :MACHINE, CONVERT(DATETIME, :BEGIN_DATE, 20), 
 						CASE 
 							WHEN $xenddate=0 THEN CONVERT(DATETIME, :END_DATE, 20)
 							ELSE NULL
 						END
-						, :FREETOOLS, :SESSIONS_PER_USER, :LOG_LOGON, :TRACE, :CURSOR_SHARING, :INIT_PLSQL, :COMMENTS)",
+						, :FREETOOLS, :SESSIONS_PER_USER, :LOG_LOGON, :TRACE, :CURSOR_SHARING, :INIT_PLSQL, :COMMENTS, :CREATED_BY, GETDATE() )",
 						array(":USERNAME"=> $username,
 								":OSUSER"=> $osuser,
 								":MACHINE"=> $machine,
@@ -103,7 +106,8 @@ elseif ($player == 'SQLSRV'):
 								":TRACE"=> $trace,
 								":CURSOR_SHARING"=> $cursorsharing,
 								":INIT_PLSQL"=> $initplsql,
-								":COMMENTS"=> $comments
+								":COMMENTS"=> $comments,
+								":CREATED_BY"=> $loginname
 								)
 					);
 

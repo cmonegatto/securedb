@@ -45,8 +45,8 @@ endif;
 								  , l.USERNAME
 								  , l.OSUSER
 								  , l.MACHINE
-								  , to_char(l.begin_date, 'dd/mm/yy hh24:mi') as BEGIN_DATE
-								  , to_char(l.end_date, 'dd/mm/yy hh24:mi')   as END_DATE
+								  , to_char(l.begin_date, 'dd/mm/yy hh24:mi') 	as BEGIN_DATE
+								  , to_char(l.end_date, 'dd/mm/yy hh24:mi')   	as END_DATE
 								  , l.FREETOOLS
 								  , l.SESSIONS_PER_USER
 								  , l.LOG_LOGON
@@ -54,7 +54,11 @@ endif;
 								  , l.CURSOR_SHARING
 								  , l.INIT_PLSQL
 								  , l.COMMENTS
-								  , decode(tk.USERNAME,'','N','S') as TO_KILL
+								  , decode(tk.USERNAME,'','N','S') 				as TO_KILL
+								  , l.CREATED_BY 								as CREATED_BY
+								  , to_char(l.created_date, 'dd/mm/yy hh24:mi') as CREATED_DATE
+								  , l.LAST_UPDATED_BY
+								  , to_char(l.last_updated_date, 'dd/mm/yy hh24:mi') as LAST_UPDATED_DATE
 							FROM adm_logins l
 							LEFT JOIN adm_logins_to_kill tk
 								ON l.username = tk.username
@@ -77,11 +81,15 @@ endif;
 								  , l.TRACE
 								  , l.CURSOR_SHARING
 								  , l.INIT_PLSQL
-								  , l.COMMENTS
-								,   CASE 
+								  , l.COMMENTS								  
+								  , CASE 
 										WHEN tk.USERNAME is null THEN 'N'
 										ELSE 'S'
 									END as TO_KILL
+								  , l.CREATED_BY 									as CREATED_BY
+								  , format(l.CREATED_DATE,'dd/MM/yyyy HH:mm:ss')  	as CREATED_DATE
+								  , l.LAST_UPDATED_BY
+								  , format(l.LAST_UPDATED_DATE,'dd/MM/yyyy HH:mm:ss')  	as LAST_UPDATED_DATE
 							FROM adm_logins l
 							LEFT JOIN adm_logins_to_kill tk
 								ON l.username = tk.username
@@ -151,6 +159,10 @@ endif;
 		echo "<td>".$result[$key]['CURSOR_SHARING']."</td>";
 		echo "<td>".$result[$key]['INIT_PLSQL']."</td>";
 		echo "<td>".$result[$key]['COMMENTS']."</td>";
+		echo "<td>".$result[$key]['CREATED_BY']."</td>";
+		echo "<td>".$result[$key]['CREATED_DATE']."</td>";
+		echo "<td>".$result[$key]['LAST_UPDATED_BY']."</td>";
+		echo "<td>".$result[$key]['LAST_UPDATED_DATE']."</td>";
 
 		/*
 		if ($result[$key]['TO_KILL'] == "S"):

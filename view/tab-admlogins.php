@@ -216,6 +216,10 @@ $player = $_SESSION['player'];
                             <th scope="col">Cursor;Sharing</th>
                             <th scope="col">PL/SQL init</th>
                             <th scope="col">Comentários</th>
+                            <th scope="col">Criado Por</th>
+                            <th scope="col">Data Criação</th>
+                            <th scope="col">Última Alt. Por</th>
+                            <th scope="col">Data Alteração</th>
                         </tr>
                     </thead>
                     <tbody>

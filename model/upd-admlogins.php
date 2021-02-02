@@ -26,6 +26,8 @@ $cursorsharing		= (isset($_POST["cursorsharing"])?'S':'N');
 $begindate  = str_replace("T", " ", $begindate);
 $enddate    = str_replace("T", " ", $enddate);
 
+$loginname  = strtoupper($_SESSION['s_login']);
+
 
 if (!($username.$osuser.$machine)):
      $_SESSION['msg'] = 'Preencha ao menos um dos três primeiros campos!';
@@ -67,7 +69,10 @@ if ($player == 'OCI'):
 								trace              = :TRACE, 
 								cursor_sharing     = :CURSOR_SHARING, 
 								init_plsql         = :INIT_PLSQL, 
-								comments           = :COMMENTS
+								comments           = :COMMENTS,
+								last_updated_by	   = :LAST_UPDATED_BY,
+								last_updated_date  = sysdate
+
 						WHERE id_login = $id_login",
 						array(":USERNAME"         => $username,
 								":OSUSER"           => $osuser,
@@ -80,7 +85,8 @@ if ($player == 'OCI'):
 								":TRACE"            => $trace,
 								":CURSOR_SHARING"   => $cursorsharing,
 								":INIT_PLSQL"       => $initplsql,
-								":COMMENTS"         => $comments
+								":COMMENTS"         => $comments,
+								":LAST_UPDATED_BY"  => $loginname
 								)
 					);
 
@@ -112,7 +118,10 @@ elseif ($player == 'SQLSRV'):
 								trace              = :TRACE, 
 								cursor_sharing     = :CURSOR_SHARING, 
 								init_plsql         = :INIT_PLSQL, 
-								comments           = :COMMENTS
+								comments           = :COMMENTS,
+								last_updated_by	   = :LAST_UPDATED_BY,
+								last_updated_date  = GETDATE()
+
 						WHERE id_login = $id_login",
 						array(":USERNAME"         => $username,
 								":OSUSER"           => $osuser,
@@ -125,7 +134,8 @@ elseif ($player == 'SQLSRV'):
 								":TRACE"            => $trace,
 								":CURSOR_SHARING"   => $cursorsharing,
 								":INIT_PLSQL"       => $initplsql,
-								":COMMENTS"         => $comments
+								":COMMENTS"         => $comments,
+								":LAST_UPDATED_BY"  => $loginname								
 								)
 					);
 

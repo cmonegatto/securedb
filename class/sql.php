@@ -106,7 +106,8 @@ class Sql {
 			// UPDATE precisa checar os campos alterados...
 		endif;
 		*/
-		
+
+
 		if (!$result): 	
 
 			

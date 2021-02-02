@@ -18,7 +18,8 @@ $machine		    = str_replace('*', '\\', $data["machine"]);
 $freetools		    = str_replace('*', '\\', $data["program"]);
 */
 
-$begindate		    = date("Y-m-d", strtotime("now")) . ' ' . date("H:i", strtotime("now"));
+$begindate	= date("Y-m-d", strtotime("now")) . ' ' . date("H:i", strtotime("now"));
+$loginname  = strtoupper($_SESSION['s_login']);
 
 
 $conn=new Sql();
@@ -75,9 +76,10 @@ if ($result[0]['QTD'] >0) :
 
         $result= $conn->sql( basename(__FILE__), 
                             "UPDATE adm_logins
-                                SET freetools = freetools || '; ' || (select program from adm_logins_log where  id_log=:ID_LOG)
+                                SET freetools = freetools || '; ' || (select program from adm_logins_log where  id_log=:ID_LOG),
+                                last_updated_by = :LAST_UPDATED_BY, last_updated_date = sysdate
                               WHERE (username, osuser, machine) in (select username, osuser, machine from adm_logins_log where  id_log=:ID_LOG)",
-                            array(":ID_LOG"=> $id_log)
+                            array(":ID_LOG"=> $id_log, ":LAST_UPDATED_BY" => $loginname)
                         );
 /*
                             "UPDATE adm_logins
@@ -90,7 +92,8 @@ if ($result[0]['QTD'] >0) :
     elseif ($player == 'SQLSRV'):
         $result= $conn->sql( basename(__FILE__), 
                             "UPDATE adm_logins 
-                            SET freetools = freetools + '; ' + ll.program
+                            SET freetools = freetools + '; ' + ll.program,
+                            last_updated_by = :LAST_UPDATED_BY, last_updated_date = GETDATE()    
                             FROM (
                                 SELECT username, osuser, machine, program
                                 FROM adm_logins_log
@@ -98,7 +101,7 @@ if ($result[0]['QTD'] >0) :
                             WHERE isnull(adm_logins.username,'') = isnull(ll.username,'')
                             and isnull(adm_logins.osuser,'')   = isnull(ll.osuser,'')
                             and isnull(adm_logins.machine,'')  = isnull(ll.machine,'')",
-                            array(":ID_LOG"=> $id_log)
+                            array(":ID_LOG"=> $id_log, ":LAST_UPDATED_BY" => $loginname)
                             );
         
     
@@ -110,11 +113,11 @@ else:
     if ($player == 'OCI'):
 
         $result= $conn->sql( basename(__FILE__), 
-                            "INSERT INTO adm_logins (username, osuser, machine, begin_date, freetools)
-                             SELECT username, osuser, machine, sysdate, program
+                            "INSERT INTO adm_logins (username, osuser, machine, begin_date, freetools, created_by, created_date)
+                             SELECT username, osuser, machine, sysdate, program, :CREATED_BY, sysdate
                                FROM adm_logins_log
                               WHERE id_log = :ID_LOG",
-                            array(":ID_LOG"=> $id_log)
+                            array(":ID_LOG"=> $id_log, ":CREATED_BY" => $loginname)
                         );
     
 
@@ -122,11 +125,11 @@ else:
     elseif ($player == 'SQLSRV'):
 
         $result= $conn->sql( basename(__FILE__), 
-                            "INSERT INTO adm_logins (username, osuser, machine, begin_date, freetools)
-                             SELECT username, osuser, machine, getdate(), program
+                            "INSERT INTO adm_logins (username, osuser, machine, begin_date, freetools, created_by, created_date)
+                             SELECT username, osuser, machine, getdate(), program, :CREATED_BY, GETDATE()
                                FROM adm_logins_log
                               WHERE id_log = :ID_LOG",
-                            array(":ID_LOG"=> $id_log)
+                            array(":ID_LOG"=> $id_log, ":CREATED_BY" => $loginname)
                         );
        
 
