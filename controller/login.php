@@ -14,6 +14,8 @@ if (! file_exists("../config.ini")):
 else:
 
 $ini = parse_ini_file('../config.ini', true);
+$dtregister = date('Y-m-d H:i:s');
+
 
 /*
 	$_SESSION['s_hostname'] = $ini['database']['hostname'];
@@ -93,7 +95,7 @@ else :
 endif;
 
 $result= $conn->sql( basename(__FILE__), 
-					 "INSERT INTO adm_login_activity (user, username, ip, status) values (:USER, :USERNAME, :IP, :STATUS)",
+					 "INSERT INTO adm_login_activity (dtregister, user, username, ip, status) values ('$dtregister', :USER, :USERNAME, :IP, :STATUS)",
 					  array( ":USER"=> $email,
 					  		 ":USERNAME"=> getenv("USERNAME"),
 							 ":IP"=> getenv("REMOTE_ADDR"),

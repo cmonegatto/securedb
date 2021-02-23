@@ -27,8 +27,8 @@ foreach ($result1 as $key1 => $value) {
 	$localhost	= $result1[$key1]['hostname'];
 	$username	= $result1[$key1]['username'];
 	$password	= encrypt_decrypt('decrypt', $result1[$key1]['password']);
-	$aliasdb	= strtoupper($result1[$key1]['aliasdb']);
-	$dbname		= strtoupper($result1[$key1]['dbname']);
+	$aliasdb	= $result1[$key1]['aliasdb'];
+	$dbname		= $result1[$key1]['dbname'];
 	$port		= $result1[$key1]['port'];
 	$player		= $result1[$key1]['player'];
 	$iddb		= $result1[$key1]['iddb'];
@@ -38,6 +38,9 @@ foreach ($result1 as $key1 => $value) {
 	
 	$conn2=new Sql($player, $localhost, $username, $password, $dbname, $port);
 
+
+	$aliasdb	= strtoupper($result1[$key1]['aliasdb']);
+	$dbname		= strtoupper($result1[$key1]['dbname']);
 
 	$pauta = ($pauta=="corsim")?"cornao":"corsim";
 
