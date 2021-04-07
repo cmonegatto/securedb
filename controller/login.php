@@ -16,21 +16,31 @@ else:
 $ini = parse_ini_file('../config.ini', true);
 $dtregister = date('Y-m-d H:i:s');
 
+/* Parâmetros INI 
 
-/*
-	$_SESSION['s_hostname'] = $ini['database']['hostname'];
-	$_SESSION['s_username'] = encrypt_decrypt('decrypt', $ini['database']['username']);
-	$_SESSION['s_password'] = encrypt_decrypt('decrypt', $ini['database']['password']);
-	$_SESSION['s_dbname'] 	= encrypt_decrypt('decrypt', $ini['database']['dbname']);
-	$_SESSION['s_db'] 		= $ini['database']['db'];
+hostname	: nome do servidor HOST que hospeda MYSQL
+username	: usuário de acesso ao banco de dados
+password	: senha
+dbname		: nome do banco
+db			: Drive do banco de dados que hospeda o metadados. "MYSQL"
+lockNoRule	: (on/off) 
+				- default off - só permite lock em usuários com regras definidas...
+				- ON para aceitar locar usuario do banco mesmo sem nenhuma regra
+				- OFF - só permite lock em usuários com regras definidas...
 */
 
 	$_SESSION['s_hostname'] = $ini['database']['hostname'];
 	$_SESSION['s_username'] = $ini['database']['username'];
 	$_SESSION['s_password'] = encrypt_decrypt('decrypt', $ini['database']['password']);
-//	$_SESSION['s_password'] = $ini['database']['password'];
 	$_SESSION['s_dbname'] 	= $ini['database']['dbname'];
 	$_SESSION['s_db'] 		= $ini['database']['db'];
+
+
+	if (isset($ini['database']['lockNoRule'])):
+		$_SESSION['s_lockNoRule'] = $ini['database']['lockNoRule'] == 1 ? 1 : 0;
+	else:
+		$_SESSION['s_lockNoRule'] = 0;
+	endif;
 
 	$expiration_time = $ini['session']['expiration_time'];
 

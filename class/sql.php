@@ -29,6 +29,8 @@ class Sql {
 			}
 
 
+			//sleep(60);
+
 		elseif ($db=='OCI'):
 
 			$tns = " (DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP) (HOST = ".$hostname.")(PORT = ".$port.")))(CONNECT_DATA = (SID=".$dbname.")))";

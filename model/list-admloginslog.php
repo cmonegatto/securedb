@@ -183,14 +183,18 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 			$cadeado = 1;
 		endif;
 
+		$user_name = str_replace('\\', '*', $result[$key]['USERNAME']);
+
 		
 		if ($cadeado && $result[$key]['TO_KILL'] == "N"):
-			echo "<td style='text-align:center'><i class='fa fa-unlock x'></i></a></td>";
+			//echo "<td style='text-align:center'><i class='fa fa-unlock x'></i></a></td>";
+			echo "<td style='text-align:center'><a href='\admlogins/lockuser/$user_name'><i class='fa fa-unlock x'></i></a></td>";
+
 		else:
 			echo "<td></td>";			                
 		endif;		
 
-		$user_name = str_replace('\\', '*', $result[$key]['USERNAME']);
+		//$user_name = str_replace('\\', '*', $result[$key]['USERNAME']);
 
 /*
 		if ($result[$key]['TO_KILL'] == "S" && $result[$key]['USERNAME']):
