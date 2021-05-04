@@ -105,7 +105,8 @@ elseif ($player == 'SQLSRV'):
 
                      "SELECT * FROM 
                      (
-                        SELECT name USERNAME, 0 ADMTRIGGER, 0 TOKILL, 0 ADMLOGINS from sys.database_principals where type_desc='SQL_USER'
+                        -- SELECT name USERNAME, 0 ADMTRIGGER, 0 TOKILL, 0 ADMLOGINS from sys.database_principals where type_desc='SQL_USER'
+                        SELECT name USERNAME, 0 ADMTRIGGER, 0 TOKILL, 0 ADMLOGINS from sys.server_principals where type_desc='SQL_LOGIN' and  is_disabled=0
                         EXCEPT
                         (SELECT lower(username) username, 0 admtrigger, 0 tokill, 0 admlogins from adm_logins
                         UNION

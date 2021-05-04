@@ -49,7 +49,7 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 								, ll.program
 								, ll.module
 								, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S')) as TO_KILL
-								, adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) as REGRA
+								, SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) as REGRA
 								, max(id_log) as ID_LOG
 							   FROM adm_logins_log ll
 						  LEFT JOIN adm_logins_to_kill tk
@@ -64,7 +64,7 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 							  WHERE  ll.archived is null
 						   GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
 									, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S'))
-						   ORDER BY adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) DESC
+						   ORDER BY SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) DESC
 									, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S'))
 									, 1 DESC"
 
@@ -77,13 +77,13 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 								  , ll.program
 								  , ll.module
 								  , decode(tk.username,'','N','S') as TO_KILL
-								  , adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) as REGRA
+								  , SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) as REGRA
 								  , max(id_log) as ID_LOG
 							FROM adm_logins_log ll
 							LEFT JOIN adm_logins_to_kill tk
 								ON ll.username = tk.username
 							GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, decode(tk.username,'','N','S')
-							ORDER BY adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) DESC, decode(tk.username,'','N','S'), 1 DESC"
+							ORDER BY SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) DESC, decode(tk.username,'','N','S'), 1 DESC"
 */
 							);
 
@@ -226,7 +226,7 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 		echo "<td>".$result[$key]['OSUSER']."</td>";
 		echo "<td>".$result[$key]['MACHINE']."</td>";
 		echo "<td>".$result[$key]['PROGRAM']."</td>";
-		echo "<td>".$result[$key]['MODULE']."</td>";
+		//echo "<td>".$result[$key]['MODULE']."</td>";
 
 		//if ($result[$key]['REGRA'] ):
 		if ($result[$key]['REGRA'] && $result[$key]['TO_KILL']!='S'):			

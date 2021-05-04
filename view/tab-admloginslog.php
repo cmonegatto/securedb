@@ -65,7 +65,7 @@ $_SESSION['idcat'] = $data['idcat'];
                 <table class="table table-dark  tab-admloginslog" id="myTable" style="width:100%"> 
                     <thead>
                         <tr>
-<!--                        <th scope="col">#</th> -->
+                            <!-- <th scope="col">#</th> -->
                             <th scope="col"></th>                            
                             <th scope="col"></th>
                             <th scope="col"></th>
@@ -74,7 +74,7 @@ $_SESSION['idcat'] = $data['idcat'];
                             <th scope="col">OsUser</th>
                             <th scope="col">Machine</th>
                             <th scope="col">Program</th>
-                            <th scope="col">Module</th>
+                            <!-- <th scope="col">Module</th> -->
                             <th scope="col"></th>
                         </tr>
                     </thead>

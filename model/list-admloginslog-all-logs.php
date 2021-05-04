@@ -58,7 +58,7 @@ foreach ($result1 as $key1 => $value) {
 										, ll.program
 										, ll.module
 										, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S')) as TO_KILL
-										, adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) as REGRA
+										, SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) as REGRA
 										, max(id_log) as ID_LOG
 									FROM adm_logins_log ll
 								LEFT JOIN adm_logins_to_kill tk
@@ -73,7 +73,7 @@ foreach ($result1 as $key1 => $value) {
 									  WHERE archived is null
 								GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
 											, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S'))
-								ORDER BY adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) DESC
+								ORDER BY SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) DESC
 											, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S'))
 											, 1 DESC"
 			);
@@ -86,15 +86,15 @@ foreach ($result1 as $key1 => $value) {
                                     , ll.program
                                     , ll.module
                                     , decode(tk.username,'','N','S') as TO_KILL
-                                    , adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) as REGRA
+                                    , SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) as REGRA
 --                                    , max(id_log) as ID_LOG
                                 FROM adm_logins_log ll
                                 LEFT JOIN adm_logins_to_kill tk
                                     ON ll.username = tk.username
---                                 WHERE adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) =1
+--                                 WHERE SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) =1
                                    --AND decode(tk.username,'','N','S') ='N'
                                 GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, decode(tk.username,'','N','S')
-                                ORDER BY adm_logins_fun(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) DESC, decode(tk.username,'','N','S'), 1 DESC"
+                                ORDER BY SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) DESC, decode(tk.username,'','N','S'), 1 DESC"
                                 );
 */
 
