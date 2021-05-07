@@ -67,7 +67,23 @@ elseif ($player == 'SQLSRV'):
                         array(":ID_LOG"=> $id_log)
                         );
 
+
+elseif ($player == 'MYSQL'):
+
+    $result= $conn->sql( basename(__FILE__), 
+                        "SELECT COUNT(*) as QTD
+                        FROM adm_logins l,
+                        (select USERNAME, OSUSER, MACHINE, PROGRAM, MODULE from adm_logins_log where id_log=:ID_LOG) ll
+                        WHERE l.username = ll.username
+                        and if(isnull(l.osuser),'', l.osuser)     = if(isnull(ll.osuser),'', ll.osuser)
+                        and if(isnull(l.machine),'', l.machine)    = if(isnull(ll.machine),'', ll.machine)
+--                      and isnull(l.freetools,'')  = isnull(ll.program,'')
+                        and instr('%', l.freetools)=0",
+                        array(":ID_LOG"=> $id_log)
+                        );
+
 endif;
+
 
 
 if ($result[0]['QTD'] >0) :
@@ -103,7 +119,23 @@ if ($result[0]['QTD'] >0) :
                             and isnull(adm_logins.machine,'')  = isnull(ll.machine,'')",
                             array(":ID_LOG"=> $id_log, ":LAST_UPDATED_BY" => $loginname)
                             );
-        
+
+
+    elseif ($player == 'MYSQL'):
+        $result= $conn->sql( basename(__FILE__), 
+                            "UPDATE adm_logins 
+                            SET freetools = freetools + '; ' + ll.program,
+                            last_updated_by = :LAST_UPDATED_BY, last_updated_date = NOW()    
+                            FROM (
+                                SELECT username, osuser, machine, program
+                                FROM adm_logins_log
+                                where id_log=:ID_LOG) as ll
+                            WHERE if(isnull(adm_logins.username),'', adm_logins.username)    = if(isnull(ll.username),'', ll.username)
+                            and if(isnull(adm_logins.osuser),'', adm_logins.osuser)          = if(isnull(ll.osuser),'', ll.osuser)
+                            and if(isnull(adm_logins.machine),'', adm_logins.machine)        = if(isnull(ll.machine),'', ll.machine)",
+                            array(":ID_LOG"=> $id_log, ":LAST_UPDATED_BY" => $loginname)
+                            );
+
     
     endif;
 
@@ -132,6 +164,18 @@ else:
                             array(":ID_LOG"=> $id_log, ":CREATED_BY" => $loginname)
                         );
        
+
+
+    elseif ($player == 'MYSQL'):
+
+        $result= $conn->sql( basename(__FILE__), 
+                            "INSERT INTO adm_logins (username, osuser, machine, begin_date, freetools, created_by, created_date)
+                                SELECT username, osuser, machine, NOW(), program, :CREATED_BY, NOW()
+                                FROM adm_logins_log
+                                WHERE id_log = :ID_LOG",
+                            array(":ID_LOG"=> $id_log, ":CREATED_BY" => $loginname)
+                        );
+
 
     endif;
 

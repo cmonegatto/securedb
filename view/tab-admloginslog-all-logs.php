@@ -62,7 +62,7 @@ $days = -1; //$data['days'];
                             <th scope="col">OsUser</th>
                             <th scope="col">Machine</th>
                             <th scope="col">Program</th>
-                            <th scope="col">Module</th>
+                            <!-- <th scope="col">Module</th> -->
                         </tr>
                     </thead>
                     <tbody>

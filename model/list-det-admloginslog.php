@@ -117,6 +117,36 @@ elseif ($player == 'SQLSRV'):
 							ORDER BY datetime2 desc",
 							array( ":ID_LOG"=>$id_log)
 						);
+
+
+
+elseif ($player == 'MYSQL'):
+
+	$result= $conn->sql( basename(__FILE__), 
+						"SELECT ID_LOG
+								, DATETIME as DATETIME
+								, DATETIME as DATETIME2
+								, ll1.USERNAME
+								, ll1.OSUSER
+								, ll1.MACHINE
+								, ll1.TERMINAL
+								, ll1.PROGRAM
+								, ll1.MODULE
+								, ll1.KILLED
+							FROM adm_logins_log ll1,
+						(select USERNAME, OSUSER, MACHINE, PROGRAM, MODULE from adm_logins_log ll2 where id_log=:ID_LOG) ll2
+							WHERE ll1.username = ll2.username
+							and if(isnull(ll1.osuser),'', ll1.osuser)   = if(isnull(ll2.osuser),'', ll2.osuser)
+							and if(isnull(ll1.machine),'', ll1.machine)  = if(isnull(ll2.machine),'', ll2.machine)
+							and if(isnull(ll1.program),'', ll1.program)  = if(isnull(ll2.program),'', ll2.program)
+							and if(isnull(ll1.module),'', ll1.module)    = if(isnull(ll2.module),'', ll2.module)
+							and datetime >= date_sub(now(), interval $days day)
+							/* . $whereclause .*/
+							ORDER BY datetime2 desc",
+							array( ":ID_LOG"=>$id_log)
+						);						
+
+
 endif;
 
 

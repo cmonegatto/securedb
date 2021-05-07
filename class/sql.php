@@ -63,6 +63,19 @@ class Sql {
 
 			}
 			
+		elseif ($db=='MYSQL'):
+
+			$db = strtolower($db);
+			
+			try{
+				$this->conn = new \PDO(
+					"{$db}:dbname={$dbname};host={$hostname}", $username, $password
+				);
+			}catch(PDOException $e){
+				$_SESSION['msg'] = "Ocorreu um erro na conexão com banco de dados. Verifique os dados de conexão - " . ($e->getMessage());
+				$_SESSION['msg'] = $_SESSION['msg']."$db:dbname=".$dbname .'/'. $username . '/**';
+
+			}
 
 
 		endif;
