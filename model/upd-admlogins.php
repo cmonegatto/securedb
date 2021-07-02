@@ -54,6 +54,7 @@ $player		= $result[0]['player'];
 
 $conn=new Sql($player, $localhost, $user, $password, $dbname, $port);
 
+
 if ($player == 'OCI'):
 
 	$result= $conn->sql( basename(__FILE__), 
@@ -140,22 +141,39 @@ elseif ($player == 'SQLSRV'):
 					);
 
 
+elseif ($player == 'MYSQL'):
 
-/*
+
+	$username		= (empty($username)) 		?NULL:$username;
+	$osuser			= (empty($osuser)) 			?NULL:$osuser;
+	$machine   		= (empty($machine))			?NULL:$machine;
+	$freetools 		= (empty($freetools))		?NULL:$freetools;
+	$sessionsperuser= (empty($sessionsperuser))	?NULL:$sessionsperuser;
+	$initplsql		= (empty($initplsql))		?NULL:$initplsql;
+	$comments		= (empty($comments))		?NULL:$comments;
+
+
+	$xenddate = empty($enddate)? 1 : 0;
+
+
+
 	$result= $conn->sql( basename(__FILE__), 
 						"UPDATE adm_logins 
 							SET username           = :USERNAME, 
 								osuser             = :OSUSER, 
 								machine            = :MACHINE, 
-								begin_date		   = CONVERT(DATETIME, :BEGIN_DATE, 20),
-							    end_date		   = iif( $xenddate=0, CONVERT(DATETIME, :END_DATE, 20),NULL),
+								begin_date		   = STR_TO_DATE(:BEGIN_DATE, '%Y-%m-%d %H:%i:%s'),
+								end_date		   = CASE WHEN $xenddate=0 THEN STR_TO_DATE(:END_DATE, '%Y-%m-%d %H:%i:%s') ELSE NULL END,
 								freetools          = :FREETOOLS, 
 								sessions_per_user  = :SESSIONS_PER_USER, 
 								log_logon          = :LOG_LOGON, 
 								trace              = :TRACE, 
 								cursor_sharing     = :CURSOR_SHARING, 
 								init_plsql         = :INIT_PLSQL, 
-								comments           = :COMMENTS
+								comments           = :COMMENTS,
+								last_updated_by	   = :LAST_UPDATED_BY,
+								last_updated_date  = NOW()
+
 						WHERE id_login = $id_login",
 						array(":USERNAME"         => $username,
 								":OSUSER"           => $osuser,
@@ -168,10 +186,15 @@ elseif ($player == 'SQLSRV'):
 								":TRACE"            => $trace,
 								":CURSOR_SHARING"   => $cursorsharing,
 								":INIT_PLSQL"       => $initplsql,
-								":COMMENTS"         => $comments
+								":COMMENTS"         => $comments,
+								":LAST_UPDATED_BY"  => $loginname								
 								)
 					);
-*/
+
+
+					
+
+
 endif;
 
 

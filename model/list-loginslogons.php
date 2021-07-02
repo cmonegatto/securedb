@@ -48,12 +48,20 @@ if ($player=='OCI'):
             
 elseif ($player=='SQLSRV'):
 
-
     $result= $conn->sql( basename(__FILE__), 
                         "SELECT ID_LOGIN, format(DATETIME,'dd/MM/yyyy HH:mm:ss') as DATE_TIME, USERNAME, OSUSER, MACHINE, TERMINAL, PROGRAM, MODULE
                             FROM adm_logins_logons ll
                             ORDER BY datetime DESC"
                         );
+
+elseif ($player=='MYSQL'):
+
+    $result= $conn->sql( basename(__FILE__), 
+                        "SELECT ID_LOGIN, DATE_FORMAT(DATETIME, '%d/%m/%Y %H:%i:%s')  as DATE_TIME, USERNAME, OSUSER, MACHINE, TERMINAL, PROGRAM, MODULE
+                            FROM adm_logins_logons ll
+                            ORDER BY datetime DESC"
+                        );
+
 endif;            
 
 foreach ($result as $key => $value) {

@@ -80,6 +80,27 @@ elseif ($player == 'SQLSRV'):
                         FROM adm_logins l
                         WHERE id_login=$id_login");
     
+elseif ($player == 'MYSQL'):
+
+    $result= $conn->sql(basename(__FILE__), 
+                            "SELECT l.ID_LOGIN
+                                  , l.USERNAME    AS USERNAME
+                                  , l.OSUSER
+                                  , l.MACHINE
+                                  , DATE_FORMAT(l.BEGIN_DATE,'%Y/%m/%d %H:%i:%s')  as BEGIN_DATE
+                                  , DATE_FORMAT(l.END_DATE,'%Y/%m/%d %H:%i:%s')	as END_DATE
+                                  , l.FREETOOLS
+                                  , l.SESSIONS_PER_USER
+                                  , l.INIT_PLSQL
+                                  , l.COMMENTS
+                                  , l.LOG_LOGON
+                                  , l.TRACE
+                                  , l.CURSOR_SHARING
+                            FROM adm_logins l
+                            WHERE id_login=$id_login");
+        
+    
+
 endif;
 
 
@@ -160,7 +181,7 @@ endif;
 
                     <div class="form-group col-md-2">
                         <label  for="osuser">Usuário AD (osuser)</label>
-                        <input type="text" value="<?php echo $osuser ?>" name="osuser" class="form-control upper" id="osuser" maxlength="30" >
+                        <input type="text" value="<?php echo $osuser ?>" name="osuser" class="form-control upper" id="osuser" maxlength="30" <?php echo $player=='MYSQL'?'disabled':'enabled' ?> >
                     </div>          
 
                     <div class="form-group col-md-2">
@@ -216,12 +237,12 @@ endif;
                         <label class="custom-control-label" for="loglogon">Gerar histórico de Acessos</label>                    </div>
 
                     <div class="custom-control custom-checkbox col-md-4">
-                        <input type="checkbox" class="custom-control-input" name="trace" id="trace" <?php echo $trace ?> >
+                        <input type="checkbox" class="custom-control-input" name="trace" id="trace" <?php echo $trace ?> <?php echo $player<>'OCI'?'disabled':'' ?> >
                         <label class="custom-control-label" for="trace">Gerar trace</label>
                     </div>
 
                     <div class="custom-control custom-checkbox col-md-4">
-                        <input type="checkbox" class="custom-control-input" name="cursorsharing" id="cursorsharing" <?php echo $cursorsharing ?> >
+                        <input type="checkbox" class="custom-control-input" name="cursorsharing" id="cursorsharing" <?php echo $cursorsharing ?> <?php echo $player<>'OCI'?'disabled':'' ?> >
                         <label class="custom-control-label" for="cursorsharing">Ativar Cursor Sharing</label>
                     </div>
                 </div>

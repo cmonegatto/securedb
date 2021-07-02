@@ -55,7 +55,7 @@ endif;
 
 
 
-$email = $_POST["email"];
+$email = addslashes($_POST["email"]);
 $senha = md5($_POST["senha"]);
 
 $role = "";
@@ -70,7 +70,8 @@ endif;
 
 $result= $conn->sql( basename(__FILE__), 
 					 "SELECT * FROM adm_users
-					   WHERE email = :EMAIL and password = :PASSWORD",
+					   WHERE email = :EMAIL 
+					     AND password = :PASSWORD",
 					  array(":EMAIL"=> $email,
 					  		":PASSWORD"=> $senha
 					  )

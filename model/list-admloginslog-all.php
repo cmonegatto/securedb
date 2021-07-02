@@ -69,7 +69,25 @@ foreach ($result1 as $key1 => $value) {
 									GROUP BY ll.username, ll.osuser, ll.machine, ll.program, ll.module, ll.killed
 									ORDER BY 2 DESC"
 								);
+
+		elseif ($player == 'MYSQL'):
+
+			$result2= $conn2->sql( basename(__FILE__), 
+								"SELECT max(id_log) ID_LOG, count(*) as QTD, ll.USERNAME, ll.OSUSER, ll.MACHINE, ll.PROGRAM, ll.MODULE, ll.KILLED
+									FROM adm_logins_log ll
+									WHERE datetime >= date_sub(now(), interval $days day)
+									GROUP BY ll.username, ll.osuser, ll.machine, ll.program, ll.module, ll.killed
+									ORDER BY 2 DESC"
+								);
 		endif;
+
+
+
+
+
+
+
+
 
 
 		if (strlen($_SESSION['msg']) > 0 ):

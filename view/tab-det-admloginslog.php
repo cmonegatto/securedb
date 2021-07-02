@@ -87,7 +87,7 @@ $_SESSION['iddb']   = $iddb;
                             <th scope="col">Machine</th>
                             <th scope="col">Terminal</th>
                             <th scope="col">Program</th>
-                            <th scope="col">Module</th>
+                            <!-- <th scope="col">Module</th> -->
                             <th scope="col">Killed</th>
                         </tr>
                     </thead>

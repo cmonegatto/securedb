@@ -59,6 +59,7 @@ endif;
 								  , to_char(l.created_date, 'dd/mm/yy hh24:mi') as CREATED_DATE
 								  , l.LAST_UPDATED_BY
 								  , to_char(l.last_updated_date, 'dd/mm/yy hh24:mi') as LAST_UPDATED_DATE
+								  , to_char(l.last_used_date, 'dd/mm/yy hh24:mi') 	 as LAST_USED_DATE
 							FROM adm_logins l
 							LEFT JOIN adm_logins_to_kill tk
 								ON l.username = tk.username
@@ -90,37 +91,49 @@ endif;
 								  , format(l.CREATED_DATE,'dd/MM/yyyy HH:mm:ss')  	as CREATED_DATE
 								  , l.LAST_UPDATED_BY
 								  , format(l.LAST_UPDATED_DATE,'dd/MM/yyyy HH:mm:ss')  	as LAST_UPDATED_DATE
+								  , format(l.LAST_USED_DATE,'dd/MM/yyyy HH:mm:ss')  	as LAST_USED_DATE
 							FROM adm_logins l
 							LEFT JOIN adm_logins_to_kill tk
 								ON l.username = tk.username
 							ORDER BY id_login desc"
 							);
 
+	
+	
+	elseif ($player == 'MYSQL'):
 
 
-	/*
-	elseif ($player == 'SQLSRV'):
 		$result= $conn->sql( basename(__FILE__), 
 							"SELECT l.ID_LOGIN
 								  , l.USERNAME
 								  , l.OSUSER
 								  , l.MACHINE
-								  , format(l.BEGIN_DATE,'dd/MM/yyyy HH:mm:ss')  as BEGIN_DATE
-								  , format(l.END_DATE,'dd/MM/yyyy HH:mm:ss')	as END_DATE
+								  , DATE_FORMAT(l.BEGIN_DATE, '%d/%m/%Y %H:%i:%s')	as BEGIN_DATE
+								  , DATE_FORMAT(l.END_DATE, '%d/%m/%Y %H:%i:%s') 	as END_DATE
 								  , l.FREETOOLS
 								  , l.SESSIONS_PER_USER
 								  , l.LOG_LOGON
 								  , l.TRACE
 								  , l.CURSOR_SHARING
 								  , l.INIT_PLSQL
-								  , l.COMMENTS
-								  , iif(tk.USERNAME is null,'N','S') as TO_KILL
+								  , l.COMMENTS								  
+								  , CASE 
+										WHEN tk.USERNAME is null THEN 'N'
+										ELSE 'S'
+									END as TO_KILL
+								  , l.CREATED_BY 									 	as CREATED_BY
+								  , DATE_FORMAT(l.CREATED_DATE, '%d/%m/%Y %H:%i:%s')	as CREATED_DATE
+								  , l.LAST_UPDATED_BY
+								  , DATE_FORMAT(l.LAST_UPDATED_DATE, '%d/%m/%Y %H:%i:%s') as LAST_UPDATED_DATE
+								  , DATE_FORMAT(l.LAST_USED_DATE, '%d/%m/%Y %H:%i:%s') as LAST_USED_DATE
 							FROM adm_logins l
 							LEFT JOIN adm_logins_to_kill tk
 								ON l.username = tk.username
 							ORDER BY id_login desc"
 							);
-	*/
+
+
+							
 	endif;
 
 			  
@@ -133,12 +146,13 @@ endif;
 		$username = $result[$key]['USERNAME'];
 
 		
+
 		if ($result[$key]['TO_KILL'] == "S" && $result[$key]['USERNAME']):
-			//echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-lock'></i></a></td>";
-			echo "<td><i class='fa fa-lock'></i></a></td>";
+			echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-lock'></i></a></td>"; // habilita o click no cadeado para LOCK
+			//echo "<td><i class='fa fa-lock'></i></a></td>";										// desabilita o click no cadeado para LOCK
 		elseif ($result[$key]['TO_KILL'] == "N" && $result[$key]['USERNAME']):
-			//echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-unlock'></i></a></td>";
-			echo "<td><i class='fa fa-unlock'></i></a></td>";
+			echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-unlock'></i></a></td>";	// habilita o click no cadeado para LOCK
+			//echo "<td><i class='fa fa-unlock'></i></a></td>";											// desabilita o click no cadeado para LOCK 
 		else:
 			echo "<td></td>";			
 		endif;
@@ -163,6 +177,7 @@ endif;
 		echo "<td>".$result[$key]['CREATED_DATE']."</td>";
 		echo "<td>".$result[$key]['LAST_UPDATED_BY']."</td>";
 		echo "<td>".$result[$key]['LAST_UPDATED_DATE']."</td>";
+		echo "<td>".$result[$key]['LAST_USED_DATE']."</td>";		
 
 		/*
 		if ($result[$key]['TO_KILL'] == "S"):

@@ -4,6 +4,9 @@
 session_start();
 require_once("vendor/autoload.php");
 
+
+$url = $_SERVER["REQUEST_URI"];
+
 //$app = new \Slim\Slim();
 
 
@@ -11,7 +14,6 @@ require_once("vendor/autoload.php");
 $app = new \Slim\Slim(array(
     'templates.path' => './view'
 ));
-
 
 
 if ( isset($_SESSION['s_time']) ):
@@ -29,7 +31,6 @@ if ( isset($_SESSION['s_time']) ):
 endif;
 
 
-
 $app->get('/', function () use ($app) {  
     if (isset($_SESSION['s_iduser'])):
         $app->render('start.php');        
@@ -38,10 +39,22 @@ $app->get('/', function () use ($app) {
     endif;
 });
 
+
 $app->get('/logout', function () use ($app) {  
     session_unset();
-    $app->render('login.php');        
+    $app->render('login.php');    
 });
+
+
+
+// --- 06-jun-21 ---------------------------------------
+if ( ! isset($_SESSION['s_idcia']) ):
+    $app->run();
+    exit();
+endif;
+// -----------------------------------------------------
+
+
 
 $app->get('/changepwd', function () use ($app) {  
     $app->render('changepwd.php');        
@@ -52,9 +65,19 @@ $app->get('/upd-changepwd/:iduser', function ($iduser) use ($app) {
     $app->render('../model/reset-pwd.php', $data, 200);
 });
 
+
+
 /* ---------------------------------------------------------------------------
 *  ROTAS PARA CRUD EMPRESA/COMPANHIA
 * --------------------------------------------------------------------------- */
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+if (strpos($url, '/company') !== false && !($_SESSION['s_superuser']) ):
+    header("Location: /");    
+    exit;
+endif;
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 
 $app->get('/company', function () use ($app){
     $app->render('tab-company.php');    
@@ -85,6 +108,13 @@ $app->get('/company/delete/:p', function ($p) use ($app) {
 *  ROTAS PARA CRUD USUARIOS
 * --------------------------------------------------------------------------- */
 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+if (strpos($url, '/users') !== false && !($_SESSION['s_superuser']) && !($_SESSION['s_admin']) ):
+    header("Location: /");    
+    exit;
+endif;
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 $app->get('/users', function () use ($app){
     $app->render('tab-users.php');   
 });
@@ -113,6 +143,12 @@ $app->get('/users/delete/:p', function ($p) use ($app) {
 *  ROTAS PARA CRUD CATEGORIAS DE AMBIENTES
 * --------------------------------------------------------------------------- */
 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+if (strpos($url, '/categories') !== false && !($_SESSION['s_superuser']) && !($_SESSION['s_admin']) ):
+    header("Location: /");    
+    exit;
+endif;
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 $app->get('/categories', function () use ($app){
     $app->render('tab-categories.php');    
@@ -142,6 +178,13 @@ $app->get('/categories/delete/:p', function ($p) use ($app) {
 /* ---------------------------------------------------------------------------
 *  ROTAS PARA CRUD DATABASES
 * --------------------------------------------------------------------------- */
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+if (strpos($url, '/databases') !== false && !($_SESSION['s_superuser']) && !($_SESSION['s_admin']) ):
+    header("Location: /");    
+    exit;
+endif;
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 $app->get('/databases', function () use ($app){
     $app->render('tab-databases.php');    

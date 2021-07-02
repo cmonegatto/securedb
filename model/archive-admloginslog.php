@@ -40,7 +40,6 @@ endif;
 
 if ($player == 'OCI'):
 
-
 	$result= $conn->sql( basename(__FILE__), 
 						"UPDATE adm_logins_log ll1
                             SET archived = '*'
@@ -74,7 +73,25 @@ elseif ($player == 'SQLSRV'):
                         ",
 							array( ":ID_LOG"=>$id_log)
 						);
+
+
+elseif ($player == 'MYSQL'):
+
+	$result= $conn->sql( basename(__FILE__), 
+						"UPDATE adm_logins_log ll1
+                            SET archived = '*'
+                          WHERE (coalesce(USERNAME,''), coalesce(OSUSER,''), coalesce(MACHINE,''), coalesce(PROGRAM,''), coalesce(MODULE,'')) 
+                             in
+                                (SELECT coalesce(USERNAME,''), coalesce(OSUSER,''), coalesce(MACHINE,''), coalesce(PROGRAM,''), coalesce(MODULE,'') 
+                                   FROM adm_logins_log ll2 
+                                  WHERE id_log=:ID_LOG
+                                )",
+						array( ":ID_LOG"=>$id_log)
+						);
+
 endif;
+
+
 
 
 header("Location: \admloginslog/$iddb/$idcat");

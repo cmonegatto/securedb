@@ -133,7 +133,52 @@ elseif ($player == 'SQLSRV'):
 					);
 	*/
 
+
+
+elseif ($player == 'MYSQL'):
+
+	$xenddate = empty($enddate)? 1 : 0;
+
+
+	$username		= (empty($username)) 		?NULL:$username;
+	$osuser			= (empty($osuser)) 			?NULL:$osuser;
+	$machine   		= (empty($machine))			?NULL:$machine;
+	$freetools 		= (empty($freetools))		?NULL:$freetools;
+	$sessionsperuser= (empty($sessionsperuser))	?NULL:$sessionsperuser;
+	$initplsql		= (empty($initplsql))		?NULL:$initplsql;
+	$comments		= (empty($comments))		?NULL:$comments;
+
+
+
+	$result= $conn->sql( basename(__FILE__), 
+						"INSERT INTO adm_logins (username, osuser, machine, begin_date, end_date, freetools, sessions_per_user, log_logon, trace, cursor_sharing, init_plsql, comments, created_by, created_date)
+						VALUES (:USERNAME, :OSUSER, :MACHINE, STR_TO_DATE(:BEGIN_DATE, '%Y-%m-%d %H:%i:%s'), 
+						CASE 
+							WHEN $xenddate=0 THEN STR_TO_DATE(:END_DATE, '%Y-%m-%d %H:%i:%s')
+							ELSE NULL
+						END
+						, :FREETOOLS, :SESSIONS_PER_USER, :LOG_LOGON, :TRACE, :CURSOR_SHARING, :INIT_PLSQL, :COMMENTS, :CREATED_BY, NOW() )",
+						array(":USERNAME"=> $username,
+								":OSUSER"=> $osuser,
+								":MACHINE"=> $machine,
+								":BEGIN_DATE"=> $begindate,
+								":END_DATE"=> $enddate,
+								":FREETOOLS"=> $freetools,
+								":SESSIONS_PER_USER"=> $sessionsperuser,
+								":LOG_LOGON"=> $loglogon,
+								":TRACE"=> $trace,
+								":CURSOR_SHARING"=> $cursorsharing,
+								":INIT_PLSQL"=> $initplsql,
+								":COMMENTS"=> $comments,
+								":CREATED_BY"=> $loginname
+								)
+					);
+
+
 endif;
+
+
+
 
 
 

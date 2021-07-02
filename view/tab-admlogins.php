@@ -82,7 +82,7 @@ $player = $_SESSION['player'];
 
                     <div class="form-group col-md-2">
                         <label  for="osuser">Usuário AD (osuser)</label>
-                        <input type="text" name="osuser" class="form-control upper" id="osuser" maxlength="30" >
+                        <input type="text" name="osuser" class="form-control upper" id="osuser" maxlength="30" <?php echo $player=='MYSQL'?'disabled':'enabled' ?>>
                     </div>          
 
                     <div class="form-group col-md-2">
@@ -107,7 +107,7 @@ $player = $_SESSION['player'];
 
                     <div class="form-group col-md-10">
                         <label for="freetools">Ferramentas autorizadas</label>
-                        <input type="text" name="freetools" class="form-control upper" value="*" id="freetools" maxlength="500"  >
+                        <input type="text" name="freetools" class="form-control upper" id="freetools" maxlength="500"  >
                     </div>
 
                     <div class="form-group col-md-2">
@@ -183,13 +183,15 @@ $player = $_SESSION['player'];
                 <hr />
 
                 <!-- <a href="#" class="btn btn-danger   btn-custom"><span class="img-circle text-primary                btn-icon"></span>User Lock down</a> -->
-                <a href="\loginstokill" class="btn btn-danger   btn-custom"><span class="fa fa-lock img-circle                                              text-primary btn-icon"></span> Ativar Bloqueio</a>
-                <a href="\blacklist"    class="btn btn-dark     btn-custom"><span class="fa fa-user-times black-list                                        text-primary btn-icon"></span> Black List</a>
-                <a href="\loginstools"  class="btn btn-secondary   btn-custom"><span class="fa fa-times-circle img-circle                                      text-primary btn-icon"></span> Aplicações proibidas</a>
+                <a href="\loginstokill" class="btn btn-danger       btn-custom"><span class="fa fa-lock img-circle                                              text-primary btn-icon"></span> Ativar Bloqueio</a>
+                <a href="\blacklist"    class="btn btn-dark         btn-custom"><span class="fa fa-user-times black-list                                        text-primary btn-icon"></span> Black List</a>
+                <a href="\loginstools"  class="btn btn-warning    btn-custom"><span class="fa fa-times-circle img-circle                                      text-primary btn-icon"></span> Aplicações proibidas</a>
                 <a href="\loginslogons" class="btn btn-secondary    btn-custom"><span class="fa fa-search img-circle                                            text-primary btn-icon"></span> Histórico de acessos</a>
                 <a href="\loginstrace"  class="btn btn-secondary    btn-custom <?php echo $player<>'OCI'?'disabled':'' ?>"><span class="fa fa-search img-circle text-primary btn-icon"></span> Traces gerados</a>
-                <a href="\backup"       class="btn btn-success  btn-custom disabled"><span class="fa fa-clone img-circle                                    text-primary btn-icon"></span> Backup</a>
-                <a href="\restore"      class="btn btn-warning  btn-custom disabled"><span class="fa fa-clipboard img-circle                                text-primary btn-icon"></span> Restore</a>
+                <!--
+                <a href="\backup"       class="btn btn-success      btn-custom disabled"><span class="fa fa-clone img-circle                                    text-primary btn-icon"></span> Backup</a>
+                <a href="\restore"      class="btn btn-warning      btn-custom disabled"><span class="fa fa-clipboard img-circle                                text-primary btn-icon"></span> Restore</a>
+                -->
                 
                 <hr />
 
@@ -220,6 +222,7 @@ $player = $_SESSION['player'];
                             <th scope="col">Data Criação</th>
                             <th scope="col">Última Alt. Por</th>
                             <th scope="col">Data Alteração</th>
+                            <th scope="col">Último Acesso</th>                            
                         </tr>
                     </thead>
                     <tbody>

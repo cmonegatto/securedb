@@ -49,8 +49,6 @@ foreach ($result1 as $key1 => $value) {
 		if ($player == 'OCI'):
 
 			$result2= $conn2->sql( basename(__FILE__), 
-			
-
 									"SELECT count(*) as qtd
 										, ll.username
 										, ll.osuser
@@ -99,13 +97,9 @@ foreach ($result1 as $key1 => $value) {
 */
 
 
-		elseif ($player == 'SQLSRV'):
+		elseif ($player == 'SQLSRV'):			
 
-			
-
-			$result2 = $conn2->sql( basename(__FILE__), 
-
-			
+			$result2 = $conn2->sql( basename(__FILE__), 			
 							  "SELECT count(*) as QTD
 									, ll.USERNAME
 									, ll.OSUSER
@@ -179,10 +173,45 @@ foreach ($result1 as $key1 => $value) {
 			*/
             
                 
+		elseif ($player == 'MYSQL'):
+
+			$result2= $conn2->sql( basename(__FILE__), 
+							"SELECT count(*) as QTD
+							, ll.USERNAME
+							, ll.OSUSER
+							, ll.MACHINE
+							, ll.PROGRAM
+							, ll.MODULE
+							, if ( if(ISNULL(tk.username), 'N', 'S')='S', 'S', if(length(concat( coalesce(lk.username,''), coalesce(lk.machine,''), coalesce(lk.osuser,'')))>0, 'S','N')) as TO_KILL
+							, if( F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0, 1, 0) as REGRA
+							, max(id_log) as ID_LOG
+							FROM adm_logins_log ll
+						LEFT JOIN adm_logins_to_kill tk
+							ON ll.username = tk.username
+					--
+						LEFT JOIN adm_logins_locked lk
+							ON if( isnull(ll.username), '%', ll.username) LIKE if( isnull( lk.username), '%', lk.username)
+							AND ( if( isnull(ll.machine), '%', ll.machine) LIKE if( isnull(lk.machine), '%', '%' + lk.machine)
+							OR   if( isnull(lk.machine), '%', lk.machine) LIKE if( isnull(ll.machine) , '%', ll.machine)
+								)
+							AND   if( isnull(ll.osuser), '%', ll.osuser) LIKE if( isnull( lk.osuser), '%', lk.osuser)
+							WHERE  ll.archived is null
+
+					--
+						GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
+									, if (isnull(tk.username), 'N', 'S') ='S', 'S', if(length(concat( coalesce(lk.username,''), coalesce(lk.machine,''), coalesce(lk.osuser,'')))>0, 'S','N')
+					--
+							-- ,if( isnull(tk.username), 'N', 'S')
+							-- ,if( isnull(concat(lk.username,lk.machine,lk.osuser)), 'N', 'S')
+						ORDER BY if(F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0, 1, 0) DESC
+									, if (isnull(tk.username), 'N', 'S')='S', 'S', if(length(concat( coalesce(lk.username,''), coalesce(lk.machine,''), coalesce(lk.osuser,'')))>0, 'S','N')
+									, 1 DESC, 2"
+								);		
+
+	
 		endif;
 
-
-
+		
 		if (strlen($_SESSION['msg']) > 0 ):
 			echo "<tr class='$pauta none'>";
 			echo "<td style='text-align:center'>".$aliasdb."</td>";

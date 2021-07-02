@@ -61,6 +61,15 @@ elseif ($player == 'SQLSRV'):
                         array(":USERNAME"=> $username, ":OSUSER"=> $osuser, ":MACHINE"=> $machine)
                     );
 
+
+elseif ($player == 'MYSQL'):
+
+    $result= $conn->sql( basename(__FILE__), 
+                        "INSERT INTO adm_logins_locked (datetime, username, osuser, machine) 
+                                VALUES (now(), :USERNAME, :OSUSER, :MACHINE)", 
+                        array(":USERNAME"=> $username, ":OSUSER"=> $osuser, ":MACHINE"=> $machine)
+                    );
+                    
 endif;
 
 

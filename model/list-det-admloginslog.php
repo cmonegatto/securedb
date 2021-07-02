@@ -124,7 +124,7 @@ elseif ($player == 'MYSQL'):
 
 	$result= $conn->sql( basename(__FILE__), 
 						"SELECT ID_LOG
-								, DATETIME as DATETIME
+								, DATE_FORMAT(DATETIME, '%d/%m/%Y %H:%i:%s')  as DATETIME
 								, DATETIME as DATETIME2
 								, ll1.USERNAME
 								, ll1.OSUSER
@@ -159,7 +159,7 @@ foreach ($result as $key => $value) {
 	echo "<td>".$result[$key]['MACHINE']."</td>";
 	echo "<td>".$result[$key]['TERMINAL']."</td>";
 	echo "<td>".$result[$key]['PROGRAM']."</td>";
-	echo "<td>".$result[$key]['MODULE']."</td>";
+	//echo "<td>".$result[$key]['MODULE']."</td>";
 
 	if ($result[$key]['KILLED'] == '*'):
 		echo "<td style='text-align:center'><i class='fa fa-user-times'></i></a></td>";

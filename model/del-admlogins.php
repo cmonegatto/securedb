@@ -33,11 +33,14 @@ endif;
 $datetime = date('d/m/Y H:i:s');
 
 if ($player=='OCI'):
-	$datetimestr = "to_char('$datetime','dd-mm-yyyy hh24:mi:ss')";
+	// $datetimestr = "to_char('$datetime','dd-mm-yyyy hh24:mi:ss')";
 	$datetimestr = 'SYSDATE';
 elseif ($player == 'SQLSRV'):
-	$datetimestr = "format('$datetime','dd/MM/yyyy HH:mm:ss')";
+	// $datetimestr = "format('$datetime','dd/MM/yyyy HH:mm:ss')";
 	$datetimestr = 'GETDATE()';
+elseif ($player == 'MYSQL'):	
+	// $datetimestr = "DATETIME('$datetime','dd/MM/yyyy HH:mm:ss')";
+	$datetimestr = 'NOW()';
 endif;
 
 

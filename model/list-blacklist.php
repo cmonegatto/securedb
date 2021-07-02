@@ -49,6 +49,12 @@ elseif ($player == 'SQLSRV'):
     $result= $conn->sql( basename(__FILE__), "SELECT ID, format(DATETIME,'dd/MM/yyyy HH:mm:ss') as DATETIME, DATETIME as DATETIME2, USERNAME, OSUSER, MACHINE 
                                                 FROM adm_logins_locked
                                             ORDER BY datetime2 desc");
+
+elseif ($player == 'MYSQL'):
+    $result= $conn->sql( basename(__FILE__), "SELECT ID, date_format(DATETIME, '%Y/%m/%d %H:%i:%s') as DATETIME, DATETIME as DATETIME2, USERNAME, OSUSER, MACHINE 
+                                                FROM adm_logins_locked
+                                            ORDER BY datetime2 desc");
+
 endif;
 
 
