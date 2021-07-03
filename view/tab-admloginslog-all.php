@@ -19,7 +19,7 @@ $days = $data['days'];
 
 
                 <!-- <h3>Lista de conexões bloqueadas no banco de dados</h3>   -->
-                <h3>BLOQUEIOS em todos bancos de dados da categoria</h3>  
+                <h3>Bloqueios e ocorrências de acesso</h3>  
 
                 <hr />
 

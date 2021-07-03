@@ -15,6 +15,8 @@ id #
 		color: gray;
 	}	
 
+
+/* Linhas de títulos das páginas */
 h3 {
     padding-top: 10px;
 	padding-bottom: 0px;
@@ -25,6 +27,7 @@ hr {
 }
 
 
+/* background de todas as telas */
 body {
 	/*background: rgba(47, 0, 235, 0.197);*/
 	background: whitesmoke;
@@ -199,14 +202,13 @@ table.tab-loginstokill tr.admtrigger td {
 
 
 
-/* lista da grid de conexões bloqueadas para pautar*/
+/* lista da grid de conexões bloqueadas para pautar Tela BLOQUEIOS */
 table#myTable tr.corsim td {
 	color: rgba(211, 211, 211, 0.734);
-	background: rgba(0, 0, 0, 0.920);
-
+	background: rgba(0, 0, 0, 0.890); /* Aqui é a cor de fundo mais clara que o black */
 }
 
-/* lista da grid de conexões bloqueadas para pautar*/
+/* lista da grid de conexões bloqueadas para pautar  Tela BLOQUEIOS */
 table#myTable tr.cornao td {
 	color: gray;	
 	background: red(0, 0, 0, 0.415);
@@ -218,14 +220,14 @@ table.tab-admloginslog-all td {
 }
 
 
-/* lista da grid de conexões bloqueadas para pautar*/
+/* lista da grid de conexões bloqueadas para pautar  Tela REGRAS */
 table#myTable tr.corsim2 td {
 	/* background: rgba(221, 221, 221, 0.500);
 	background: rgb(250, 237, 210);*/
-	background: rgba(0, 0, 0, 0.920);
+	background: rgba(0, 0, 0, 0.890); /* Aqui é a cor de fundo mais clara que o black */
 }
 
-/* lista da grid de conexões bloqueadas para pautar*/
+/* lista da grid de conexões bloqueadas para pautar Tela REGRAS */
 table#myTable tr.cornao2 td {
 	/*background: rgba(221, 221, 221, 0.693);*/
 	background: red(0, 0, 0, 0.415);
