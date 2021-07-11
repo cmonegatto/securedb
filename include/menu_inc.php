@@ -24,12 +24,14 @@ endif;
 	<!-- <h2><a class="navbar-brand btn btn-warning" href="\">2Now Consulting</a></h2> -->
 	<a href="\">
 
-		<!--2NOW -->
-		<img src="\img/400PngdpiLogoCropped.png" width="125" height="38">
-		<!--LOGO BPO
+		<!--2NOW 
+		<img src="\img/400PngdpiLogoCropped.png" width="125" height="38">-->
+		<img src="\img/400PngdpiLogoCropped.png" width="133" height="42">
+		
+		<!--LOGO BPO 
 		<img src="\img/LogoBPO.png" width="100" height="38">
 		-->		
-
+		
 	</a>
 
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,6 +65,9 @@ endif;
 					<a class="nav-link text-white-50 <?= ($user)? '': 'disabled'?>" href="/admloginslogall/0">Regras<span class="sr-only">(current)</span></a>
 				</li>
 
+				<li class="nav-item active">
+					<a class="nav-link text-white-50 <?= ($user)? '': 'disabled'?>" href="/kpi/0/-7/-60">KPIs<span class="sr-only">(current)</span></a>
+				</li>
 					
 				<li class="nav-item active">
 					<a class="nav-link text-white-50" href="/logout">Sair<span class="sr-only">(current)</span></a>

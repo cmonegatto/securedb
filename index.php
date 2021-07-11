@@ -385,6 +385,28 @@ $app->get('/blacklist/delete/:id', function ($id) use ($app){
 
 
 
+/* ---------------------------------------------------------------------------
+*  ROTAS PARA KPIs
+* --------------------------------------------------------------------------- */
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+if (strpos($url, '/kpi') !== false && !($_SESSION['s_superuser']) && !($_SESSION['s_admin']) ):
+    header("Location: /");    
+    exit;
+endif;
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/*
+$app->get('/kpi', function () use ($app){
+    $app->render('charts-view.php');    
+});
+*/
+
+$app->get('/kpi/:idcat/:dayAccess/:dayRules', function ($idcat, $dayAccess, $dayRules) use ($app){      
+    $data = array("data"=>array("idcat"=>$idcat, "dayAccess"=>$dayAccess, "dayRules"=>$dayRules ));
+    $app->render('charts-view.php', $data, 200);
+});
+
 
 $app->run();
 

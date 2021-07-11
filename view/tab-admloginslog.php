@@ -127,7 +127,7 @@ $_SESSION['idcat'] = $data['idcat'];
         
         //alert ("iddb: " + idb + " - idcat: " + idcat);
 
-        if (idb !== "" && idcat !== "") {
+        if (idb !== "" && idcat !== "") {   
             window.location=`\../../admloginslog/${idb}/${idcat}`;
         };    
 
