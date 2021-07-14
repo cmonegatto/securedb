@@ -44,11 +44,14 @@ endif;
 if ($player == 'OCI'):
 
     //tratativa da ordenação para Oracle caso parâmetro lockNoRule esteja ON ou OFF
+    /*
     if (! $_SESSION['s_lockNoRule']):
         $orderby = "order by 4, 3 desc,2,1";
     else:
         $orderby = "order by 3 desc,2,1";
     endif;
+    */
+    $orderby = "order by 1";
 
     $result= $conn->sql( basename(__FILE__), 
                      "SELECT DISTINCT u.username, adm.admtrigger, k.tokill, l.admlogins
@@ -78,35 +81,27 @@ if ($player == 'OCI'):
 elseif ($player == 'SQLSRV'):
 
      //tratativa da ordenação para Oracle caso parâmetro lockNoRule esteja ON ou OFF
+     /*
     if (! $_SESSION['s_lockNoRule']):
         $orderby = "ORDER by 4 desc,3 desc, 1";
     else:
         $orderby = "ORDER by 3 desc, 1";
     endif;
+    */
 
+    $orderby = "order by 1";
 
     $result= $conn->sql( basename(__FILE__),  
-                    /*
-                     "SELECT name USERNAME, 0 ADMTRIGGER, 0 TOKILL, 0 ADMLOGINS from sys.database_principals where type_desc='SQL_USER'
-                      EXCEPT
-                     (SELECT lower(username) username, 0 admtrigger, 0 tokill, 0 admlogins from adm_logins
-                       UNION
-                      SELECT lower(username) username, 0 admtrigger, 0 tokill, 0 admlogins from ADM_LOGINS_TO_KILL
-                     )
-                       UNION 
-                      SELECT lower(username) username, 0 admtrigger, 1 tokill, 0 admlogins from ADM_LOGINS_TO_KILL
-                       UNION
-                      SELECT lower(username) username, 0 admtrigger, 0 tokill, 1 admlogins from adm_logins
-                      EXCEPT
-                      SELECT lower(username) username, 0 admtrigger, 0 tokill, 1 admlogins from ADM_LOGINS_TO_KILL
-                     "
-                        );
-                    */
-
                      "SELECT * FROM 
                      (
-                        -- SELECT name USERNAME, 0 ADMTRIGGER, 0 TOKILL, 0 ADMLOGINS from sys.database_principals where type_desc='SQL_USER'
-                        SELECT name USERNAME, 0 ADMTRIGGER, 0 TOKILL, 0 ADMLOGINS from sys.server_principals where type_desc='SQL_LOGIN' and  is_disabled=0
+                        -- SELECT name USERNAME, 0 ADMTRIGGER, 0 TOKILL, 0 ADMLOGINS from sys.server_principals where type_desc='SQL_LOGIN' and  is_disabled=0
+                        SELECT name USERNAME, 0 ADMTRIGGER, 0 TOKILL, 0 ADMLOGINS 
+                        FROM sys.server_principals 
+		                          WHERE is_disabled=0
+                                    AND type <>'R'
+                                    AND name NOT LIKE 'NT%SERVI%'
+                                    AND type_desc not in ('WINDOWS_GROUP')
+                                    AND name NOT LIKE '##%'
                         EXCEPT
                         (SELECT lower(username) username, 0 admtrigger, 0 tokill, 0 admlogins from adm_logins
                         UNION
@@ -123,36 +118,20 @@ elseif ($player == 'SQLSRV'):
                         );
 
 
-
-
 elseif ($player == 'MYSQL'):
 
     //tratativa da ordenação para Oracle caso parâmetro lockNoRule esteja ON ou OFF
+    /*
     if (! $_SESSION['s_lockNoRule']):
         $orderby = "ORDER by 4 desc,3 desc, 1";
     else:
         $orderby = "ORDER by 3 desc, 1";
     endif;
+    */
 
+    $orderby = "order by 1";
 
     $result= $conn->sql( basename(__FILE__),  
-                    /*
-                    "SELECT name USERNAME, 0 ADMTRIGGER, 0 TOKILL, 0 ADMLOGINS from sys.database_principals where type_desc='SQL_USER'
-                        EXCEPT
-                    (SELECT lower(username) username, 0 admtrigger, 0 tokill, 0 admlogins from adm_logins
-                        UNION
-                        SELECT lower(username) username, 0 admtrigger, 0 tokill, 0 admlogins from ADM_LOGINS_TO_KILL
-                    )
-                        UNION 
-                        SELECT lower(username) username, 0 admtrigger, 1 tokill, 0 admlogins from ADM_LOGINS_TO_KILL
-                        UNION
-                        SELECT lower(username) username, 0 admtrigger, 0 tokill, 1 admlogins from adm_logins
-                        EXCEPT
-                        SELECT lower(username) username, 0 admtrigger, 0 tokill, 1 admlogins from ADM_LOGINS_TO_KILL
-                    "
-                        );
-                    */
-
                     "SELECT * FROM 
                     (
                         -- SELECT name USERNAME, 0 ADMTRIGGER, 0 TOKILL, 0 ADMLOGINS from sys.database_principals where type_desc='SQL_USER'

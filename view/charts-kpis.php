@@ -5,26 +5,51 @@ include_once 'include/menu_inc.php';
 include_once "class/Sql.php";
 include "function/utils.php";
 
+/*
 
-$idcat     = $data['idcat'];
+-- MYSQL
+select ifnull(last_updated_by, created_by) username, count(*) 
+  from adm_logins 
+ group by ifnull(last_updated_by, created_by) ;
+ 
+
+-- ORACLE
+select decode(last_updated_by, null, created_by) username, count(*)   
+  from adm_logins  
+ group by decode(last_updated_by, null, created_by) ;
+ 
+
+-- SQLSERVER
+ select isnull(last_updated_by, created_by), count(*)
+  from adm_logins
+ group by isnull(last_updated_by, created_by);
+
+*/
+
+
+$idcat      = $data['idcat'];
 $dayAccess  = $data['dayAccess']*-1;
 $dayRules   = $data['dayRules']*-1;
 
 $conn1=new Sql();
 $conn2=new Sql();
 
-$ArrayCredenciaisCobertas = []; //[['Databases', '%Cobertura']];
-$ArrayChartAcessos = [];
+$ArrayCredenciaisCobertas   = []; //[['Databases', '%Cobertura']];
+$ArrayAcessos               = [];
+$ArrayRegras                = [];
+$ArraySuperUsers            = [];
+$ArrayOperadores            = [];
 
-$result1 = $conn1->sql( basename(__FILE__), "SELECT hostname, username, password, aliasdb, dbname, port, player, iddb
-											  FROM adm_databases
-											 WHERE idcat = :IDCAT
-											 ORDER BY dbname",
-											 array(":IDCAT" => $idcat));
+
+$result1 = $conn1->sql( basename(__FILE__), 
+    "SELECT hostname, username, password, aliasdb, dbname, port, player, iddb
+       FROM adm_databases
+      WHERE idcat = :IDCAT
+      ORDER BY dbname",
+      array(":IDCAT" => $idcat));
 
 
 foreach ($result1 as $key1 => $value) {
-
 
     $localhost	= $result1[$key1]['hostname'];
     $username	= $result1[$key1]['username'];
@@ -48,7 +73,7 @@ foreach ($result1 as $key1 => $value) {
 
         if ($player == 'OCI'):
 
-            $result2= $conn2->sql( basename(__FILE__), 
+            $CredenciaisCobertas= $conn2->sql( basename(__FILE__), 
                                 "SELECT users.total_users as TOTAL_USERS, k.kill_users as KILL_USERS
                                    FROM
                                     ( SELECT count(*) as total_users
@@ -58,7 +83,7 @@ foreach ($result1 as $key1 => $value) {
                                         FROM securedb.adm_logins_to_kill) k"
                                 );
 
-            $lista = $conn2->sql( basename(__FILE__), 
+            $Acessos = $conn2->sql( basename(__FILE__), 
                                 "SELECT * FROM 
                                     (SELECT count(*) as SUSPECT
                                        FROM adm_logins_log
@@ -68,22 +93,40 @@ foreach ($result1 as $key1 => $value) {
                                        FROM adm_logins_log
                                       WHERE datetime>= trunc(sysdate)-$dayAccess
                                         AND killed is not null) k"
+                                );
+
+            $Regras = $conn2->sql( basename(__FILE__), 
+                                "SELECT count(*) as TOTAL_USERS 
+                                   FROM adm_logins
+                                  WHERE last_used_date <= TRUNC(sysdate)-$dayRules OR last_used_date IS NULL"                                
+                                );
+
+            $SuperUsers = $conn2->sql( basename(__FILE__), 
+                                "SELECT COUNT(*) as TOTAL_USERS 
+                                   FROM dba_role_privs rp, dba_users u
+                                  WHERE granted_role='DBA'
+                                    AND rp.grantee = u.username
+                                    AND u.account_status='OPEN'"                                
                                 );
 
 
         elseif ($player == 'SQLSRV'):
 
-            $result2= $conn2->sql( basename(__FILE__),
+            $CredenciaisCobertas= $conn2->sql( basename(__FILE__),
                                 "SELECT users.total_users as TOTAL_USERS, k.kill_users as KILL_USERS
                                    FROM
                                 (SELECT count(*) as total_users
                                    FROM sys.server_principals 
-                                  WHERE type_desc='SQL_LOGIN' and  is_disabled=0) as users,
+		                          WHERE is_disabled=0
+                                    AND type <>'R'
+                                    AND name NOT LIKE 'NT%SERVI%'
+                                    AND type_desc not in ('WINDOWS_GROUP')
+                                    AND name NOT LIKE '##%') as users,
                                 (SELECT count(username) kill_users			
                                    FROM adm_logins_to_kill) as k"
                                 );
 
-            $lista = $conn2->sql( basename(__FILE__), 
+            $Acessos = $conn2->sql( basename(__FILE__), 
                                 "SELECT * FROM 
                                     (SELECT count(*) as SUSPECT
                                        FROM adm_logins_log
@@ -96,10 +139,27 @@ foreach ($result1 as $key1 => $value) {
                                 );
 
 
+            $Regras = $conn2->sql( basename(__FILE__), 
+                                "SELECT count(*) as TOTAL_USERS 
+                                   FROM adm_logins
+                                  WHERE last_used_date <= cast(GETDATE()-$dayRules as date) OR last_used_date IS NULL"                                
+                                );
+
+
+            $SuperUsers = $conn2->sql( basename(__FILE__), 
+                                "SELECT count(*) as TOTAL_USERS
+                                   FROM sys.server_principals a
+                                   JOIN master..syslogins b ON a.sid = b.sid
+                                  WHERE a.type <> 'R'
+                                    AND b.sysadmin = 1
+                                    AND a.name NOT LIKE '##%'
+                                    AND a.name NOT LIKE 'NT%SERV%'
+                                    AND is_disabled=0"                                
+                                );
 
         elseif ($player == 'MYSQL'):
 
-            $result2= $conn2->sql( basename(__FILE__), 
+            $CredenciaisCobertas= $conn2->sql( basename(__FILE__), 
                                 "SELECT users.total_users as TOTAL_USERS, k.kill_users as KILL_USERS
                                    FROM
                                     (SELECT count(distinct user) total_users 		FROM mysql.user) 		 as users,
@@ -107,7 +167,7 @@ foreach ($result1 as $key1 => $value) {
                                 );
 
 
-            $lista = $conn2->sql( basename(__FILE__), 
+            $Acessos = $conn2->sql( basename(__FILE__), 
                                 "SELECT * FROM 
                                     (SELECT count(*) as SUSPECT
                                        FROM adm_logins_log
@@ -118,32 +178,40 @@ foreach ($result1 as $key1 => $value) {
                                       WHERE datetime >= date_sub(now(), interval $dayAccess day)
                                         AND killed is not null) k"
                                 );
+
+                                
+            $Regras = $conn2->sql( basename(__FILE__), 
+                                "SELECT count(*) as TOTAL_USERS 
+                                   FROM adm_logins
+                                  WHERE last_used_date <= date_sub(now(), interval $dayRules day) OR last_used_date IS NULL"
+                                );
+
+
+            $SuperUsers = $conn2->sql( basename(__FILE__), 
+                                "SELECT count(distinct user) as TOTAL_USERS 
+                                   FROM mysql.user 
+                                  WHERE super_priv='Y'"                                
+                                );
+
+
         endif;
 
 
-		foreach ($result2 as $key2 => $value) {
-
-			$total_users    = $result2[$key2]['TOTAL_USERS'];
-			$kill_users     = $result2[$key2]['KILL_USERS'];
-
-            // alias, e percentual de cobertura por banco de dados...
-            array_push($ArrayCredenciaisCobertas, [$aliasdb, round( ($kill_users/$total_users)*100, 1) ]);
-
+		foreach ($CredenciaisCobertas as $key2 => $value) {
+            array_push($ArrayCredenciaisCobertas, [$aliasdb, round( ($CredenciaisCobertas[$key2]['KILL_USERS']/$CredenciaisCobertas[$key2]['TOTAL_USERS'])*100, 1) ]);
 		};
 
-		foreach ($lista as $key2 => $value) {
-
-			$suspect    = $lista[$key2]['SUSPECT'];
-			$killed     = $lista[$key2]['KILLED'];
-
-            // alias, e percentual de cobertura por banco de dados...
-            array_push($ArrayChartAcessos, [$aliasdb, $suspect, $killed ]);
-
+		foreach ($Acessos as $key2 => $value) {
+            array_push($ArrayAcessos, [$aliasdb, $Acessos[$key2]['SUSPECT'], $Acessos[$key2]['KILLED'] ]);
 		};
 
+		foreach ($Regras as $key2 => $value) {
+            array_push($ArrayRegras, [$aliasdb, $Regras[$key2]['TOTAL_USERS'] ]);
+		};
 
-
-
+		foreach ($SuperUsers as $key2 => $value) {
+            array_push($ArraySuperUsers, [$aliasdb, $SuperUsers[$key2]['TOTAL_USERS'] ]);
+		};
 
 
     endif;                                            
@@ -162,37 +230,6 @@ exit();
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 
-    /*
-
-    ------------- MYSQL
-    select users.total_users, k.kill_users
-    from
-        (select count(*) 		total_users 		from mysql.user) 		 as users,
-        (select count(username) kill_users			from adm_logins_to_kill) as k;
-
-
-    ------------- SQLSERVER
-    select users.total_users, k.kill_users
-      from
-		( select count(*) as total_users
-			from sys.server_principals 
-		   where type_desc='SQL_LOGIN' and  is_disabled=0) as users,
-		( select count(username) kill_users			
-			from adm_logins_to_kill) as k;
-
-    
-    ------------- ORACLE
-    select users.total_users, k.kill_users
-    from
-        ( select count(*) as total_users
-            from dba_users
-        where account_status='OPEN') users,
-        ( select count(username) kill_users			
-            from securedb.adm_logins_to_kill) k;
-
-    */
-
-
         google.charts.load('current', {'packages':['bar']});
 
         /* ---------------------------------------------------------------------- */
@@ -202,9 +239,9 @@ exit();
         var data = google.visualization.arrayToDataTable([
             ['Databases', '%Cobertura'],
         <?php
-        foreach ($ArrayCredenciaisCobertas as $key => $value){
-            echo '["' . $ArrayCredenciaisCobertas[$key][0] . '", ' . $ArrayCredenciaisCobertas[$key][1] . '], ';
-        };
+            foreach ($ArrayCredenciaisCobertas as $key => $value){
+                echo '["' . $ArrayCredenciaisCobertas[$key][0] . '", ' . $ArrayCredenciaisCobertas[$key][1] . '], ';
+            };
         ?>
 
             /*
@@ -245,9 +282,9 @@ exit();
         var data = google.visualization.arrayToDataTable([
             ['Databases', 'Sem regra', 'Bloqueado'],
             <?php
-            foreach ($ArrayChartAcessos as $key => $value){
-                echo '["' . $ArrayChartAcessos[$key][0] . '", ' . $ArrayChartAcessos[$key][1] . ', ' . $ArrayChartAcessos[$key][2] . '], ';
-            };
+                foreach ($ArrayAcessos as $key => $value){
+                    echo '["' . $ArrayAcessos[$key][0] . '", ' . $ArrayAcessos[$key][1] . ', ' . $ArrayAcessos[$key][2] . '], ';
+                };
             ?>
 
             /*
@@ -286,7 +323,7 @@ exit();
 
         function selectHandler()
         {
-            alert('foi foi foi...');
+            alert('working progress...');
 
         }
 
@@ -297,10 +334,17 @@ exit();
         function drawChartRegras() {
         var data = google.visualization.arrayToDataTable([
             ['Databases', 'Quantidade'],
+            <?php
+                foreach ($ArrayRegras as $key => $value){
+                    echo '["' . $ArrayRegras[$key][0] . '", ' . $ArrayRegras[$key][1] . '], ';
+                };
+            ?>
+            /*
             ['db-mysql', 2],
             ['db-oracle', 5],
             ['db-sqlserver', 1],
             ['db-mysql2', 11]
+            */
         ]);
 
         var options = {
@@ -330,10 +374,17 @@ exit();
         function drawChartSuperUsers() {
         var data = google.visualization.arrayToDataTable([
             ['Databases', 'Quantidade'],
+            <?php
+                foreach ($ArraySuperUsers as $key => $value){
+                    echo '["' . $ArraySuperUsers[$key][0] . '", ' . $ArraySuperUsers[$key][1] . '], ';
+                };
+            ?>
+            /*
             ['db-mysql', 2],
             ['db-oracle', 135],
             ['db-sqlserver', 4],
             ['db-mysql2', 11]
+            */
         ]);
 
         var options = {
@@ -357,6 +408,42 @@ exit();
         }
 
 
+       
+        /* ---------------------------------------------------------------------- */
+        google.charts.load('current', {'packages':['corechart']});
+
+        google.charts.setOnLoadCallback(drawChartOperadores);
+        function drawChartOperadores() {
+        var data = google.visualization.arrayToDataTable([
+            ['Databases', 'Quantidade'],
+            ['Cláudio Monegatto', 70],
+            ['José Antonio', 15],
+            ['Maria do Rosario', 5],
+            ['Lidia Macedo', 10]
+        ]);
+
+        var options = {
+            chartArea: {
+                backgroundColor: {
+                //fill: '#FF0000',
+                fillOpacity: 0.1 }},
+                title: 'Operadores da Solução',
+                //pieHole: 0.4,
+                is3D: true,
+            legend: { position: 'labeled', textStyle: { fontSize: 10 } },
+            titleTextStyle: { fontSize: 15, color: "gray", bold: false },
+            backgroundColor: 'whitesmoke',
+        };
+
+        //var chart = new google.charts.Bar(document.getElementById('Chart-Operadores'));
+        //chart.draw(data, google.charts.Bar.convertOptions(options));
+
+        var chart = new google.visualization.PieChart(document.getElementById('Chart-Operadores'));
+        chart.draw(data, options);
+
+        }
+
+
 </script>
 
     <div class="container">
@@ -367,6 +454,7 @@ exit();
             <div class="col-sm-6"   id="chart-acessos"              style="width: 400px;  height: 230px; padding-top:0px;"></div> 
             <div class="col-sm-6"   id="Chart-Regras"               style="width: 400px;  height: 230px; padding-top:15px;"></div>
             <div class="col-sm-6"   id="Chart-SuperUsers"           style="width: 400px;  height: 230px; padding-top:15px;"></div>
+            <div class="col-sm-6"   id="Chart-Operadores"            style="width: auto;  height: auto; padding-top:20px;"></div>
 
         </div>
     </div>
