@@ -43,14 +43,14 @@ $dayRules  = $data['dayRules'];
                     <div class="form-group row">
                         <label style="padding-left:50px; padding-right:50px" for="dayAccess" class="col-md-1 col-form-label">Acessos</label>
                         <div class="col-md-6">
-                            <input class="form-control" type="number" maxlength="3" <?php echo "value=$dayAccess"?>  id="dayAccess" min="-90" max="-1" require>
+                            <input class="form-control" type="number" maxlength="3" <?php echo "value=$dayAccess"?>  id="dayAccess" min="-90" max="-0" require>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label style="padding-left:50px; padding-right:50px" for="dayRules" class="col-md-1 col-form-label">Regras</label>
                         <div class="col-md-6">
-                            <input class="form-control" type="number" maxlength="3" <?php echo "value=$dayRules"?>  id="dayRules" min="-365" max="-1" require>
+                            <input class="form-control" type="number" maxlength="3" <?php echo "value=$dayRules"?>  id="dayRules" min="-365" max="-30" require>
                         </div>
                     </div>
 

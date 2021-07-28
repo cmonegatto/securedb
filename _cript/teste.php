@@ -32,7 +32,7 @@ function encrypt_decrypt($action, $string) {
     return $output;
 }
 
-$plain_txt = "adm";
+$plain_txt = "Compaqv410";
 echo "Plain Text =" .$plain_txt. "<br/>";
 
 $encrypted_txt = encrypt_decrypt('encrypt', $plain_txt);

@@ -5,26 +5,28 @@ include_once 'include/menu_inc.php';
 include_once "class/Sql.php";
 include "function/utils.php";
 
-/*
 
--- MYSQL
-select ifnull(last_updated_by, created_by) username, count(*) 
-  from adm_logins 
- group by ifnull(last_updated_by, created_by) ;
- 
-
--- ORACLE
-select decode(last_updated_by, null, created_by) username, count(*)   
-  from adm_logins  
- group by decode(last_updated_by, null, created_by) ;
- 
-
--- SQLSERVER
- select isnull(last_updated_by, created_by), count(*)
-  from adm_logins
- group by isnull(last_updated_by, created_by);
-
+/* 
+funão para ordenação array multidimensional 
+uso: $arrayTst = array_orderby($arrayTst, 'quantidade', SORT_DESC, 'database', SORT_ASC);
 */
+function array_orderby()
+{
+    $args = func_get_args();
+    $data = array_shift($args);
+    foreach ($args as $n => $field) {
+        if (is_string($field)) {
+            $tmp = array();
+            foreach ($data as $key => $row)
+                $tmp[$key] = $row[$field];
+            $args[$n] = $tmp;
+            }
+    }
+    $args[] = &$data;
+    call_user_func_array('array_multisort', $args);
+    return array_pop($args);
+}
+
 
 
 $idcat      = $data['idcat'];
@@ -34,12 +36,15 @@ $dayRules   = $data['dayRules']*-1;
 $conn1=new Sql();
 $conn2=new Sql();
 
-$ArrayCredenciaisCobertas   = []; //[['Databases', '%Cobertura']];
-$ArrayAcessos               = [];
+$ArrayCredenciaisCobertas   = []; 
 $ArrayRegras                = [];
+$ArrayAcessos               = [];
 $ArraySuperUsers            = [];
 $ArrayOperadores            = [];
-
+$ArrayOcorrencias           = [];
+$ArrayAcessosTOP            = [];
+$ArrayAcessosGeral          = [];
+$ArrayTentativas             = [];
 
 $result1 = $conn1->sql( basename(__FILE__), 
     "SELECT hostname, username, password, aliasdb, dbname, port, player, iddb
@@ -92,13 +97,17 @@ foreach ($result1 as $key1 => $value) {
                                     (SELECT count(*) as KILLED
                                        FROM adm_logins_log
                                       WHERE datetime>= trunc(sysdate)-$dayAccess
-                                        AND killed is not null) k"
+                                        AND killed = '*') k,
+                                    (SELECT count(*) as KILLED_AFTER
+                                       FROM adm_logins_log
+                                      WHERE datetime>= trunc(sysdate)-$dayAccess
+                                        AND killed = '#') ka"
                                 );
 
             $Regras = $conn2->sql( basename(__FILE__), 
                                 "SELECT count(*) as TOTAL_USERS 
                                    FROM adm_logins
-                                  WHERE last_used_date <= TRUNC(sysdate)-$dayRules OR last_used_date IS NULL"                                
+                                  WHERE NVL(last_used_date,created_date) <= TRUNC(sysdate)-$dayRules"                                
                                 );
 
             $SuperUsers = $conn2->sql( basename(__FILE__), 
@@ -109,6 +118,35 @@ foreach ($result1 as $key1 => $value) {
                                     AND u.account_status='OPEN'"                                
                                 );
 
+            $Operadores = $conn2->sql( basename(__FILE__), 
+                                "SELECT decode(last_updated_by, null, created_by, last_updated_by) as USERNAME, count(*) as TOTAL_USERS
+                                   FROM adm_logins  
+                               GROUP BY decode(last_updated_by, null, created_by, last_updated_by)"                                
+                                );
+
+            $AcessosTOP = $conn2->sql( basename(__FILE__), 
+                                "SELECT USERNAME, count(*) as TOTAL_ACCESS    
+                                   FROM adm_logins_log
+                                  WHERE datetime>= trunc(sysdate)-$dayAccess
+                                    -- AND killed is not null
+                               GROUP BY USERNAME"
+                                );
+
+            $AcessosGeral = $conn2->sql( basename(__FILE__), 
+                                "SELECT count(*) as QUANTIDADE, to_char(datetime, 'mon') as MESEXTENSO, to_char(datetime, 'mm') as MES, to_char(datetime, 'yyyy') as ANO
+                                   FROM adm_logins_log
+                                  WHERE datetime >= TO_CHAR(ADD_MONTHS(sysdate-to_char(sysdate, 'DD')+1,-5),'DD-MON-YYYY')
+                                  GROUP BY to_char(datetime, 'mon'), to_char(datetime, 'mm'), to_char(datetime, 'yyyy')
+                                  ORDER BY 4,3"
+                                );
+
+            $Tentativas = $conn2->sql( basename(__FILE__), 
+                                "SELECT count(*) as TOTAL_ACCESS    
+                                   FROM dba_audit_session
+                                  WHERE timestamp >= trunc(sysdate)-$dayAccess"
+                                );
+
+                           
 
         elseif ($player == 'SQLSRV'):
 
@@ -135,14 +173,22 @@ foreach ($result1 as $key1 => $value) {
                                     (SELECT count(*) as KILLED
                                        FROM adm_logins_log
                                       WHERE datetime >= cast(GETDATE()-$dayAccess as date)
-                                        AND killed is not null) k"
+                                        AND killed = '*') k,
+                                    (SELECT count(*) as KILLED_AFTER
+                                       FROM adm_logins_log
+                                      WHERE datetime >= cast(GETDATE()-$dayAccess as date)
+                                        AND killed = '#') ka"
                                 );
 
 
             $Regras = $conn2->sql( basename(__FILE__), 
                                 "SELECT count(*) as TOTAL_USERS 
                                    FROM adm_logins
-                                  WHERE last_used_date <= cast(GETDATE()-$dayRules as date) OR last_used_date IS NULL"                                
+                                  WHERE CASE 
+                                            WHEN last_used_date IS NULL 
+                                            THEN created_date 
+                                            ELSE last_updated_date 
+                                        END <= cast(GETDATE()-$dayRules as date)"
                                 );
 
 
@@ -156,6 +202,35 @@ foreach ($result1 as $key1 => $value) {
                                     AND a.name NOT LIKE 'NT%SERV%'
                                     AND is_disabled=0"                                
                                 );
+
+                                
+            $Operadores = $conn2->sql( basename(__FILE__), 
+                                "SELECT isnull(last_updated_by, created_by) as USERNAME, count(*) as TOTAL_USERS
+                                   FROM adm_logins
+                               GROUP BY isnull(last_updated_by, created_by);"                                
+                                );
+
+            $AcessosTOP = $conn2->sql( basename(__FILE__), 
+                                "SELECT USERNAME, count(*) as TOTAL_ACCESS    
+                                   FROM adm_logins_log
+                                  WHERE datetime >= cast(GETDATE()-$dayAccess as date)
+                                    -- AND killed is not null
+                                    GROUP BY USERNAME"
+                                );
+
+            $AcessosGeral = $conn2->sql( basename(__FILE__), 
+                                "SELECT count(*) as QUANTIDADE, lower(left( DATENAME ( month, datetime ),3)) as MESEXTENSO, month(datetime) as MES, year(datetime) as ANO
+                                   FROM adm_logins_log
+                                  WHERE datetime >= cast(dateadd(month, -5, getdate()-DAY(getdate()-1)) as date)
+                                  GROUP BY LEFT( DATENAME ( month, datetime ),3), month(datetime), year(datetime)
+                                  ORDER BY 4,3"
+                                );
+
+
+            $Tentativas = $conn2->sql( basename(__FILE__), 
+                                "EXEC sp_acessoslog $dayAccess", 
+                                );
+
 
         elseif ($player == 'MYSQL'):
 
@@ -176,14 +251,18 @@ foreach ($result1 as $key1 => $value) {
                                     (SELECT count(*) as KILLED
                                        FROM adm_logins_log                                      
                                       WHERE datetime >= date_sub(now(), interval $dayAccess day)
-                                        AND killed is not null) k"
+                                        AND killed = '*') k,
+                                    (SELECT count(*) as KILLED_AFTER
+                                       FROM adm_logins_log                                      
+                                      WHERE datetime >= date_sub(now(), interval $dayAccess day)
+                                        AND killed = '#') ka"
                                 );
 
                                 
             $Regras = $conn2->sql( basename(__FILE__), 
                                 "SELECT count(*) as TOTAL_USERS 
                                    FROM adm_logins
-                                  WHERE last_used_date <= date_sub(now(), interval $dayRules day) OR last_used_date IS NULL"
+                                  WHERE ifnull(last_used_date,created_date) <= date_sub(now(), interval $dayRules day)"
                                 );
 
 
@@ -194,35 +273,129 @@ foreach ($result1 as $key1 => $value) {
                                 );
 
 
+            $Operadores = $conn2->sql( basename(__FILE__), 
+                                "SELECT ifnull(last_updated_by, created_by) as USERNAME, count(*) as TOTAL_USERS
+                                   FROM adm_logins 
+                               GROUP BY ifnull(last_updated_by, created_by)"                                
+                                );
+
+
+            $AcessosTOP = $conn2->sql( basename(__FILE__), 
+                                "SELECT USERNAME, count(*) as TOTAL_ACCESS    
+                                   FROM adm_logins_log
+                                  WHERE datetime >= date_sub(now(), interval $dayAccess day)
+                                    -- AND killed is not null
+                                    GROUP BY USERNAME"                                    
+                                );
+
+
+            $AcessosGeral = $conn2->sql( basename(__FILE__), 
+                                "SELECT count(*) as QUANTIDADE, month(datetime) as MES, year(datetime) as ANO,
+                                 CASE 
+                                    WHEN lower( left( DATE_FORMAT(datetime, '%M'), 3)) = 'feb' THEN 'fev' 
+                                    WHEN lower( left( DATE_FORMAT(datetime, '%M'), 3)) = 'apr' THEN 'abr' 
+                                    WHEN lower( left( DATE_FORMAT(datetime, '%M'), 3)) = 'aug' THEN 'ago' 
+                                    WHEN lower( left( DATE_FORMAT(datetime, '%M'), 3)) = 'sep' THEN 'set' 
+                                    WHEN lower( left( DATE_FORMAT(datetime, '%M'), 3)) = 'oct' THEN 'out' 
+                                    WHEN lower( left( DATE_FORMAT(datetime, '%M'), 3)) = 'dec' THEN 'dez' 
+                                    ELSE lower( left( DATE_FORMAT(datetime, '%M'), 3))
+                                 END as MESEXTENSO
+                                   FROM adm_logins_log
+                                  WHERE datetime >= date_sub(date_sub(now(), interval 5 month), interval day(now())-1 day)
+                                  GROUP BY month(datetime), year(datetime)
+                                  ORDER BY 3,4"
+                                );
+
+            $Tentativas = $conn2->sql( basename(__FILE__), 
+                                "SELECT 0 as TOTAL_ACCESS"
+                                );
+
+
+                                
         endif;
 
 
-		foreach ($CredenciaisCobertas as $key2 => $value) {
-            array_push($ArrayCredenciaisCobertas, [$aliasdb, round( ($CredenciaisCobertas[$key2]['KILL_USERS']/$CredenciaisCobertas[$key2]['TOTAL_USERS'])*100, 1) ]);
-		};
 
+		foreach ($CredenciaisCobertas as $key2 => $value) 
+        {
+            $ArrayCredenciaisCobertas[] = array('database'=> $aliasdb, 'kill_users'=> round( ($CredenciaisCobertas[$key2]['KILL_USERS']/$CredenciaisCobertas[$key2]['TOTAL_USERS'])*100, 1) );
+		};  $ArrayCredenciaisCobertas = array_orderby($ArrayCredenciaisCobertas, 'kill_users', SORT_ASC, 'database', SORT_ASC);
+
+
+
+		foreach ($Regras as $key2 => $value) 
+        {
+            $ArrayRegras[] = array( 'database'=> $aliasdb, 'total_users' => $Regras[$key2]['TOTAL_USERS'] );
+		};  $ArrayRegras = array_orderby($ArrayRegras, 'total_users', SORT_DESC, 'database', SORT_ASC);
+
+
+        
 		foreach ($Acessos as $key2 => $value) {
-            array_push($ArrayAcessos, [$aliasdb, $Acessos[$key2]['SUSPECT'], $Acessos[$key2]['KILLED'] ]);
-		};
+            $ArrayAcessos[] = array( 'database'=> $aliasdb, 'suspect'=> $Acessos[$key2]['SUSPECT'], 
+                                     'killed'=> $Acessos[$key2]['KILLED'], 
+                                     'killed_after'=> $Acessos[$key2]['KILLED_AFTER'], 
+                                     'total'=> $Acessos[$key2]['SUSPECT'] + $Acessos[$key2]['KILLED'] + $Acessos[$key2]['KILLED_AFTER']  );
+		};  $ArrayAcessos = array_orderby($ArrayAcessos, 'total', SORT_DESC);
 
-		foreach ($Regras as $key2 => $value) {
-            array_push($ArrayRegras, [$aliasdb, $Regras[$key2]['TOTAL_USERS'] ]);
-		};
 
 		foreach ($SuperUsers as $key2 => $value) {
-            array_push($ArraySuperUsers, [$aliasdb, $SuperUsers[$key2]['TOTAL_USERS'] ]);
-		};
+            $ArraySuperUsers[] = array( 'database'=> $aliasdb, 'total_users'=> $SuperUsers[$key2]['TOTAL_USERS'] );
+		};  $ArraySuperUsers = array_orderby($ArraySuperUsers, 'total_users', SORT_DESC, 'database', SORT_ASC);
 
+
+
+        foreach ($Operadores as $key2 => $value) {
+            if ( isset($ArrayOperadores) ):
+                $index = array_search($Operadores[$key2]['USERNAME'], array_column($ArrayOperadores, 'username')); // procura se já tem esse USERNAME no array          
+            endif;
+
+            if (isset($index) && gettype($index)== 'integer'): // se o tipo da variavel for integer significa que encontrou um valor numerico da posição do dado no array, senão a variavel fica boolean 
+                $ArrayOperadores[$index]['total_users']=$ArrayOperadores[$index]['total_users']+$Operadores[$key2]['TOTAL_USERS'];
+            else:
+                $ArrayOperadores[] = array('username'=> $Operadores[$key2]['USERNAME'], 'total_users'=> $Operadores[$key2]['TOTAL_USERS'] );
+            endif;
+        };  $ArrayOperadores = array_orderby($ArrayOperadores, 'total_users', SORT_DESC);
+
+
+
+		foreach ($AcessosTOP as $key2 => $value) {
+            $ArrayAcessosTOP[] = array( 'username'=> $AcessosTOP[$key2]['USERNAME'] . " ($aliasdb)", 'total_access'=> $AcessosTOP[$key2]['TOTAL_ACCESS'] );
+		};  $ArrayAcessosTOP = array_orderby($ArrayAcessosTOP, 'total_access', SORT_DESC);
+
+
+
+
+        foreach ($AcessosGeral as $key2 => $value) {
+            if ( isset($ArrayAcessosGeral) ):
+                $index = array_search($AcessosGeral[$key2]['MES'], array_column($ArrayAcessosGeral, 'mes')); // procura se já tem esse USERNAME no array          
+            endif;
+
+            if (isset($index) && gettype($index)== 'integer'): // se o tipo da variavel for integer significa que encontrou um valor numerico da posição do dado no array, senão a variavel fica boolean 
+                $ArrayAcessosGeral[$index]['quantidade']=$ArrayAcessosGeral[$index]['quantidade']+$AcessosGeral[$key2]['QUANTIDADE'];
+            else:
+                $ArrayAcessosGeral[] = array('mesano'=> $AcessosGeral[$key2]['MESEXTENSO'] . '-' . substr($AcessosGeral[$key2]['ANO'], -2), 
+                                         'quantidade'=> $AcessosGeral[$key2]['QUANTIDADE'],
+                                                'mes'=> $AcessosGeral[$key2]['MES'],
+                                                'ano'=> $AcessosGeral[$key2]['ANO'] );
+            endif;
+        };  $ArrayAcessosGeral = array_orderby($ArrayAcessosGeral, 'ano', SORT_ASC, 'mes', SORT_ASC);
+
+
+        
+        foreach ($Tentativas as $key2 => $value) 
+        {
+            $ArrayTentativas[] = array( 'database'=> $aliasdb, 'total_access' => $Tentativas[$key2]['TOTAL_ACCESS'] );
+		};  $ArrayTentativas = array_orderby($ArrayTentativas, 'total_access', SORT_DESC, 'database', SORT_ASC);
 
     endif;                                            
+
 };
 
-/*
-foreach ($ArrayCredenciaisCobertas as $key => $value){
-    echo '[' . $ArrayCredenciaisCobertas[$key][0] . ', ' . $ArrayCredenciaisCobertas[$key][1] . '], ';
-};
-exit();
-*/
+
+/* calcula o tamanho do height para os gráficos, dependendo de quantos bancos existem (tamanho vertical variável) */
+$height = count($ArrayCredenciaisCobertas)*80;
+$height = $height <= 200 ? 200 : $height;
+
 
 ?>
 
@@ -237,20 +410,12 @@ exit();
 
         function drawChartCredenciaisCobertas() {
         var data = google.visualization.arrayToDataTable([
-            ['Databases', '%Cobertura'],
+            ['Databases', 'Cobertura'],
         <?php
             foreach ($ArrayCredenciaisCobertas as $key => $value){
-                echo '["' . $ArrayCredenciaisCobertas[$key][0] . '", ' . $ArrayCredenciaisCobertas[$key][1] . '], ';
+                echo '["' . $ArrayCredenciaisCobertas[$key]['database'] . '", ' . $ArrayCredenciaisCobertas[$key]['kill_users']/100 . '], ';
             };
         ?>
-
-            /*
-            ['Databases', '%Cobertura'],
-            ['db-mysql', 50],
-            ['db-oracle', 22],
-            ['db-sqlserver', 87],
-            ['db-mysql2', 45],
-            */
         ]);
 
         var options = {
@@ -259,20 +424,21 @@ exit();
                 //fill: '#FF0000',
                 fillOpacity: 0.1 }},
             chart: {
-                title: 'Cobertura de Credenciais',
+                title: 'Cobertura de Credenciais por database',
                 subtitle: 'Alvo: 100%'
             },
             legend: { position: 'center', textStyle: { fontSize: 10 } },
             colors: ['lightblue'],
             backgroundColor: 'whitesmoke',
+            hAxis: { format: '#%', viewWindow:{ min:0, max:1 } },
             bars: 'horizontal' // Required for Material Bar Charts.
         };
-
+        
         var chart = new google.charts.Bar(document.getElementById('Chart-CredenciaisCobertas'));
         chart.draw(data, google.charts.Bar.convertOptions(options));
-
-        }
-
+        
+    }
+    
 
 
         /* ---------------------------------------------------------------------- */
@@ -280,19 +446,13 @@ exit();
 
         function drawChartAcessos() {
         var data = google.visualization.arrayToDataTable([
-            ['Databases', 'Sem regra', 'Bloqueado'],
+            ['Databases', 'Sem regra', 'Bloqueado', 'Derrubado'],
             <?php
                 foreach ($ArrayAcessos as $key => $value){
-                    echo '["' . $ArrayAcessos[$key][0] . '", ' . $ArrayAcessos[$key][1] . ', ' . $ArrayAcessos[$key][2] . '], ';
+                    //echo '["' . $ArrayAcessos[$key]['database'] . '", ' . $ArrayAcessos[$key]['suspect'] . ', ' . $ArrayAcessos[$key]['killed'] . ', ' . '], ';
+                    echo '["' . $ArrayAcessos[$key]['database'] . '", ' . $ArrayAcessos[$key]['suspect'] . ', ' . $ArrayAcessos[$key]['killed'] . ', ' . $ArrayAcessos[$key]['killed_after'] . ', ' . '], ';
                 };
             ?>
-
-            /*
-            ['db-mysql', 50, 20],
-            ['db-oracle', 22, 2],
-            ['db-sqlserver', 7, 33],
-            ['db-mysql2', 45, 10]
-            */
         ]);
 
         var options = {
@@ -301,15 +461,20 @@ exit();
                 //fill: '#FF0000',
                 fillOpacity: 0.1 }},
             chart: {
-                title: 'Incidencia de acessos nos últimos <?php echo $dayAccess ?> dias',
+                /*  title: 'Incidencia de acessos - último(s) <?php echo $dayAccess ?> dia(s)', */
+                title: 'Incidencia de acessos <?php echo $dayAccess==0 ? "(HOJE)" : "(-$dayAccess\d)" ?> ',
                 subtitle: 'Alvo 0%'
             },
             legend: { position: 'top', textStyle: { fontSize: 10 } },
-            //colors: ['#FFF68F','pink'],
-            colors: ['#FFF68F','#FF6A6A'],
             backgroundColor: 'whitesmoke',
-            bars: 'horizontal'
-        };
+            bars: 'horizontal',
+            //groupWidth: '75%',
+            isStacked: true,
+            series: {0:{color: '#FFF68F', visibleInLegend: true}, 1:{color: '#FF4040', visibleInLegend: true}, 2:{color: 'darkgray', visibleInLegend: true} },
+            hAxis: { viewWindow:{ min:0 } }
+            //series: {0:{color: '#FFF68F', visibleInLegend: true}, 1:{color: '#FF6A6A', visibleInLegend: true}}
+            //series: {0:{color: 'gold', visibleInLegend: true}, 1:{color: 'red', visibleInLegend: true}}
+            };
 
         var chart = new google.charts.Bar(document.getElementById('chart-acessos'));
         chart.draw(data, google.charts.Bar.convertOptions(options));
@@ -336,15 +501,9 @@ exit();
             ['Databases', 'Quantidade'],
             <?php
                 foreach ($ArrayRegras as $key => $value){
-                    echo '["' . $ArrayRegras[$key][0] . '", ' . $ArrayRegras[$key][1] . '], ';
+                    echo '["' . $ArrayRegras[$key]['database'] . '", ' . $ArrayRegras[$key]['total_users'] . '], ';
                 };
             ?>
-            /*
-            ['db-mysql', 2],
-            ['db-oracle', 5],
-            ['db-sqlserver', 1],
-            ['db-mysql2', 11]
-            */
         ]);
 
         var options = {
@@ -353,12 +512,15 @@ exit();
                 //fill: '#FF0000',
                 fillOpacity: 0.1 }},
             chart: {
-                title: 'Regras não utilizadas últimos <?php echo $dayRules ?> dias',
+                //title: 'Regras não utilizadas último(s) <?php echo $dayRules ?> dia(s)',
+                title: 'Regras não utilizadas <?php echo "-$dayRules dia(s)" ?> ',
                 subtitle: 'Alvo: 0'
             },
             legend: { position: 'center', textStyle: { fontSize: 10 } },
+            //colors: ['#104E8B'],
             colors: ['lightblue'],
             backgroundColor: 'whitesmoke',
+            hAxis: { viewWindow:{ min:0 } },
             bars: 'horizontal', // Required for Material Bar Charts.
         };
 
@@ -376,15 +538,9 @@ exit();
             ['Databases', 'Quantidade'],
             <?php
                 foreach ($ArraySuperUsers as $key => $value){
-                    echo '["' . $ArraySuperUsers[$key][0] . '", ' . $ArraySuperUsers[$key][1] . '], ';
+                    echo '["' . $ArraySuperUsers[$key]['database'] . '", ' . $ArraySuperUsers[$key]['total_users'] . '], ';                    
                 };
             ?>
-            /*
-            ['db-mysql', 2],
-            ['db-oracle', 135],
-            ['db-sqlserver', 4],
-            ['db-mysql2', 11]
-            */
         ]);
 
         var options = {
@@ -397,8 +553,10 @@ exit();
                 subtitle: 'Alvo: baixo'
             },
             legend: { position: 'center', textStyle: { fontSize: 10 } },
+            //colors: ['#104E8B'],
             colors: ['lightblue'],
             backgroundColor: 'whitesmoke',
+            hAxis: { viewWindow:{ min:0 } },
             bars: 'horizontal', // Required for Material Bar Charts.
         };
 
@@ -414,12 +572,13 @@ exit();
 
         google.charts.setOnLoadCallback(drawChartOperadores);
         function drawChartOperadores() {
-        var data = google.visualization.arrayToDataTable([
-            ['Databases', 'Quantidade'],
-            ['Cláudio Monegatto', 70],
-            ['José Antonio', 15],
-            ['Maria do Rosario', 5],
-            ['Lidia Macedo', 10]
+            var data = google.visualization.arrayToDataTable([
+            ['Nome', '%Atividades'],
+            <?php
+                foreach ($ArrayOperadores as $key => $value){
+                    echo '["' . $ArrayOperadores[$key]['username'] . '", ' . $ArrayOperadores[$key]['total_users'] . '], ';
+                };
+            ?>
         ]);
 
         var options = {
@@ -430,7 +589,8 @@ exit();
                 title: 'Operadores da Solução',
                 //pieHole: 0.4,
                 is3D: true,
-            legend: { position: 'labeled', textStyle: { fontSize: 10 } },
+            legend: { position: 'center', textStyle: { fontSize: 10 } },
+            chartArea:{left:0}, //,top:20, width:"70%",height:"70%"},
             titleTextStyle: { fontSize: 15, color: "gray", bold: false },
             backgroundColor: 'whitesmoke',
         };
@@ -444,18 +604,152 @@ exit();
         }
 
 
+        /* ---------------------------------------------------------------------- */
+        google.charts.load('current', {'packages':['corechart']});
+
+        google.charts.setOnLoadCallback(drawChartAcessosTOP);
+        function drawChartAcessosTOP() {
+        var data = google.visualization.arrayToDataTable([
+            ['Databases', 'Quantidade'],
+            <?php
+                foreach ($ArrayAcessosTOP as $key => $value){
+                    if ($key >= 10): break; endif; // Mostrar somente 10 registros do array (TOP 10)
+                    echo '["' . $ArrayAcessosTOP[$key]['username'] . '", ' . $ArrayAcessosTOP[$key]['total_access'] . '], ';
+                };
+            ?>                    
+        ]);
+
+        var options = {
+            chartArea: {
+                backgroundColor: {
+                //fill: '#FF0000',
+                fillOpacity: 0.1 }},
+                //title: 'TOP 10 ocorrencias de acessos último(s) <?php echo $dayAccess ?> dia(s)',
+                title: 'TOP 10 ocorrencias de acessos <?php echo $dayAccess==0 ? "(HOJE)" : "(-$dayAccess\d)" ?> ',      
+                //pieHole: 0.4,
+                is3D: true,
+            legend: { position: 'center', textStyle: { fontSize: 10 } },
+            chartArea:{left:0}, //,top:20, width:"70%",height:"70%"},
+            titleTextStyle: { fontSize: 15, color: "gray", bold: false },
+            backgroundColor: 'whitesmoke',
+        };
+
+        //var chart = new google.charts.Bar(document.getElementById('Chart-Operadores'));
+        //chart.draw(data, google.charts.Bar.convertOptions(options));
+
+        var chart = new google.visualization.PieChart(document.getElementById('Chart-AcessosTOP'));
+        chart.draw(data, options);
+
+        }
+
+
+
+
+      google.charts.setOnLoadCallback(drawChartAcessosGeral);
+
+      function drawChartAcessosGeral() {
+        var data = google.visualization.arrayToDataTable([
+            ['Meses', 'Quantidade'],
+            <?php
+                foreach ($ArrayAcessosGeral as $key => $value){
+                    if ($key >= 10): break; endif; // Mostrar somente 10 registros do array (TOP 10)
+                    echo '["' . $ArrayAcessosGeral[$key]['mesano'] . '", ' . $ArrayAcessosGeral[$key]['quantidade'] . '], ';
+                };
+            ?>       
+        ]);
+
+        var options = {
+            chartArea: {
+                backgroundColor: {
+                //fill: '#FF0000',
+                fillOpacity: 0.1 }},
+          chart: {
+            title: 'Histórico geral de ocorrências de acesso (6 meses)' ,
+            subtitle: 'Alvo: próximo de zero',
+          },
+            legend: { position: 'center', textStyle: { fontSize: 10 } },
+            colors: ['lightblue'],
+            is3D: true,
+            backgroundColor: 'whitesmoke'
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('teste'));
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+       
+
+      }      
+
+  
+
+        
+        /* ---------------------------------------------------------------------- */
+        google.charts.setOnLoadCallback(drawChartTentativa);
+        function drawChartTentativa() {
+        var data = google.visualization.arrayToDataTable([
+            ['Databases', 'Quantidade'],
+            <?php
+                foreach ($ArrayTentativas as $key => $value){
+                    echo '["' . $ArrayTentativas[$key]['database'] . '", ' . $ArrayTentativas[$key]['total_access'] . '], ';                    
+                };
+            ?>
+        ]);
+
+        var options = {
+            chartArea: {
+                backgroundColor: {
+                //fill: '#FF0000',
+                fillOpacity: 0.1 }},
+            chart: {
+                //title: 'Tentavias de quebra de senha último(s) <?php echo $dayAccess ?> dia(s)',
+                title: 'Tentavias de quebra de senha <?php echo $dayAccess==0 ? "(HOJE)" : "(-$dayAccess\d)" ?> ',
+                subtitle: 'Alvo: 0'
+            },
+            legend: { position: 'center', textStyle: { fontSize: 10 } },
+            //colors: ['#104E8B'],
+            colors: ['RED'],
+            backgroundColor: 'whitesmoke',
+            hAxis: { viewWindow:{ min:0 } },
+            bars: 'horizontal', // Required for Material Bar Charts.
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('Chart-Tentativa'));
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+
+        }
+
+
+
+
+
 </script>
 
     <div class="container">
 
         <div class="row">
-
+            <!--
             <div class="col-sm-6"   id="Chart-CredenciaisCobertas"  style="width: 400px;  height: 230px; padding-top:0px;"></div>
             <div class="col-sm-6"   id="chart-acessos"              style="width: 400px;  height: 230px; padding-top:0px;"></div> 
             <div class="col-sm-6"   id="Chart-Regras"               style="width: 400px;  height: 230px; padding-top:15px;"></div>
             <div class="col-sm-6"   id="Chart-SuperUsers"           style="width: 400px;  height: 230px; padding-top:15px;"></div>
             <div class="col-sm-6"   id="Chart-Operadores"            style="width: auto;  height: auto; padding-top:20px;"></div>
 
+            <div class="col-sm-6"   id="Chart-CredenciaisCobertas"  style="width: auto;  height: <?php echo $height?>px;    padding-top:10px;"></div>
+            <div class="col-sm-6"   id="Chart-Regras"               style="width: auto;  height: <?php echo $height?>px;    padding-top:10px;"></div>
+            <div class="col-sm-6"   id="chart-acessos"              style="width: auto;  height: <?php echo $height?>px ;   padding-top:20px;"></div> 
+            <div class="col-sm-6"   id="Chart-AcessosTOP"           style="width: 300px; height: 300px;                     padding-top:20px;"></div>
+            <div class="col-sm-6"   id="Chart-SuperUsers"           style="width: auto;  height: <?php echo $height?>px;    padding-top:10px;"></div>
+            <div class="col-sm-6"   id="Chart-Operadores"           style="width: 300px; height: 300px;                     padding-top:10px;"></div>
+            -->
+            <div class="col-sm-6"   id="teste"                      style="width: 300px; height: <?php echo $height?>px;    padding-top:10px;"></div>            
+            <div class="col-sm-6"   id="Chart-CredenciaisCobertas"  style="width: auto;  height: <?php echo $height?>px;    padding-top:10px;"></div>
+            <div class="col-sm-6"   id="chart-acessos"              style="width: auto;  height: <?php echo $height?>px ;   padding-top:20px;"></div> 
+            <div class="col-sm-6"   id="Chart-AcessosTOP"           style="width: 300px; height: 300px;                     padding-top:20px;"></div>
+            <div class="col-sm-6"   id="Chart-SuperUsers"           style="width: auto;  height: <?php echo $height?>px;    padding-top:20px;"></div>
+            <div class="col-sm-6"   id="Chart-Regras"               style="width: auto;  height: <?php echo $height?>px;    padding-top:20px;"></div>
+            
+            <div class="col-sm-6"   id="Chart-Tentativa"           style="width: auto;  height: <?php echo $height?>px;    padding-top:20px;"></div>
+            <div class="col-sm-6"   id="Chart-Operadores"           style="width: 300px; height: 300px;                     padding-top:10px;"></div>
+                       
         </div>
     </div>
 

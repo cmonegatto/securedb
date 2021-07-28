@@ -169,32 +169,44 @@ foreach ($result as $key => $value) {
 
     $msg = "";
 
-    if ($result[$key]['TOKILL'] && !$result[$key]['ADMTRIGGER']):
+    //if ($result[$key]['TOKILL'] && !$result[$key]['ADMTRIGGER']):
+    if ($result[$key]['TOKILL'] ):
         echo "<tr class='tokill'>";
         echo "<td style='text-align:center'><a href='\admlogins/lockuser/$user_name'><i class='fa fa-lock'></i></a></td>";
         $msg = 'KILL de sessão ON';
         //$msg = 'usuário HABILITADO para KILL SESSION';        
 
 
-    elseif (!$result[$key]['TOKILL'] && !$result[$key]['ADMTRIGGER'] && $result[$key]['ADMLOGINS'] OR ($_SESSION['s_lockNoRule'] && !$result[$key]['ADMTRIGGER'])  ):
+    //elseif (!$result[$key]['TOKILL'] && !$result[$key]['ADMTRIGGER'] && $result[$key]['ADMLOGINS'] OR ($_SESSION['s_lockNoRule'] && !$result[$key]['ADMTRIGGER'])  ):
+    elseif (!$result[$key]['TOKILL'] && $result[$key]['ADMLOGINS'] OR ($_SESSION['s_lockNoRule'] )  ):
         echo "<tr class='notokill'>";
         echo "<td style='text-align:center'><a href='\admlogins/lockuser/$user_name'><i class='fa fa-unlock'></i></a></td>";
         $msg = 'KILL de sessão OFF';
         //$msg = 'usuário DESABILITADO para KILL SESSION';
 
-    elseif (!$result[$key]['ADMLOGINS'] && !$result[$key]['ADMTRIGGER']):
+    //elseif (!$result[$key]['ADMLOGINS'] && !$result[$key]['ADMTRIGGER']):
+    elseif (!$result[$key]['ADMLOGINS'] ):
         echo "<tr class='admtrigger'>";
         echo "<td></td>";		
         $msg = 'Não há regra definida para esse usuário';
 
+    /*
     else:
         echo "<tr class='admtrigger'>";
         echo "<td></td>";		
         $msg = 'usuário com privilégio ADMINISTER DATABASE TRIGGER';
-
+    */
+    endif;
+    
+    
+    if ($result[$key]['ADMLOGINS']):
+        echo "<td style='text-align:center'><i td style='color:white'; class='fa fa-list'></i></td>";
+    else:
+        echo "<td></td>";
     endif;
 
 
+    //echo "<td></td>";
     echo "<td>".$username."</td>";
     echo "<td>".$msg."</td>";
 

@@ -60,7 +60,8 @@ $_SESSION['idcat']  = $idcat;
                 <table class="table table-dark tab-loginstokill table-bordered" id="myTable" style="width:100%"> 
                     <thead>
                         <tr>
-                            <th scope="col"></th>
+                            <th style="width:10%" scope="col">Status</th>
+                            <th style="width:10%" scope="col">Regras</th>
                             <th scope="col">Username/Owner</th>
                             <th scope="col">Observação</th>
                         </tr>

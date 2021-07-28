@@ -408,6 +408,26 @@ $app->get('/kpi/:idcat/:dayAccess/:dayRules', function ($idcat, $dayAccess, $day
 });
 
 
+
+/* 
+- Exemplo de chamada API para retornar dados do banco de dados em JSON
+- Incluir  include_once "class/Sql.php";
+- Necessita estar conectado por causa das variáveis de ambiente global (pensar em algo independente)...
+
+$app->get('/api', function () {      
+    
+    $conn1=new Sql();
+
+    $result1 = $conn1->sql( basename(__FILE__), 
+    "SELECT *
+       FROM adm_cias");
+
+
+    echo json_encode($result1);
+});
+
+*/
+
 $app->run();
 
 

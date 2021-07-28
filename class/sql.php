@@ -122,7 +122,6 @@ class Sql {
 		endif;
 		*/
 
-
 		if (!$result): 	
 
 			

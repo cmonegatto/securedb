@@ -58,7 +58,7 @@ endif;
 				</li>
 
 				<li class="nav-item active">
-					<a class="nav-link text-white-50 <?= ($user)? '': 'disabled'?>" href="/admloginslogall/0/-1">Bloqueios<span class="sr-only">(current)</span></a>
+					<a class="nav-link text-white-50 <?= ($user)? '': 'disabled'?>" href="/admloginslogall/0/0">Bloqueios<span class="sr-only">(current)</span></a>
 				</li>
 
 				<li class="nav-item active">

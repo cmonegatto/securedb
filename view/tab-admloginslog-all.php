@@ -41,7 +41,7 @@ $days = $data['days'];
                     <div class="form-group row">
                         <label style="padding-left:50px; padding-right:30px" for="days" class="col-md-1 col-form-label">Dias</label>
                         <div class="col-md-6">
-                            <input class="form-control" type="number" maxlength="3" <?php echo "value=$days"?>  id="days" min="-90" max="-1" require>
+                            <input class="form-control" type="number" maxlength="3" <?php echo "value=$days"?>  id="days" min="-90" max="0" require>
                         </div>
                     </div>
 
