@@ -74,7 +74,7 @@ $_SESSION['idcat'] = $data['idcat'];
                             <th scope="col">OsUser</th>
                             <th scope="col">Machine</th>
                             <th scope="col">Program</th>
-                            <!-- <th scope="col">Module</th> -->
+                            <th scope="col">Module</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -89,7 +89,12 @@ $_SESSION['idcat'] = $data['idcat'];
                     </tbody>
 
                 </table>
-                <button type="submit" class="btn btn-primary" <?php echo isset($_SESSION['player'])?"enabled":"disabled" ?> >Gestão das Regras</button>
+
+                <button type="submit" class="btn btn-primary" id="btn-gestao" name="btn-gestao" <?php echo isset($_SESSION['player'])?"enabled":"disabled" ?> >Gestão das Regras</button>
+                <!--
+                <button type="submit" class="btn btn-primary" id="btn-gestao" name="btn-gestao" disabled >Gestão das Regras</button>
+                -->
+
 
                 <span class="fa fa-square" style="color:yellow; padding-left:50px"></span>                
                 Sem Regra
@@ -178,7 +183,22 @@ $_SESSION['idcat'] = $data['idcat'];
     });
 
 
-/*
+    /*
+    $('#btn-gestao').click(function(){
+        
+        alert("vc venceu...");
+    });
+    */
+
+
+    $('#iddb').change(function(){
+        if( $(this).val() ) {
+            document.getElementById("btn-gestao").disabled = true;
+        }
+    });
+
+
+    /*
     $("#c").on("change", function() {
         var idcat = $("#idcat").val();
         
@@ -203,7 +223,7 @@ $_SESSION['idcat'] = $data['idcat'];
         alert (idcat);
 
     });
-*/
+    */
 </script>
 
 

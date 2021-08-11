@@ -75,7 +75,7 @@ foreach ($result1 as $key1 => $value) {
 			$result2= $conn2->sql( basename(__FILE__), 
 								"SELECT max(id_log) ID_LOG, count(*) as QTD, ll.USERNAME, ll.OSUSER, ll.MACHINE, ll.PROGRAM, ll.MODULE, ll.KILLED
 									FROM adm_logins_log ll
-									WHERE datetime >= date_sub(now(), interval $days day)
+									WHERE datetime >= date(date_sub(now(), interval $days day))
 									GROUP BY ll.username, ll.osuser, ll.machine, ll.program, ll.module, ll.killed
 									ORDER BY 2 DESC"
 								);
@@ -140,7 +140,7 @@ foreach ($result1 as $key1 => $value) {
 			echo "<td>".$result2[$key2]['OSUSER']."</td>";
 			echo "<td>".$result2[$key2]['MACHINE']."</td>";
 			echo "<td>".$result2[$key2]['PROGRAM']."</td>";
-			// echo "<td>".$result2[$key2]['MODULE']."</td>";
+			echo "<td>".$result2[$key2]['MODULE']."</td>";
 
 /*			
 			if ($result2[$key2]['KILLED'] == '*'):

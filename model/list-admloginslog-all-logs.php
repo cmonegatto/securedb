@@ -281,7 +281,7 @@ foreach ($result1 as $key1 => $value) {
 			echo "<td>".$result2[$key2]['OSUSER']."</td>";
 			echo "<td>".$result2[$key2]['MACHINE']."</td>";
 			echo "<td>".$result2[$key2]['PROGRAM']."</td>";
-			//echo "<td>".$result2[$key2]['MODULE']."</td>";
+			echo "<td>".$result2[$key2]['MODULE']."</td>";
 
             
 /*            

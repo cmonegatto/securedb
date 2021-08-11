@@ -246,15 +246,15 @@ foreach ($result1 as $key1 => $value) {
                                 "SELECT * FROM 
                                     (SELECT count(*) as SUSPECT
                                        FROM adm_logins_log
-                                      WHERE datetime >= date_sub(now(), interval $dayAccess day)
+                                      WHERE datetime >= date(date_sub(now(), interval $dayAccess day))
                                         AND killed is null) s,
                                     (SELECT count(*) as KILLED
                                        FROM adm_logins_log                                      
-                                      WHERE datetime >= date_sub(now(), interval $dayAccess day)
+                                      WHERE datetime >= date(date_sub(now(), interval $dayAccess day))
                                         AND killed = '*') k,
                                     (SELECT count(*) as KILLED_AFTER
                                        FROM adm_logins_log                                      
-                                      WHERE datetime >= date_sub(now(), interval $dayAccess day)
+                                      WHERE datetime >= date(date_sub(now(), interval $dayAccess day))
                                         AND killed = '#') ka"
                                 );
 
@@ -262,7 +262,7 @@ foreach ($result1 as $key1 => $value) {
             $Regras = $conn2->sql( basename(__FILE__), 
                                 "SELECT count(*) as TOTAL_USERS 
                                    FROM adm_logins
-                                  WHERE ifnull(last_used_date,created_date) <= date_sub(now(), interval $dayRules day)"
+                                  WHERE ifnull(last_used_date,created_date) <= date(date_sub(now(), interval $dayRules day))"
                                 );
 
 
@@ -283,7 +283,7 @@ foreach ($result1 as $key1 => $value) {
             $AcessosTOP = $conn2->sql( basename(__FILE__), 
                                 "SELECT USERNAME, count(*) as TOTAL_ACCESS    
                                    FROM adm_logins_log
-                                  WHERE datetime >= date_sub(now(), interval $dayAccess day)
+                                  WHERE datetime >= date(date_sub(now(), interval $dayAccess day))
                                     -- AND killed is not null
                                     GROUP BY USERNAME"                                    
                                 );
@@ -301,7 +301,7 @@ foreach ($result1 as $key1 => $value) {
                                     ELSE lower( left( DATE_FORMAT(datetime, '%M'), 3))
                                  END as MESEXTENSO
                                    FROM adm_logins_log
-                                  WHERE datetime >= date_sub(date_sub(now(), interval 5 month), interval day(now())-1 day)
+                                  WHERE datetime >= date(date_sub(date_sub(now(), interval 5 month), interval day(now())-1 day))
                                   GROUP BY month(datetime), year(datetime)
                                   ORDER BY 3,4"
                                 );

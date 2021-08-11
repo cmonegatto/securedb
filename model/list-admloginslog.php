@@ -262,7 +262,7 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 		echo "<td>".$result[$key]['OSUSER']."</td>";
 		echo "<td>".$result[$key]['MACHINE']."</td>";
 		echo "<td>".$result[$key]['PROGRAM']."</td>";
-		//echo "<td>".$result[$key]['MODULE']."</td>";
+		echo "<td>".$result[$key]['MODULE']."</td>";
 
 		//if ($result[$key]['REGRA'] ):
 		if ($result[$key]['REGRA'] && $result[$key]['TO_KILL']!='S'):			

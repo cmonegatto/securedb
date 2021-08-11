@@ -66,7 +66,7 @@ endif;
 				</li>
 
 				<li class="nav-item active">
-					<a class="nav-link text-white-50 <?= ($user)? '': 'disabled'?>" href="/kpi/0/-7/-60">KPIs<span class="sr-only">(current)</span></a>
+					<a class="nav-link text-white-50 <?= ($user)? '': 'disabled'?>" href="/kpi/0/-7/-60">Indicadores de Gestão<span class="sr-only">(current)</span></a>
 				</li>
 					
 				<li class="nav-item active">
