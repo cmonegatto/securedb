@@ -44,6 +44,36 @@ $player		= $result[0]['player'];
 $conn=new Sql($player, $localhost, $user, $password, $dbname, $port);
 
 
+$datetime = date('d/m/Y H:i:s');
+
+if ($player=='OCI'):
+        // $datetimestr = "to_char('$datetime','dd-mm-yyyy hh24:mi:ss')";
+        $datetimestr = 'SYSDATE';
+elseif ($player == 'SQLSRV'):
+        // $datetimestr = "format('$datetime','dd/MM/yyyy HH:mm:ss')";
+        $datetimestr = 'GETDATE()';
+elseif ($player == 'MYSQL'):
+        // $datetimestr = "DATETIME('$datetime','dd/MM/yyyy HH:mm:ss')";
+        $datetimestr = 'NOW()';
+endif;
+
+
+$loginname = strtoupper($_SESSION['s_login']);
+
+
+$result= $conn->sql( basename(__FILE__), 
+    "INSERT INTO adm_logins_locked (datetime, username, osuser, machine) 
+          VALUES ($datetimestr, :USERNAME, :OSUSER, :MACHINE)", array(":USERNAME"=> $username, ":OSUSER"=> $osuser, ":MACHINE"=> $machine)
+    );
+
+$result= $conn->sql( basename(__FILE__),     
+    "INSERT INTO ADM_LOGINS_AUD ( ACTION, ACTION_BY, ACTION_DATE, USERNAME, OSUSER, MACHINE )
+    VALUES ('BLACK-YES', '$loginname', $datetimestr, :USERNAME, :OSUSER, :MACHINE)", array(":USERNAME"=> $username, ":OSUSER"=> $osuser, ":MACHINE"=> $machine)
+    );
+
+
+
+/*
 if ($player == 'OCI'):
 
 
@@ -71,7 +101,7 @@ elseif ($player == 'MYSQL'):
                     );
                     
 endif;
-
+*/
 
 header("Location: \blacklist");
 exit;	

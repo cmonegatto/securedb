@@ -44,7 +44,9 @@ $ArrayOperadores            = [];
 $ArrayOcorrencias           = [];
 $ArrayAcessosTOP            = [];
 $ArrayAcessosGeral          = [];
-$ArrayTentativas             = [];
+$ArrayTentativas            = [];
+$ArrayStatusTrigger         = [];
+$ArrayDBVersion             = [];
 
 $result1 = $conn1->sql( basename(__FILE__), 
     "SELECT hostname, username, password, aliasdb, dbname, port, player, iddb
@@ -53,6 +55,9 @@ $result1 = $conn1->sql( basename(__FILE__),
       ORDER BY dbname",
       array(":IDCAT" => $idcat));
 
+
+$msgALL = 'Ocorreu erro de abertura nas seguintes instâncias: '; //acumula mensagens de erros de abertura dos bancos depois envia para MSG da SESSION Global
+$msgErro = 0; // se ocorrer algum erro seta 1. Ao final se >0 então alimenta MSG da Global Session 
 
 foreach ($result1 as $key1 => $value) {
 
@@ -146,8 +151,20 @@ foreach ($result1 as $key1 => $value) {
                                   WHERE timestamp >= trunc(sysdate)-$dayAccess"
                                 );
 
-                           
+            $StatusTrigger = $conn2->sql( basename(__FILE__), 
+                                "SELECT decode(status, 'ENABLED', 1, 0) STATUS
+                                   FROM dba_triggers 
+                                  WHERE trigger_name ='SECDB_T'"
+                                );
 
+            $DBVersion = $conn2->sql( basename(__FILE__), 
+                                'SELECT BANNER as VERSION 
+                                   FROM "V$VERSION" '
+                                );
+
+                                
+                                
+ 
         elseif ($player == 'SQLSRV'):
 
             $CredenciaisCobertas= $conn2->sql( basename(__FILE__),
@@ -231,6 +248,33 @@ foreach ($result1 as $key1 => $value) {
                                 "EXEC sp_acessoslog $dayAccess", 
                                 );
 
+            $StatusTrigger = $conn2->sql( basename(__FILE__), 
+                                "SELECT case when (is_disabled = 0) then 1 else 0 end as STATUS
+                                   FROM sys.server_triggers 
+                                  WHERE name like '%T_LOGON'"
+                                );
+
+            $DBVersion = $conn2->sql( basename(__FILE__), 
+                                "SELECT
+                                    concat(
+                                    CASE
+                                        WHEN CONVERT(VARCHAR(128), SERVERPROPERTY ('productversion')) like '8%' THEN 'SQL2000'
+                                        WHEN CONVERT(VARCHAR(128), SERVERPROPERTY ('productversion')) like '9%' THEN 'SQL2005'
+                                        WHEN CONVERT(VARCHAR(128), SERVERPROPERTY ('productversion')) like '10.0%' THEN 'SQL2008'
+                                        WHEN CONVERT(VARCHAR(128), SERVERPROPERTY ('productversion')) like '10.5%' THEN 'SQL2008 R2'
+                                        WHEN CONVERT(VARCHAR(128), SERVERPROPERTY ('productversion')) like '11%' THEN 'SQL2012'
+                                        WHEN CONVERT(VARCHAR(128), SERVERPROPERTY ('productversion')) like '12%' THEN 'SQL2014'
+                                        WHEN CONVERT(VARCHAR(128), SERVERPROPERTY ('productversion')) like '13%' THEN 'SQL2016'
+                                        WHEN CONVERT(VARCHAR(128), SERVERPROPERTY ('productversion')) like '14%' THEN 'SQL2017'
+                                        WHEN CONVERT(VARCHAR(128), SERVERPROPERTY ('productversion')) like '15%' THEN 'SQL2019'
+                                        ELSE 'unknown'
+                                    END,
+                                    ' - ', CONVERT(VARCHAR(128), SERVERPROPERTY('ProductLevel')),
+                                    ' - ', CONVERT(VARCHAR(128), SERVERPROPERTY('Edition')),
+                                    ' - ', CONVERT(VARCHAR(128), SERVERPROPERTY('ProductVersion'))) as VERSION
+                                    "
+                                );
+
 
         elseif ($player == 'MYSQL'):
 
@@ -311,7 +355,15 @@ foreach ($result1 as $key1 => $value) {
                                 );
 
 
-                                
+            $StatusTrigger = $conn2->sql( basename(__FILE__), 
+                                "SELECT if(GLOBAL_VALUE like '%p_logon%', 1, 0) as STATUS
+                                   FROM INFORMATION_SCHEMA.SYSTEM_VARIABLES 
+                                  WHERE VARIABLE_NAME = 'INIT_CONNECT'"
+                                );                                
+
+            $DBVersion = $conn2->sql( basename(__FILE__), 
+                                "SELECT VERSION() as VERSION"
+                            );
         endif;
 
 
@@ -387,15 +439,41 @@ foreach ($result1 as $key1 => $value) {
             $ArrayTentativas[] = array( 'database'=> $aliasdb, 'total_access' => $Tentativas[$key2]['TOTAL_ACCESS'] );
 		};  $ArrayTentativas = array_orderby($ArrayTentativas, 'total_access', SORT_DESC, 'database', SORT_ASC);
 
+
+        foreach ($StatusTrigger as $key2 => $value) 
+        {
+            $ArrayStatusTrigger[] = array( 'database'=> $aliasdb, 'STATUS' => $StatusTrigger[$key2]['STATUS'] );
+		};  $ArrayStatusTrigger = array_orderby($ArrayStatusTrigger, 'STATUS', SORT_ASC, 'database', SORT_ASC);
+
+
+        foreach ($DBVersion as $key2 => $value) {
+            if ( isset($ArrayDBVersion) ):
+                $index = array_search($DBVersion[$key2]['VERSION'], array_column($ArrayDBVersion, 'version')); // procura se já tem esse USERNAME no array          
+            endif;
+
+            if (isset($index) && gettype($index)== 'integer'): // se o tipo da variavel for integer significa que encontrou um valor numerico da posição do dado no array, senão a variavel fica boolean 
+                $ArrayDBVersion[$index]['qtd']=$ArrayDBVersion[$index]['qtd'] + 1;
+            else:
+                $ArrayDBVersion[] = array('version'=> $DBVersion[$key2]['VERSION'], 'qtd'=> 1 );
+            endif;
+        };  $ArrayDBVersion = array_orderby($ArrayDBVersion, 'qtd', SORT_DESC, 'version', SORT_ASC);
+
+    else:
+        $msgALL = $msgALL . "($aliasdb)" . " "; // incremento da mensagem com os databases que tiveram erro de abertura
+        $msgErro =1;                            // seta se ocorreu algum erro de abertura. É usado após o loop para checar...
     endif;                                            
 
 };
 
+// Se ocorram erros acima na abertura de algum banco, seta a mensagem global
+if ($msgErro > 0):
+    $_SESSION['msg'] = $msgALL . " - Verifique (usuário/senha/host/porta)"."<br/><br/>";
+endif;
+    
 
 /* calcula o tamanho do height para os gráficos, dependendo de quantos bancos existem (tamanho vertical variável) */
 $height = count($ArrayCredenciaisCobertas)*80;
 $height = $height <= 200 ? 200 : $height;
-
 
 ?>
 
@@ -673,7 +751,7 @@ $height = $height <= 200 ? 200 : $height;
             backgroundColor: 'whitesmoke'
         };
 
-        var chart = new google.charts.Bar(document.getElementById('teste'));
+        var chart = new google.charts.Bar(document.getElementById('chart-AcessoGeral'));
         chart.draw(data, google.charts.Bar.convertOptions(options));
        
 
@@ -719,7 +797,74 @@ $height = $height <= 200 ? 200 : $height;
 
 
 
+        /* ---------------------------------------------------------------------- */
 
+        google.charts.load('current', {'packages':['corechart']});
+
+        google.charts.setOnLoadCallback(drawChartDBVersion);
+        function drawChartDBVersion() {
+        var data = google.visualization.arrayToDataTable([
+            ['Versão Database', 'Quantidade'],
+            <?php
+                foreach ($ArrayDBVersion as $key => $value){
+                    echo '["' . $ArrayDBVersion[$key]['version'] . '", ' . $ArrayDBVersion[$key]['qtd'] . '], ';
+                };
+            ?>                    
+        ]);
+        
+        var options = {
+            chartArea: {
+                backgroundColor: {
+                fillOpacity: 0.1 }},
+                title: 'Sumarização das versões dos Databases',      
+                //pieHole: 0.4,
+                is3D: true,
+            legend: { position: 'center', textStyle: { fontSize: 10 } },
+            chartArea:{left:0}, //,top:20, width:"70%",height:"70%"},
+            titleTextStyle: { fontSize: 15, color: "gray", bold: false },
+            backgroundColor: 'whitesmoke',
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('Chart-DBVersion'));
+        chart.draw(data, options);
+
+        }
+
+
+        /*
+        google.charts.setOnLoadCallback(drawChartDBVersion);
+        function drawChartDBVersion() {
+        var data = google.visualization.arrayToDataTable([
+            ['Versão Database', 'Quantidade'],
+            <?php
+                foreach ($ArrayDBVersion as $key => $value){
+                    echo '["' . $ArrayDBVersion[$key]['version'] . '", ' . $ArrayDBVersion[$key]['qtd'] . '], ';                    
+                };
+            ?>
+        ]);
+
+        var options = {
+            chartArea: {
+                backgroundColor: {
+                //fill: '#FF0000',
+                fillOpacity: 0.1 }},
+            chart: {
+                title: 'Sumarização das versões dos Databases',      
+                subtitle: ''
+            },
+            legend: { position: 'center', textStyle: { fontSize: 10 } },
+            //colors: ['#104E8B'],
+            colors: ['lightblue'],
+            backgroundColor: 'whitesmoke',
+            //hAxis: { viewWindow:{ min:0 } },
+            bars: 'horizontal', // Required for Material Bar Charts.
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('Chart-DBVersion'));
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+
+        }
+        */
 
 </script>
 
@@ -740,19 +885,54 @@ $height = $height <= 200 ? 200 : $height;
             <div class="col-sm-6"   id="Chart-SuperUsers"           style="width: auto;  height: <?php echo $height?>px;    padding-top:10px;"></div>
             <div class="col-sm-6"   id="Chart-Operadores"           style="width: 300px; height: 300px;                     padding-top:10px;"></div>
             -->
-            <div class="col-sm-6"   id="teste"                      style="width: 300px; height: <?php echo $height?>px;    padding-top:10px;"></div>            
-            <div class="col-sm-6"   id="Chart-CredenciaisCobertas"  style="width: auto;  height: <?php echo $height?>px;    padding-top:10px;"></div>
-            <div class="col-sm-6"   id="chart-acessos"              style="width: auto;  height: <?php echo $height?>px ;   padding-top:20px;"></div> 
-            <div class="col-sm-6"   id="Chart-AcessosTOP"           style="width: 300px; height: 300px;                     padding-top:20px;"></div>
-            <div class="col-sm-6"   id="Chart-SuperUsers"           style="width: auto;  height: <?php echo $height?>px;    padding-top:20px;"></div>
-            <div class="col-sm-6"   id="Chart-Regras"               style="width: auto;  height: <?php echo $height?>px;    padding-top:20px;"></div>
-            
-            <div class="col-sm-6"   id="Chart-Tentativa"           style="width: auto;  height: <?php echo $height?>px;    padding-top:20px;"></div>
-            <div class="col-sm-6"   id="Chart-Operadores"           style="width: 300px; height: 300px;                     padding-top:10px;"></div>
-                       
-        </div>
-    </div>
+            <div class="col-sm-6"   id="chart-AcessoGeral"                          style="width: 300px; height: <?php echo $height?>px;    padding-top:10px;"></div>            
+            <div class="col-sm-6 verticalLine"   id="Chart-CredenciaisCobertas"     style="width: 300px;  height: <?php echo $height?>px;    padding-top:10px;"></div>
 
+            <div class="col-sm-6"   id="chart-acessos"                              style="width: 300px;  height: <?php echo $height?>px ;   padding-top:20px;"></div> 
+            <div class="col-sm-6 verticalLine"   id="Chart-AcessosTOP"              style="width: 300px; height: 300px;                     padding-top:20px;"></div>
+
+            <div class="col-sm-6"   id="Chart-Tentativa"                            style="width: 300px;  height: <?php echo $height?>px;    padding-top:20px;"></div>
+            <div class="col-sm-6 verticalLine"   id="Chart-SuperUsers"              style="width: 300px;  height: <?php echo $height?>px;    padding-top:20px;"></div>
+
+            <div class="col-sm-6"   id="Chart-Regras"                               style="width: 300px;  height: <?php echo $height?>px;    padding-top:20px;"></div>
+            <div class="col-sm-6 verticalLine"   id="Chart-Operadores"              style="width: 300px; height: 300px;                     padding-top:10px;"></div>
+
+          
+            
+            <div class="col-sm-4"                                                   style="width: 300px; height: 300px;                     padding-top:10px;">
+                Status Controle de Acessos (agora)
+                <table class="table table-sm table-dark table-hover table-bordered">
+                    <thead>
+                        <tr>
+                        <th style='width:20%; text-align:center' scope="col">Status</th>
+                        <th style='text-align:left' scope="col">Database</th>
+                        <th style='width:20%; text-align:center' scope="col">Versão</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            foreach ($ArrayStatusTrigger as $key => $value) {
+                                echo "<tr>";
+                                $str = $ArrayStatusTrigger[$key]['STATUS'] ? 'lightgreen' : 'lightcoral';
+                                echo "<td style='text-align: center'><i style='color: $str'; class='fa fa-circle fa-lg'></i></td>";                                                              
+                                echo "<td>".$ArrayStatusTrigger[$key]['database']."</td>";
+                                echo "<td style='text-align: center'> - </td>";
+                                echo "</tr>";
+                            };
+                        ?>
+
+                    </tbody>
+                </table>               
+            </div>
+
+            <div class="col-sm-2 "></div>            
+            <div class="col-sm-6 verticalLine"   id="Chart-DBVersion"           style="width: 300px; height: 300px ;   padding-top:20px;"></div>            
+            
+            <div class="col-sm-12 ">
+                <hr/>
+            </div>
+                       
+       </div>
 
 <?php include_once 'include/footer_inc.php' ?>
 

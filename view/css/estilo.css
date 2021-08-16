@@ -3,7 +3,13 @@ class .
 id #
 */
 
-	
+/* Linhas verticais na tela de Gestão dos indicadores */
+.verticalLine {
+	/*border-left: thick solid gray;*/
+	/*border-left: medium dashed green;*/
+	border-left: 1px solid lightgray;
+  }
+  	
 .navbar-light .navbar-nav .nav-link:hover {
 		/*background: rgb(173, 18, 18);*/
 		background: black;
@@ -34,6 +40,7 @@ hr {
 body {
 	/*background: rgba(47, 0, 235, 0.197);*/
 	background: whitesmoke;
+
 }
 
 

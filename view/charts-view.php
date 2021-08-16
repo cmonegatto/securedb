@@ -21,7 +21,7 @@ $dayRules  = $data['dayRules'];
 
 
                 <!-- <h3>Lista de conexões bloqueadas no banco de dados</h3>   -->
-                <h3>Indicadores Gráficos</h3>  
+                <h3>Indicadores de Gestão</h3>  
 
                 <hr />
 
