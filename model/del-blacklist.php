@@ -60,11 +60,6 @@ $result= $conn->sql(basename(__FILE__),
                     "DELETE FROM adm_logins_locked WHERE id=:ID", array(":ID"=> $id)
                    );
 
-
-
-
-
-
 header("Location: \blacklist");
 exit;	
                 

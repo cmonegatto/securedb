@@ -100,6 +100,7 @@ foreach ($result1 as $key1 => $value) {
 			echo "<td>*** FALHA DE DADOS/TABELAS *** </td>";
 			echo "<td></td>";
 			echo "<td></td>";
+			echo "<td></td>";
 			echo "</tr>";
 			$_SESSION['msg']='';
 		endif;					
@@ -124,7 +125,7 @@ foreach ($result1 as $key1 => $value) {
 
 			echo "<tr class='$pauta $rule'>";
 			echo "<td style='text-align:center'><a href='\admloginslog/detail/$id_log/$iddb/1/$days'><i class='fa fa-search'></i></a></td>";			
-			echo "<td style='text-align:center; font-weight:bolder'>".$aliasdb."</td>";
+			echo "<td style='text-align:center; font-weight:normal'>".$aliasdb."</td>";
 
 			if ($result2[$key2]['KILLED'] == '*'):
 				echo "<td style='text-align:center'><i class='fa fa-user-times'></i></a></td>";
@@ -164,6 +165,7 @@ foreach ($result1 as $key1 => $value) {
 		echo "<td></td>";
 		echo "<td></td>";
 		echo "<td>*** FALHA DE CONEXÃO *** </td>";
+		echo "<td></td>";
 		echo "<td></td>";
 		echo "<td></td>";
 		echo "</tr>";

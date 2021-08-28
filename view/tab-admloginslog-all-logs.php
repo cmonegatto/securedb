@@ -85,6 +85,7 @@ $days = -1; //$data['days'];
                 <span class="fa fa-square" style="color:green"></span>
                 Liberar
 
+                <br><br>
                 <?php
                     if(isset($_SESSION['msg'])):
                         echo "<span style='color:red'> {$_SESSION['msg']}</span>";

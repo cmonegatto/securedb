@@ -59,7 +59,11 @@ class Sql {
 			}catch(PDOException $e){
 				//echo ($e->getMessage());
 				$_SESSION['msg'] = "Ocorreu um erro na conexão com banco de dados. Verifique os dados de conexão - " . ($e->getMessage());
-				$_SESSION['msg'] = $_SESSION['msg']."$db:dbname=".$dbname .'/'. $username .'/**************';
+				//$_SESSION['msg'] = $_SESSION['msg']."hostname=$hostname, $db:dbname=".$dbname .'/'. $username .'/**************';
+				$_SESSION['msg'] = $_SESSION['msg']." hostname=$hostname, $db:dbname=$dbname, user=$username" ;
+				//echo "\n";  
+				//print_r ($e->errorInfo);  
+				//exit();
 
 			}
 			

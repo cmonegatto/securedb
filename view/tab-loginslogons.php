@@ -87,7 +87,7 @@ $_SESSION['idcat']  = $idcat;
                     </div>
                 </div>
 
-
+            <br><br>
             <?php
                 if(isset($_SESSION['msg'])):
                     echo "<span style='color:red'> {$_SESSION['msg']}</span>";

@@ -48,7 +48,7 @@ include_once 'include/menu_inc.php';
                     </tbody>
 
                 </table>
-                <button type="submit" class="btn btn-primary">Novo registro</button>
+                <button type="submit" class="btn btn-primary">Novo registro</button> <br> <br>
 
                 <?php
                     if(isset($_SESSION['msg'])):

@@ -86,6 +86,7 @@ $days = $data['days'];
                 </table>
 
                 <!-- <button type="submit" class="btn btn-primary">Gestão das Regras</button> -->
+                <br><br>
 
                 <?php
                     if(isset($_SESSION['msg'])):

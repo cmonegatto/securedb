@@ -147,8 +147,11 @@ foreach ($result1 as $key1 => $value) {
 
             $Tentativas = $conn2->sql( basename(__FILE__), 
                                 "SELECT count(*) as TOTAL_ACCESS    
-                                   FROM dba_audit_session
-                                  WHERE timestamp >= trunc(sysdate)-$dayAccess"
+                                   FROM dba_audit_session 
+                                  WHERE timestamp >= trunc(sysdate)-$dayAccess
+                                    AND returncode=1017         -- falha na tentativa de login: usuário inexistente ou senha incorreta
+                                    AND action_name='LOGON'     -- tentar ajudar o otimizador oracle
+                                "
                                 );
 
             $StatusTrigger = $conn2->sql( basename(__FILE__), 
@@ -159,7 +162,8 @@ foreach ($result1 as $key1 => $value) {
 
             $DBVersion = $conn2->sql( basename(__FILE__), 
                                 'SELECT BANNER as VERSION 
-                                   FROM "V$VERSION" '
+                                   FROM "V$VERSION" 
+                                  WHERE ROWNUM=1'
                                 );
 
                                 
@@ -472,7 +476,7 @@ endif;
     
 
 /* calcula o tamanho do height para os gráficos, dependendo de quantos bancos existem (tamanho vertical variável) */
-$height = count($ArrayCredenciaisCobertas)*80;
+$height = count($ArrayCredenciaisCobertas)*20;
 $height = $height <= 200 ? 200 : $height;
 
 ?>
@@ -540,8 +544,8 @@ $height = $height <= 200 ? 200 : $height;
                 fillOpacity: 0.1 }},
             chart: {
                 /*  title: 'Incidencia de acessos - último(s) <?php echo $dayAccess ?> dia(s)', */
-                title: 'Incidencia de acessos <?php echo $dayAccess==0 ? "(HOJE)" : "(-$dayAccess\d)" ?> ',
-                subtitle: 'Alvo 0%'
+                title: 'Incidencia de acessos <?php echo $dayAccess==0 ? "(HOJE)" : "-$dayAccess\ dia(s)" ?> ',
+                subtitle: 'Alvo 0'
             },
             legend: { position: 'top', textStyle: { fontSize: 10 } },
             backgroundColor: 'whitesmoke',

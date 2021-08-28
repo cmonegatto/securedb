@@ -102,7 +102,7 @@ $_SESSION['idcat'] = $data['idcat'];
                 Bloquear
                 <span class="fa fa-square" style="color:green"></span>
                 Liberar
-
+                <br> <br>
 
                 <?php
                     if(isset($_SESSION['msg'])):

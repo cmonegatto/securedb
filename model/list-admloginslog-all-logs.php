@@ -221,7 +221,7 @@ foreach ($result1 as $key1 => $value) {
 			echo "<td></td>";
 			echo "<td>*** FALHA DE DADOS/TABELAS *** </td>";
 			echo "<td></td>";
-			//echo "<td></td>";
+			echo "<td></td>";
 			echo "</tr>";
             $_SESSION['msg']='';
             $pauta = ($pauta=="corsim2")?"cornao2":"corsim2";
@@ -305,7 +305,7 @@ foreach ($result1 as $key1 => $value) {
 		echo "<td></td>";
 		echo "<td>*** FALHA DE CONEXÃO *** </td>";
 		echo "<td></td>";
-		//echo "<td></td>";
+		echo "<td></td>";
 		echo "</tr>";
         $_SESSION['msg']='';
 	endif;

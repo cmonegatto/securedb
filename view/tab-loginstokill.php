@@ -79,7 +79,7 @@ $_SESSION['idcat']  = $idcat;
 
                 <div class="row"> 
                     <div class="input-field col-md-10">
-                        <input type="button" value="Voltar"                         class="btn btn-secondary"   id="btnvoltar" >
+                        <input type="button" value="Voltar"                         class="btn btn-secondary"   id="btnvoltar" > <br><br>
                     </div>
                 </div>
 

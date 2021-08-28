@@ -3,7 +3,7 @@
 
 session_start();
 require_once("vendor/autoload.php");
-
+//include_once "class/Sql.php";
 
 $url = $_SERVER["REQUEST_URI"];
 
@@ -414,13 +414,16 @@ $app->get('/kpi/:idcat/:dayAccess/:dayRules', function ($idcat, $dayAccess, $day
 - Incluir  include_once "class/Sql.php";
 - Necessita estar conectado por causa das variáveis de ambiente global (pensar em algo independente)...
 
+
 $app->get('/api', function () {      
-    
+
+
     $conn1=new Sql();
 
     $result1 = $conn1->sql( basename(__FILE__), 
-    "SELECT *
-       FROM adm_cias");
+    "SELECT 'PROD' CATEGORY, 'DB-MYSQL' DBNAME, DATETIME, USERNAME, OSUSER, MACHINE, TERMINAL, PROGRAM, MODULE, KILLED
+       FROM adm_logins_log where killed is not null  limit 3     
+       ");
 
 
     echo json_encode($result1);
