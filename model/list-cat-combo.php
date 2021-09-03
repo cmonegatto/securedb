@@ -48,7 +48,8 @@ else:
                                                     ON cat.idcat=db.idcat   
                                                  INNER JOIN adm_cias cia                                                 
                                                     ON cia.idcia = cat.idcia
-                                                 WHERE db.iddb = :IDDB
+                                                 WHERE db.iddb = :IDDB 
+                                                   AND db.idcia = :IDCIA  -- linha incluída 28-ago-21 (carregava reg de outra cia) --
                                                  UNION 
                                                  SELECT DISTINCT cat.idcat, cat.category, cat.idcia, cia.cianame
                                                   FROM adm_categories cat

@@ -68,8 +68,10 @@ elseif ($player == 'SQLSRV'):
                               , l.USERNAME    AS USERNAME
                               , l.OSUSER
                               , l.MACHINE
-                              , format(l.BEGIN_DATE,'yyyy/MM/dd HH:mm:ss')  as BEGIN_DATE
-							  , format(l.END_DATE,'yyyy/MM/dd HH:mm:ss')	as END_DATE
+                              -- , format(l.BEGIN_DATE,'yyyy/MM/dd HH:mm:ss')  as BEGIN_DATE
+                              , CONVERT(VARCHAR(10), l.BEGIN_DATE, 103) + ' '  + convert(VARCHAR(8), l.BEGIN_DATE, 14) as BEGIN_DATE
+							  --, format(l.END_DATE,'yyyy/MM/dd HH:mm:ss')	as END_DATE
+                              , CONVERT(VARCHAR(10), l.END_DATE, 103) + ' '  + convert(VARCHAR(8), l.END_DATE, 14) as END_DATE
                               , l.FREETOOLS
                               , l.SESSIONS_PER_USER
                               , l.INIT_PLSQL

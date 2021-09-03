@@ -96,7 +96,8 @@ elseif ($player == 'SQLSRV'):
 
 	$result= $conn->sql( basename(__FILE__), 
 						"SELECT ID_LOG
-							  , format(ll1.DATETIME,'dd/MM/yyyy HH:mm:ss')  as DATETIME
+							  --, format(ll1.DATETIME,'dd/MM/yyyy HH:mm:ss')  as DATETIME
+							  , CONVERT(VARCHAR(10), ll1.DATETIME, 103) + ' '  + convert(VARCHAR(8), ll1.DATETIME, 14) as DATETIME
 							  , DATETIME as DATETIME2
 							  , ll1.USERNAME
 							  , ll1.OSUSER

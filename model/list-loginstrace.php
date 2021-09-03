@@ -49,7 +49,7 @@ if ($player=='OCI'):
            
 elseif ($player=='SQLSRV'):
 
-    
+    // NÃO HÁ RESULTADOS DE TRACE PARA SQL SERVER - ESTÁ DESABILITADO, NÃO VAI ENTRAR NESSE IF
     $result= $conn->sql( basename(__FILE__), 
                         "SELECT ID_LOGIN, format(DATETIME,'dd/MM/yyyy HH:mm:ss') as DATE_TIME, USERNAME, OSUSER, MACHINE, TERMINAL, PROGRAM, MODULE, SPID
                             FROM adm_logins_trace

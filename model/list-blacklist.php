@@ -46,7 +46,9 @@ if ($player == 'OCI'):
                                             ORDER BY datetime2 desc");
 
 elseif ($player == 'SQLSRV'):
-    $result= $conn->sql( basename(__FILE__), "SELECT ID, format(DATETIME,'dd/MM/yyyy HH:mm:ss') as DATETIME, DATETIME as DATETIME2, USERNAME, OSUSER, MACHINE 
+    $result= $conn->sql( basename(__FILE__), "SELECT ID, 
+												-- format(DATETIME,'dd/MM/yyyy HH:mm:ss') as DATETIME, DATETIME as DATETIME2, USERNAME, OSUSER, MACHINE 
+												CONVERT(VARCHAR(10), DATETIME, 103) + ' '  + convert(VARCHAR(8), DATETIME, 14) as DATETIME, DATETIME as DATETIME2, USERNAME, OSUSER, MACHINE 
                                                 FROM adm_logins_locked
                                             ORDER BY datetime2 desc");
 

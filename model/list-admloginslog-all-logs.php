@@ -106,12 +106,13 @@ foreach ($result1 as $key1 => $value) {
 									, ll.MACHINE
 									, ll.PROGRAM
 									, ll.MODULE
-									, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END as TO_KILL
+									-- , CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END as TO_KILL
+									, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when isnull(lk.username,'' ) + isnull(lk.machine,'' ) + isnull(lk.osuser,'' ) ='' THEN 'N' ELSE 'S' END END as TO_KILL
 									, CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0 THEN 1 ELSE 0 END as REGRA
 									, max(id_log) as ID_LOG
 								FROM adm_logins_log ll
 							LEFT JOIN adm_logins_to_kill tk
-								  ON ll.username = tk.username
+									ON ll.username = tk.username
 							--
 							LEFT JOIN adm_logins_locked lk
 									ON CASE WHEN ll.username IS NULL THEN '%' ELSE ll.username END LIKE CASE WHEN lk.username IS NULL THEN '%' ELSE lk.username END
@@ -119,15 +120,19 @@ foreach ($result1 as $key1 => $value) {
 									OR   CASE WHEN lk.machine IS NULL THEN '%' ELSE lk.machine END LIKE CASE WHEN ll.machine IS NULL THEN '%' ELSE ll.machine END
 									)
 								AND   CASE WHEN ll.osuser IS NULL THEN '%' ELSE ll.osuser END LIKE CASE WHEN lk.osuser IS NULL THEN '%' ELSE lk.osuser END
-							  WHERE archived is null
+								WHERE  ll.archived is null
+
 							--
 							GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
-										, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END
+										--, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END
+										, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when isnull(lk.username,'' ) + isnull(lk.machine,'' ) + isnull(lk.osuser,'' ) ='' THEN 'N' ELSE 'S' END END
 							--
 									,CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END
-									,case when concat(lk.username,lk.machine,lk.osuser) IS NULL THEN 'N' ELSE 'S' END 
+									--,case when concat(lk.username,lk.machine,lk.osuser) IS NULL THEN 'N' ELSE 'S' END 
+									,case when isnull(lk.username,'' ) + isnull(lk.machine,'' ) + isnull(lk.osuser,'' ) = '' THEN 'N' ELSE 'S' END 
 								ORDER BY CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0 THEN 1 ELSE 0 END DESC
-										, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END
+										--, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END
+										, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when isnull(lk.username,'' ) + isnull(lk.machine,'' ) + isnull(lk.osuser,'' ) ='' THEN 'N' ELSE 'S' END END
 										, 1 DESC"			
 								);
 

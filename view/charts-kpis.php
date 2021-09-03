@@ -147,7 +147,7 @@ foreach ($result1 as $key1 => $value) {
 
             $Tentativas = $conn2->sql( basename(__FILE__), 
                                 "SELECT count(*) as TOTAL_ACCESS    
-                                   FROM dba_audit_session 
+                                   FROM mv_dba_audit_session 
                                   WHERE timestamp >= trunc(sysdate)-$dayAccess
                                     AND returncode=1017         -- falha na tentativa de login: usuário inexistente ou senha incorreta
                                     AND action_name='LOGON'     -- tentar ajudar o otimizador oracle
@@ -260,7 +260,6 @@ foreach ($result1 as $key1 => $value) {
 
             $DBVersion = $conn2->sql( basename(__FILE__), 
                                 "SELECT
-                                    concat(
                                     CASE
                                         WHEN CONVERT(VARCHAR(128), SERVERPROPERTY ('productversion')) like '8%' THEN 'SQL2000'
                                         WHEN CONVERT(VARCHAR(128), SERVERPROPERTY ('productversion')) like '9%' THEN 'SQL2005'
@@ -272,10 +271,10 @@ foreach ($result1 as $key1 => $value) {
                                         WHEN CONVERT(VARCHAR(128), SERVERPROPERTY ('productversion')) like '14%' THEN 'SQL2017'
                                         WHEN CONVERT(VARCHAR(128), SERVERPROPERTY ('productversion')) like '15%' THEN 'SQL2019'
                                         ELSE 'unknown'
-                                    END,
-                                    ' - ', CONVERT(VARCHAR(128), SERVERPROPERTY('ProductLevel')),
-                                    ' - ', CONVERT(VARCHAR(128), SERVERPROPERTY('Edition')),
-                                    ' - ', CONVERT(VARCHAR(128), SERVERPROPERTY('ProductVersion'))) as VERSION
+                                    END
+                                    + ' - ' + CONVERT(VARCHAR(128), SERVERPROPERTY('ProductLevel'))
+                                    + ' - ' + CONVERT(VARCHAR(128), SERVERPROPERTY('Edition'))
+                                    + ' - ' + CONVERT(VARCHAR(128), SERVERPROPERTY('ProductVersion')) as VERSION
                                     "
                                 );
 

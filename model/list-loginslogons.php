@@ -49,7 +49,10 @@ if ($player=='OCI'):
 elseif ($player=='SQLSRV'):
 
     $result= $conn->sql( basename(__FILE__), 
-                        "SELECT ID_LOGIN, format(DATETIME,'dd/MM/yyyy HH:mm:ss') as DATE_TIME, USERNAME, OSUSER, MACHINE, TERMINAL, PROGRAM, MODULE
+                        "SELECT ID_LOGIN
+                              --, format(DATETIME,'dd/MM/yyyy HH:mm:ss') as DATE_TIME
+                              , CONVERT(VARCHAR(10), DATETIME, 103) + ' '  + convert(VARCHAR(8), DATETIME, 14) as DATE_TIME
+                              , USERNAME, OSUSER, MACHINE, TERMINAL, PROGRAM, MODULE
                             FROM adm_logins_logons ll
                             ORDER BY datetime DESC"
                         );

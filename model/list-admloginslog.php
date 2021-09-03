@@ -98,7 +98,8 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 							, ll.MACHINE
 							, ll.PROGRAM
 							, ll.MODULE
-							, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END as TO_KILL
+							-- , CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END as TO_KILL
+							, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when isnull(lk.username,'' ) + isnull(lk.machine,'' ) + isnull(lk.osuser,'' ) ='' THEN 'N' ELSE 'S' END END as TO_KILL
 							, CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0 THEN 1 ELSE 0 END as REGRA
 							, max(id_log) as ID_LOG
 						  FROM adm_logins_log ll
@@ -115,12 +116,15 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 
 					--
 					  GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
-								 , CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END
+								 --, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END
+								 , CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when isnull(lk.username,'' ) + isnull(lk.machine,'' ) + isnull(lk.osuser,'' ) ='' THEN 'N' ELSE 'S' END END
 					--
 							,CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END
-							,case when concat(lk.username,lk.machine,lk.osuser) IS NULL THEN 'N' ELSE 'S' END 
+							--,case when concat(lk.username,lk.machine,lk.osuser) IS NULL THEN 'N' ELSE 'S' END 
+							,case when isnull(lk.username,'' ) + isnull(lk.machine,'' ) + isnull(lk.osuser,'' ) = '' THEN 'N' ELSE 'S' END 
 						ORDER BY CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0 THEN 1 ELSE 0 END DESC
-								 , CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END
+								 --, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END
+								 , CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when isnull(lk.username,'' ) + isnull(lk.machine,'' ) + isnull(lk.osuser,'' ) ='' THEN 'N' ELSE 'S' END END
 								 , 1 DESC"
 
 /*

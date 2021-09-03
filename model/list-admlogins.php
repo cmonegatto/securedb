@@ -74,8 +74,10 @@ endif;
 								  , l.USERNAME
 								  , l.OSUSER
 								  , l.MACHINE
-								  , format(l.BEGIN_DATE,'dd/MM/yyyy HH:mm:ss')  as BEGIN_DATE
-								  , format(l.END_DATE,'dd/MM/yyyy HH:mm:ss')	as END_DATE
+								  -- , format(l.BEGIN_DATE,'dd/MM/yyyy HH:mm:ss')  as BEGIN_DATE
+								  , CONVERT(VARCHAR(10), l.BEGIN_DATE, 103) + ' '  + convert(VARCHAR(8), l.BEGIN_DATE, 14) as BEGIN_DATE
+								  -- , format(l.END_DATE,'dd/MM/yyyy HH:mm:ss')	as END_DATE
+								  , CONVERT(VARCHAR(10), l.END_DATE, 103) + ' '  + convert(VARCHAR(8), l.END_DATE, 14) as END_DATE
 								  , l.FREETOOLS
 								  , l.SESSIONS_PER_USER
 								  , l.LOG_LOGON
@@ -88,10 +90,13 @@ endif;
 										ELSE 'S'
 									END as TO_KILL
 								  , l.CREATED_BY 									as CREATED_BY
-								  , format(l.CREATED_DATE,'dd/MM/yyyy HH:mm:ss')  	as CREATED_DATE
+								  -- , format(l.CREATED_DATE,'dd/MM/yyyy HH:mm:ss')  	as CREATED_DATE
+								  , CONVERT(VARCHAR(10), l.CREATED_DATE, 103) + ' '  + convert(VARCHAR(8), l.CREATED_DATE, 14) as CREATED_DATE
 								  , l.LAST_UPDATED_BY
-								  , format(l.LAST_UPDATED_DATE,'dd/MM/yyyy HH:mm:ss')  	as LAST_UPDATED_DATE
-								  , format(l.LAST_USED_DATE,'dd/MM/yyyy HH:mm:ss')  	as LAST_USED_DATE
+								  -- , format(l.LAST_UPDATED_DATE,'dd/MM/yyyy HH:mm:ss')  	as LAST_UPDATED_DATE
+								  , CONVERT(VARCHAR(10), l.LAST_UPDATED_DATE, 103) + ' '  + convert(VARCHAR(8), l.LAST_UPDATED_DATE, 14) as LAST_UPDATED_DATE
+								  -- , format(l.LAST_USED_DATE,'dd/MM/yyyy HH:mm:ss')  	as LAST_USED_DATE
+								  , CONVERT(VARCHAR(10), l.LAST_USED_DATE, 103) + ' '  + convert(VARCHAR(8), l.LAST_USED_DATE, 14) as LAST_USED_DATE								  
 							FROM adm_logins l
 							LEFT JOIN adm_logins_to_kill tk
 								ON l.username = tk.username

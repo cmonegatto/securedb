@@ -81,9 +81,9 @@ elseif ($player == 'SQLSRV'):
                      "SELECT DISTINCT u.name as USERNAME, 0 as ADMTRIGGER, k.TOKILL, l.ADMLOGINS
                         from sys.server_principals u
                         left outer join (select username, 1 tokill from adm_logins_to_kill) k
-                             on u.name = k.username
+                             on u.name COLLATE Latin1_General_CI_AS= k.username
                         left outer join (select username, 1 admlogins from adm_logins) l
-                             on u.name = l.username
+                             on u.name COLLATE Latin1_General_CI_AS= l.username
                        where is_disabled=0
                          and type <>'R'
                          and name NOT LIKE 'NT%SERVI%'
