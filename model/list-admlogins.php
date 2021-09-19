@@ -164,7 +164,9 @@ endif;
 
 
 		echo "<td><a href='\admlogins/update/$id'><i class='fa fa-pencil'></i></a></td>";
-		echo "<td><a href='\admlogins/delete/$id'><i class='fa fa-trash'></i></a></td>";
+		//echo "<td><a href='\admlogins/delete/$id'><i class='fa fa-trash'></i></a></td>"; // essa linha deleta sem pedir confirmação. alterada pela linha abaixo!
+		echo "<td><a href='\admlogins/delete/$id' onclick=\"return confirm('Tem certeza que deseja deletar esse registro?');\"><i class='fa fa-trash'></i></a></td>";
+
   		echo "<td>".$result[$key]['ID_LOGIN']."</td>";
   		echo "<td>".$result[$key]['USERNAME']."</td>";
   		echo "<td>".$result[$key]['OSUSER']."</td>";

@@ -475,7 +475,7 @@ endif;
     
 
 /* calcula o tamanho do height para os gráficos, dependendo de quantos bancos existem (tamanho vertical variável) */
-$height = count($ArrayCredenciaisCobertas)*20;
+$height = count($ArrayCredenciaisCobertas)*30;
 $height = $height <= 200 ? 200 : $height;
 
 ?>
@@ -782,7 +782,7 @@ $height = $height <= 200 ? 200 : $height;
                 fillOpacity: 0.1 }},
             chart: {
                 //title: 'Tentavias de quebra de senha último(s) <?php echo $dayAccess ?> dia(s)',
-                title: 'Tentavias de quebra de senha <?php echo $dayAccess==0 ? "(HOJE)" : "(-$dayAccess\d)" ?> ',
+                title: 'Falhas de login <?php echo $dayAccess==0 ? "(HOJE)" : "(-$dayAccess\d)" ?> ',
                 subtitle: 'Alvo: 0'
             },
             legend: { position: 'center', textStyle: { fontSize: 10 } },

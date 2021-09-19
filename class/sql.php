@@ -33,17 +33,19 @@ class Sql {
 
 		elseif ($db=='OCI'):
 
-			$tns = " (DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP) (HOST = ".$hostname.")(PORT = ".$port.")))(CONNECT_DATA = (SID=".$dbname.")))";
+			// $tns = " (DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP) (HOST = ".$hostname.")(PORT = ".$port.")))(CONNECT_DATA = (SID=".$dbname.")))";
+			$tns = " (DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP) (HOST = ".$hostname.")(PORT = ".$port.")))(CONNECT_DATA = (SERVICE_NAME=".$dbname.")))";
+			$tns = "";
 
 			$db = strtolower($db);
 			try{
 				$this->conn = new \PDO(
-					//"{$db}:dbname={$dbname};$tns", $username, $password
-					"$db:dbname=".$tns,$username,$password
+					//"$db:dbname=".$tns,$username,$password  // comentado em 14-set-2021
+					"$db:dbname=".$dbname,$username,$password // alterado em 14-set-2021 para pegar no TNSNAMES usa TNS_ADMIN do S.O.
 				);
 			}catch(PDOException $e){
 				//echo ($e->getMessage());
-				$_SESSION['msg'] = "Ocorreu um erro na conexão com banco de dados. Verifique os dados de conexão - " . ($e->getMessage());
+				$_SESSION['msg'] = "Ocorreu um erro na conexão com banco de dados. Verifique os dados de conexão (tnsnames.ora e variável TNS_ADMIN) - " . ($e->getMessage());
 				$_SESSION['msg'] = $_SESSION['msg']."$db:dbname=".$tns .'/'. $username .'/**************';
 			}
 

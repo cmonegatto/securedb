@@ -34,7 +34,7 @@ $datetime = date("Y-m-d", strtotime("now")) . 'T' . date("H:i", strtotime("now")
             <form method="post" action="../model/ins-blacklist.php">
 
 
-                <h3>Black List de usuários (new)</h3>  
+                <h3>Lista de usuários Bloqueados (new)</h3>  
 
                 <hr />
 

@@ -184,7 +184,7 @@ $player = $_SESSION['player'];
 
                 <!-- <a href="#" class="btn btn-danger   btn-custom"><span class="img-circle text-primary                btn-icon"></span>User Lock down</a> -->
                 <a href="\loginstokill" class="btn btn-danger       btn-custom"><span class="fa fa-lock img-circle                                              text-primary btn-icon"></span> Ativar Bloqueio</a>
-                <a href="\blacklist"    class="btn btn-dark         btn-custom"><span class="fa fa-user-times black-list                                        text-primary btn-icon"></span> Black List</a>
+                <a href="\blacklist"    class="btn btn-dark         btn-custom"><span class="fa fa-user-times black-list                                        text-primary btn-icon"></span> Lista de Bloqueios</a>
                 <a href="\loginstools"  class="btn btn-warning    btn-custom"><span class="fa fa-times-circle img-circle                                      text-primary btn-icon"></span> Aplicações proibidas</a>
                 <a href="\loginslogons" class="btn btn-secondary    btn-custom"><span class="fa fa-search img-circle                                            text-primary btn-icon"></span> Histórico de acessos</a>
                 <a href="\loginstrace"  class="btn btn-secondary    btn-custom <?php echo $player<>'OCI'?'disabled':'' ?>"><span class="fa fa-search img-circle text-primary btn-icon"></span> Traces gerados</a>

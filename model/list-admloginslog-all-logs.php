@@ -68,7 +68,16 @@ foreach ($result1 as $key1 => $value) {
 										OR   decode(lk.machine , NULL, '%', lk.machine) LIKE ll.MACHINE
 											)
 										AND   ll.OSUSER   LIKE decode(lk.osuser  , NULL, '%', lk.osuser) 
-									  WHERE archived is null
+									  WHERE archived is null 
+
+									    -- essa parte é para não apresentar os vermelhos --
+									    and (SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module)>=0
+										      and decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S')) = 'N'
+											)
+										  or (SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module)=0
+										      and decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S')) = 'S'
+											)
+										--
 								GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
 											, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S'))
 								ORDER BY SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) DESC
@@ -120,7 +129,10 @@ foreach ($result1 as $key1 => $value) {
 									OR   CASE WHEN lk.machine IS NULL THEN '%' ELSE lk.machine END LIKE CASE WHEN ll.machine IS NULL THEN '%' ELSE ll.machine END
 									)
 								AND   CASE WHEN ll.osuser IS NULL THEN '%' ELSE ll.osuser END LIKE CASE WHEN lk.osuser IS NULL THEN '%' ELSE lk.osuser END
-								WHERE  ll.archived is null
+								WHERE  ll.archived is null 
+								
+								-- essa parte é para não apresentar os vermelhos --
+								and securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)>=0
 
 							--
 							GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
@@ -200,7 +212,10 @@ foreach ($result1 as $key1 => $value) {
 							OR   if( isnull(lk.machine), '%', lk.machine) LIKE if( isnull(ll.machine) , '%', ll.machine)
 								)
 							AND   if( isnull(ll.osuser), '%', ll.osuser) LIKE if( isnull( lk.osuser), '%', lk.osuser)
-							WHERE  ll.archived is null
+							WHERE  ll.archived is null 
+							
+							-- essa parte é para não apresentar os vermelhos --							
+							and F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)>=0							
 
 					--
 						GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
