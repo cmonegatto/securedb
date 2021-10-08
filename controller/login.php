@@ -97,7 +97,7 @@ if (isset($result[0]['email']) && $result[0]['status']):
 
 	endif;
 
-	$_SESSION['s_shortnameuser'] = substr($result[0]['name'], 0, strpos($result[0]['name'], ' ')) . $role; //primeiro nome
+	$_SESSION['s_shortnameuser'] = substr($result[0]['name'], 0, strpos($result[0]['name'] . ' ', ' ')) . $role; //primeiro nome
 
 elseif (isset($result[0]['email']) && !$result[0]['status']):
 	$_SESSION['msg'] ='Esse usuário está inativo!';

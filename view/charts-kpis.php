@@ -491,7 +491,7 @@ $height = $height <= 200 ? 200 : $height;
 
         function drawChartCredenciaisCobertas() {
         var data = google.visualization.arrayToDataTable([
-            ['Databases', 'Cobertura'],
+            ['Instâncias', 'Cobertura'],
         <?php
             foreach ($ArrayCredenciaisCobertas as $key => $value){
                 echo '["' . $ArrayCredenciaisCobertas[$key]['database'] . '", ' . $ArrayCredenciaisCobertas[$key]['kill_users']/100 . '], ';
@@ -505,7 +505,7 @@ $height = $height <= 200 ? 200 : $height;
                 //fill: '#FF0000',
                 fillOpacity: 0.1 }},
             chart: {
-                title: 'Cobertura de Credenciais por database',
+                title: 'Cobertura de Credenciais por instância',
                 subtitle: 'Alvo: 100%'
             },
             legend: { position: 'center', textStyle: { fontSize: 10 } },
@@ -527,7 +527,7 @@ $height = $height <= 200 ? 200 : $height;
 
         function drawChartAcessos() {
         var data = google.visualization.arrayToDataTable([
-            ['Databases', 'Sem regra', 'Bloqueado', 'Derrubado'],
+            ['Instâncias', 'Sem regra', 'Bloqueado', 'Derrubado'],
             <?php
                 foreach ($ArrayAcessos as $key => $value){
                     //echo '["' . $ArrayAcessos[$key]['database'] . '", ' . $ArrayAcessos[$key]['suspect'] . ', ' . $ArrayAcessos[$key]['killed'] . ', ' . '], ';
@@ -579,7 +579,7 @@ $height = $height <= 200 ? 200 : $height;
         google.charts.setOnLoadCallback(drawChartRegras);
         function drawChartRegras() {
         var data = google.visualization.arrayToDataTable([
-            ['Databases', 'Quantidade'],
+            ['Instâncias', 'Quantidade'],
             <?php
                 foreach ($ArrayRegras as $key => $value){
                     echo '["' . $ArrayRegras[$key]['database'] . '", ' . $ArrayRegras[$key]['total_users'] . '], ';
@@ -616,7 +616,7 @@ $height = $height <= 200 ? 200 : $height;
         google.charts.setOnLoadCallback(drawChartSuperUsers);
         function drawChartSuperUsers() {
         var data = google.visualization.arrayToDataTable([
-            ['Databases', 'Quantidade'],
+            ['Instâncias', 'Quantidade'],
             <?php
                 foreach ($ArraySuperUsers as $key => $value){
                     echo '["' . $ArraySuperUsers[$key]['database'] . '", ' . $ArraySuperUsers[$key]['total_users'] . '], ';                    
@@ -691,7 +691,7 @@ $height = $height <= 200 ? 200 : $height;
         google.charts.setOnLoadCallback(drawChartAcessosTOP);
         function drawChartAcessosTOP() {
         var data = google.visualization.arrayToDataTable([
-            ['Databases', 'Quantidade'],
+            ['Instâncias', 'Quantidade'],
             <?php
                 foreach ($ArrayAcessosTOP as $key => $value){
                     if ($key >= 10): break; endif; // Mostrar somente 10 registros do array (TOP 10)
@@ -767,7 +767,7 @@ $height = $height <= 200 ? 200 : $height;
         google.charts.setOnLoadCallback(drawChartTentativa);
         function drawChartTentativa() {
         var data = google.visualization.arrayToDataTable([
-            ['Databases', 'Quantidade'],
+            ['Instâncias', 'Quantidade'],
             <?php
                 foreach ($ArrayTentativas as $key => $value){
                     echo '["' . $ArrayTentativas[$key]['database'] . '", ' . $ArrayTentativas[$key]['total_access'] . '], ';                    
@@ -819,7 +819,7 @@ $height = $height <= 200 ? 200 : $height;
             chartArea: {
                 backgroundColor: {
                 fillOpacity: 0.1 }},
-                title: 'Sumarização das versões dos Databases',      
+                title: 'Sumarização das versões das Instâncias',
                 //pieHole: 0.4,
                 is3D: true,
             legend: { position: 'center', textStyle: { fontSize: 10 } },

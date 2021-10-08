@@ -31,7 +31,7 @@ include_once 'include/menu_inc.php';
 
                             <th scope="col">Categoria</th>
                             <th scope="col">Alias DB</th>
-                            <th scope="col">SID (dbname)</th>
+                            <th scope="col">TNS/(dbname)</th>
                             <th scope="col">Hostname</th>
                             <th scope="col">Port</th>
                             <th scope="col">Player</th>

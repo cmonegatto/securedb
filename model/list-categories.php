@@ -28,7 +28,9 @@ foreach ($result as $key => $value) {
 		$id = $result[$key]["idcat"];
 
 		echo "<td><a href='\categories/update/$id'><i class='fa fa-pencil'></i></a></td>";
-		echo "<td><a href='\categories/delete/$id'><i class='fa fa-trash'></i></a></td>";
+		echo "<td><a href='\categories/delete/$id' onclick=\"return confirm('Tem certeza que deseja deletar esse registro?');\"><i class='fa fa-trash'></i></a></td>";
+
+
 		if ($_SESSION['s_superuser']) echo "<td>".$result[$key]['cianame']."</td>";		
   		echo "<td>".$result[$key]['category']."</td>";
 		echo "<td>".$result[$key]['descat']."</td>

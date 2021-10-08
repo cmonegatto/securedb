@@ -21,7 +21,7 @@ foreach ($result as $key => $value) {
 		echo "<td><a href='\company/update/$id'><i class='fa fa-pencil'></i></a></td>";
 
 		if ($_SESSION['s_superuser']):
-			echo "<td><a href='\company/delete/$id'><i class='fa fa-trash'></i></a></td>";
+			echo "<td><a href='\company/delete/$id' onclick=\"return confirm('Tem certeza que deseja deletar esse registro?');\"><i class='fa fa-trash'></i></a></td>";
 		else:
 			echo "<td><a href='#'><i class='fa fa-trash'></i></a></td>";
 		endif;

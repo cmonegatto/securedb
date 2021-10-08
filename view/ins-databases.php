@@ -54,8 +54,8 @@ include_once 'include/menu_inc.php';
 
 
             <div class="form-group col-md-4">
-                <label for="dbname">SID/(dbname)</label>
-                <input type="text" name="dbname" class="form-control" id="dbname" required>
+                <label for="dbname">TNS/(dbname)</label>
+                <input type="text" name="dbname" class="form-control" id="dbname" required > 
             </div>
 
         </div>
@@ -80,7 +80,7 @@ include_once 'include/menu_inc.php';
 
             <div class="form-group col-md-4">
                 <label  for="hostname">Hostname</label>
-                <input type="text" name="hostname" class="form-control" id="hostname" required>
+                <input type="text" name="hostname" class="form-control" id="hostname" required > <!-- required: colocar dependendo do banco -->
             </div>          
 
             <div class="form-group col-md-2">
@@ -114,6 +114,23 @@ include_once 'include/menu_inc.php';
     </form>
 
 </div>
+
+
+<script>
+
+    $('#player').change(function(){        
+        if( $(this).val() == 'OCI') {
+            document.getElementById("hostname").value = '';
+            document.getElementById("port").value = '';
+            document.getElementById("hostname").disabled = true;
+            document.getElementById("port").disabled = true;
+        } else {
+            document.getElementById("hostname").disabled = false;
+            document.getElementById("port").disabled = false;
+        }
+    });
+
+</script>
 
 
 <?php include_once 'include/footer_inc.php' ?>

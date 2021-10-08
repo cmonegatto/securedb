@@ -72,7 +72,7 @@ foreach ($result as $key => $value) {
 
 
 	echo "</tr>";
-	echo "<td style='text-align:center'><a href='\blacklist/delete/$id'><i class='fa fa-trash'></i></a></td>";
+	echo "<td style='text-align:center'><a href='\blacklist/delete/$id' onclick=\"return confirm('Tem certeza que deseja deletar esse registro?');\"><i class='fa fa-trash'></i></a></td>";
 	echo "<td>".$datetime."</td>";
 	echo "<td>".$username."</td>";
 	echo "<td>".$osuser."</td>";

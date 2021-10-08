@@ -119,6 +119,7 @@ $loglogon		    = ($result[0]["LOG_LOGON"]=="S") ? "checked" : "";
 $trace		        = ($result[0]["TRACE"]=="S") ? "checked" : "";
 $cursorsharing		= ($result[0]["CURSOR_SHARING"]=="S") ? "checked" : "";
 
+
 $begindate = date("Y-m-d", strtotime($result[0]['BEGIN_DATE'])) . 'T' . date("H:i", strtotime($result[0]['BEGIN_DATE']));
 
 if ($enddate):

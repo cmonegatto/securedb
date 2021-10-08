@@ -60,6 +60,7 @@ endif;
 								  , l.LAST_UPDATED_BY
 								  , to_char(l.last_updated_date, 'dd/mm/yy hh24:mi') as LAST_UPDATED_DATE
 								  , to_char(l.last_used_date, 'dd/mm/yy hh24:mi') 	 as LAST_USED_DATE
+								  , l.FLAG
 							FROM adm_logins l
 							LEFT JOIN adm_logins_to_kill tk
 								ON l.username = tk.username
@@ -97,6 +98,7 @@ endif;
 								  , CONVERT(VARCHAR(10), l.LAST_UPDATED_DATE, 103) + ' '  + convert(VARCHAR(8), l.LAST_UPDATED_DATE, 14) as LAST_UPDATED_DATE
 								  -- , format(l.LAST_USED_DATE,'dd/MM/yyyy HH:mm:ss')  	as LAST_USED_DATE
 								  , CONVERT(VARCHAR(10), l.LAST_USED_DATE, 103) + ' '  + convert(VARCHAR(8), l.LAST_USED_DATE, 14) as LAST_USED_DATE								  
+								  , l.FLAG
 							FROM adm_logins l
 							LEFT JOIN adm_logins_to_kill tk
 								ON l.username = tk.username
@@ -131,6 +133,7 @@ endif;
 								  , l.LAST_UPDATED_BY
 								  , DATE_FORMAT(l.LAST_UPDATED_DATE, '%d/%m/%Y %H:%i:%s') as LAST_UPDATED_DATE
 								  , DATE_FORMAT(l.LAST_USED_DATE, '%d/%m/%Y %H:%i:%s') as LAST_USED_DATE
+								  , l.FLAG
 							FROM adm_logins l
 							LEFT JOIN adm_logins_to_kill tk
 								ON l.username = tk.username
@@ -141,14 +144,19 @@ endif;
 							
 	endif;
 
-			  
-
-
-
+	 
 	foreach ($result as $key => $value) {
 		
 		$id 	  = $result[$key]['ID_LOGIN'];
 		$username = $result[$key]['USERNAME'];
+
+		if ($result[$key]['FLAG']):
+			echo "<tr class='to-conf'>";
+			echo "<td><a href='\admlogins/update-toconf/$id'><i class='fa fa-question-circle fa-2x'></i></a></td>";
+		else: 
+			echo "<tr class=''>";
+			echo "<td><a href='\admlogins/update-toconf/$id'><i class='fa fa-question-circle fa-1x'></i></a></td>";
+		endif;
 
 		
 

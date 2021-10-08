@@ -26,8 +26,8 @@ id #
 h3 {
     padding-top: 10px;
 	padding-bottom: 0px;
-	/* color: #A2CD5A; */
-	color : gray;
+	/* color: #A2CD5A; 
+	color : gray; */
 
 }
 
@@ -123,7 +123,20 @@ table#myTable tr.rule td {
 table#myTable tr.todie td {
 	color: rgb(228, 40, 16);
 	background: black;	
-	}
+}
+
+
+/* colorindo registros da adm_logins que campo FLAG='*', ou seja, existe dúvida para essa regra continuar */
+table#myTable tr.to-conf td {
+/*
+	color: red;
+	background: rgb(224, 255, 225);
+*/
+	/* background: rgba(255, 255, 0, 0.651); */
+	background: #FFF68F;
+	color: brown;
+}
+	
 
 /* fundo preto da tabelas adm_logins_log para realçar cores das linhas com regras */
 table.tab-admloginslog td {

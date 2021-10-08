@@ -236,6 +236,12 @@ $app->get('/admlogins/update/:id', function ($id) use ($app) {
     $app->render('upd-admlogins.php', $data, 200);         
 });
 
+
+$app->get('/admlogins/update-toconf/:id', function ($id) use ($app) {
+    $data = array("data"=>array("id"=>$id));
+    $app->render('../model/upd-admlogins-toconf.php', $data, 200);
+});
+
 $app->get('/admlogins/delete/:id', function ($id) use ($app) {
     $data = array("data"=>array("id"=>$id));
     $app->render('../model/del-admlogins.php', $data, 200);

@@ -88,8 +88,8 @@ $password	= encrypt_decrypt('decrypt', $result[0]["password"]);
 
 
             <div class="form-group col-md-4">
-                <label for="dbname">SID/(dbname)</label>
-                <input type="text" name="dbname" class="form-control" id="dbname" value="<?php echo $dbname ?>" required>
+                <label for="dbname">TNS/(dbname)</label>
+                <input type="text" name="dbname" class="form-control" id="dbname" value="<?php echo $dbname ?>" required > 
             </div>
 
         </div>
@@ -114,7 +114,7 @@ $password	= encrypt_decrypt('decrypt', $result[0]["password"]);
 
             <div class="form-group col-md-4">
                 <label  for="hostname">Hostname</label>
-                <input type="text" name="hostname" class="form-control" id="hostname" value="<?php echo $hostname ?>" required>
+                <input type="text" name="hostname" class="form-control" id="hostname" value="<?php echo $hostname ?>" > <!-- required: colocar dependendo do banco -->
             </div>          
 
             <div class="form-group col-md-2">
@@ -137,6 +137,36 @@ $password	= encrypt_decrypt('decrypt', $result[0]["password"]);
     </form>
 
 </div>
+
+<script>
+
+    $('#player').after(function(){        
+        if( $(this).val() == 'OCI') {
+            document.getElementById("hostname").value = '';
+            document.getElementById("port").value = '';
+            document.getElementById("hostname").disabled = true;
+            document.getElementById("port").disabled = true;
+        } else {
+            document.getElementById("hostname").disabled = false;
+            document.getElementById("port").disabled = false;
+        }
+    });
+
+
+    $('#player').change(function(){        
+        if( $(this).val() == 'OCI') {
+            document.getElementById("hostname").value = '';
+            document.getElementById("port").value = '';
+            document.getElementById("hostname").disabled = true;
+            document.getElementById("port").disabled = true;
+        } else {
+            document.getElementById("hostname").disabled = false;
+            document.getElementById("port").disabled = false;
+        }
+    });
+
+</script>
+
 
 
 <?php include_once 'include/footer_inc.php' ?>

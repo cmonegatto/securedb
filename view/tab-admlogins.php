@@ -121,12 +121,12 @@ $player = $_SESSION['player'];
                 <div class="row">   
                     <div class="form-group col-md-6">
                         <label for="initplsql">PL/SQL para inicialização</label>
-                        <textarea class="form-control" name="initplsql" id="initplsql" rows="3" maxlength="4000" <?php echo $player<>'OCI'?'disabled':'' ?> ></textarea>
+                        <textarea class="form-control" name="initplsql" id="initplsql" rows="2" maxlength="4000" <?php echo $player<>'OCI'?'disabled':'' ?> ></textarea>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="comments">Comentários sobre essa regra...</label>
-                        <textarea class="form-control" name="comments" id="comments" rows="3" maxlength="4000"></textarea>
+                        <textarea class="form-control" name="comments" id="comments" rows="2" maxlength="4000"></textarea>
                     </div>
 
                 </div>
@@ -202,6 +202,7 @@ $player = $_SESSION['player'];
                 <table class="table table-hover tab-admlogins table-bordered display nowrap" id="myTable" style="width:100%"> 
                     <thead>
                         <tr>
+                            <th scope="col"></th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                             <th scope="col"></th>

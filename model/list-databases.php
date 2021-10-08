@@ -35,7 +35,11 @@ foreach ($result as $key => $value) {
 		$idcia = $result[$key]["idcia"];
 
 		echo "<td><a href='\databases/update/$iddb/$idcia'><i class='fa fa-pencil'></i></a></td>";
-		echo "<td><a href='\databases/delete/$iddb'><i class='fa fa-trash'></i></a></td>";
+		// echo "<td><a href='\databases/delete/$iddb'><i class='fa fa-trash'></i></a></td>";
+
+		echo "<td><a href='\databases/delete/$iddb' onclick=\"return confirm('Tem certeza que deseja deletar esse registro?');\"><i class='fa fa-trash'></i></a></td>";
+
+
 		if ($_SESSION['s_superuser']) echo "<td>".$result[$key]['cianame']."</td>";		
 		echo "<td>".$result[$key]['category']."</td>";
 		echo "<td>".$result[$key]['aliasdb']."</td>";
