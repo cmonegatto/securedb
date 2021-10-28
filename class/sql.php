@@ -52,6 +52,7 @@ class Sql {
 		elseif ($db=='SQLSRV'):
 
 			$db = strtolower($db);
+
 			try{
 				$this->conn = new \PDO(
 					"$db:Database=$dbname;server=$hostname;ConnectionPooling=0", $username, $password

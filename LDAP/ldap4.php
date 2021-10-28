@@ -6,14 +6,15 @@
 //$domain = '@forumsys.com';
 //$port = 389;
 
-
     $ldap_server = "ldap.forumsys.com";
     $dominio = "@forumsys.com"; //Dominio local ou global
-    $user = "newton"; //.$dominio;
-    //$user = "uid=newton, dc=example,dc=com";
+    //$user = "newton"; //.$dominio;
+    $user = "uid=newton, dc=example,dc=com";
     $ldap_porta = "389";
     $ldap_pass   = 'password';
     $ldapcon = ldap_connect($ldap_server, $ldap_porta) or die("Could not connect to LDAP server.");
+
+    //ldap_set_option($ldapcon, LDAP_OPT_PROTOCOL_VERSION, 3);
 
     if ($ldapcon){
 

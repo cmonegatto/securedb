@@ -148,8 +148,8 @@ $password	= encrypt_decrypt('decrypt', $result[0]["password"]);
             document.getElementById("port").disabled = true;
         } else {
             document.getElementById("hostname").disabled = false;
-            document.getElementById("port").disabled = false;
         }
+        document.getElementById("port").disabled = true;
     });
 
 
@@ -163,6 +163,8 @@ $password	= encrypt_decrypt('decrypt', $result[0]["password"]);
             document.getElementById("hostname").disabled = false;
             document.getElementById("port").disabled = false;
         }
+        document.getElementById("port").disabled = true;
+
     });
 
 </script>

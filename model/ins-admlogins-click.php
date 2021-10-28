@@ -123,6 +123,7 @@ if ($result[0]['QTD'] >0) :
 
     elseif ($player == 'MYSQL'):
         $result= $conn->sql( basename(__FILE__), 
+                            /*
                             "UPDATE adm_logins 
                             SET freetools = freetools + '; ' + ll.program,
                             last_updated_by = :LAST_UPDATED_BY, last_updated_date = NOW()    
@@ -135,8 +136,21 @@ if ($result[0]['QTD'] >0) :
                             and if(isnull(adm_logins.machine),'', adm_logins.machine)        = if(isnull(ll.machine),'', ll.machine)",
                             array(":ID_LOG"=> $id_log, ":LAST_UPDATED_BY" => $loginname)
                             );
+                            */
+                            
+                            "UPDATE adm_logins l
+                            JOIN adm_logins_log ll
+                            on if(isnull(l.username),'', l.username)    = if(isnull(ll.username),'', ll.username)
+                                and if(isnull(l.osuser),'', l.osuser)   = if(isnull(ll.osuser),'', ll.osuser)
+                                and if(isnull(l.machine),'', l.machine) = if(isnull(ll.machine),'', ll.machine)    
+                            SET freetools = concat(freetools, '; ', (select program from adm_logins_log where  id_log=:ID_LOG)),
+                            last_updated_by = :LAST_UPDATED_BY, last_updated_date = NOW()
+                            where ll.id_log=:ID_LOG",
+                            array(":ID_LOG"=> $id_log, ":LAST_UPDATED_BY" => $loginname)
+                        );
+                    
 
-    
+
     endif;
 
 

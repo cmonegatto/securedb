@@ -117,6 +117,18 @@ include_once 'include/menu_inc.php';
 
 
 <script>
+    $('#player').after(function(){        
+        if( $(this).val() == 'OCI') {
+            document.getElementById("hostname").value = '';
+            document.getElementById("port").value = '';
+            document.getElementById("hostname").disabled = true;
+            document.getElementById("port").disabled = true;
+        } else {
+            document.getElementById("hostname").disabled = false;
+        }
+        document.getElementById("port").disabled = true;
+    });
+
 
     $('#player').change(function(){        
         if( $(this).val() == 'OCI') {
@@ -128,6 +140,7 @@ include_once 'include/menu_inc.php';
             document.getElementById("hostname").disabled = false;
             document.getElementById("port").disabled = false;
         }
+        document.getElementById("port").disabled = true;
     });
 
 </script>
