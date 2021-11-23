@@ -216,6 +216,13 @@ $app->get('/databases/delete/:p', function ($p) use ($app) {
 *  ROTAS PARA CRUD (tela de log do logins_log)
 * --------------------------------------------------------------------------- */
 
+$app->get('/admloginsAll/:idcat', function ($idcat) use ($app){   
+    $data = array("data"=>array("idcat"=>$idcat));
+    $app->render('tab-admlogins-all.php', $data, 200);
+});
+
+
+
 
 $app->get('/admlogins', function () use ($app){       
     $app->render('tab-admlogins.php');
@@ -396,17 +403,12 @@ $app->get('/blacklist/delete/:id', function ($id) use ($app){
 * --------------------------------------------------------------------------- */
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-if (strpos($url, '/kpi') !== false && !($_SESSION['s_superuser']) && !($_SESSION['s_admin']) ):
-    header("Location: /");    
-    exit;
-endif;
+//if (strpos($url, '/kpi') !== false && !($_SESSION['s_superuser']) && !($_SESSION['s_admin']) ):
+//    header("Location: /");    
+//    exit;
+//endif;
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-/*
-$app->get('/kpi', function () use ($app){
-    $app->render('charts-view.php');    
-});
-*/
 
 $app->get('/kpi/:idcat/:dayAccess/:dayRules', function ($idcat, $dayAccess, $dayRules) use ($app){      
     $data = array("data"=>array("idcat"=>$idcat, "dayAccess"=>$dayAccess, "dayRules"=>$dayRules ));

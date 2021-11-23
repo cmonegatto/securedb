@@ -62,6 +62,7 @@ $_SESSION['idcat']  = $idcat;
                         <tr>
                             <th style="width:10%" scope="col">Status</th>
                             <th style="width:10%" scope="col">Regras</th>
+                            <th style="width:10%" scope="col">Alerta</th>
                             <th scope="col">Username/Owner</th>
                             <th scope="col">Observação</th>
                         </tr>

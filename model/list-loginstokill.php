@@ -46,7 +46,7 @@ if ($player == 'OCI'):
     //tratativa da ordenação para Oracle caso parâmetro lockNoRule esteja ON ou OFF
 
     
-    $orderby = "order by 1";
+    $orderby = "order by 3,1";
 
     $result= $conn->sql( basename(__FILE__), 
                      "SELECT DISTINCT u.username, adm.admtrigger, k.tokill, l.admlogins
@@ -75,7 +75,7 @@ if ($player == 'OCI'):
 
 elseif ($player == 'SQLSRV'):
 
-    $orderby = "order by 1";
+    $orderby = "order by 3 desc,1";
 
     $result= $conn->sql( basename(__FILE__),  
                      "SELECT DISTINCT u.name as USERNAME, 0 as ADMTRIGGER, k.TOKILL, l.ADMLOGINS
@@ -94,10 +94,10 @@ elseif ($player == 'SQLSRV'):
 
 elseif ($player == 'MYSQL'):
 
-    $orderby = "order by 1";
+    $orderby = "order by 3 desc,1";
 
     $result= $conn->sql( basename(__FILE__),  
-                    "SELECT DISTINCT u.user as USERNAME, 0 as ADMTRIGGER, k.TOKILL as TOKILL, l.ADMLOGINS as ADMLOGINS
+                    "SELECT DISTINCT u.user as USERNAME, if(u.super_priv='Y', 1, 0) as ADMTRIGGER, k.TOKILL as TOKILL, l.ADMLOGINS as ADMLOGINS
                        from mysql.user u
                        left outer join (select username, 1 tokill from adm_logins_to_kill) k
                             on u.user = k.username
@@ -108,7 +108,6 @@ elseif ($player == 'MYSQL'):
     
 
 endif;
-
 
 
 /*
@@ -156,6 +155,14 @@ foreach ($result as $key => $value) {
     
     if ($result[$key]['ADMLOGINS']):
         echo "<td style='text-align:center'><i td style='color:white'; class='fa fa-list'></i></td>";
+    else:
+        echo "<td></td>";
+    endif;
+    
+    // se a credencial tiver ADM DATABASE TRIGGER vai aparecer um Warning na coluna
+    if ($result[$key]['ADMTRIGGER']):
+        echo "<td style='text-align:center'><i class='fa fa-exclamation-triangle'></i></a></td>";
+        $msg = 'Esse usuário não pode ser derrubado no momento de logon';
     else:
         echo "<td></td>";
     endif;

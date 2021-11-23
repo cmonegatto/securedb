@@ -41,7 +41,8 @@ class Sql {
 			try{
 				$this->conn = new \PDO(
 					//"$db:dbname=".$tns,$username,$password  // comentado em 14-set-2021
-					"$db:dbname=".$dbname,$username,$password // alterado em 14-set-2021 para pegar no TNSNAMES usa TNS_ADMIN do S.O.
+					//"$db:dbname=".$dbname,$username,$password // alterado em 14-set-2021 para pegar no TNSNAMES usa TNS_ADMIN do S.O.
+					"$db:dbname=".$dbname.";charset=utf8",$username,$password // alterado em 14-set-2021 para pegar no TNSNAMES usa TNS_ADMIN do S.O.
 				);
 			}catch(PDOException $e){
 				//echo ($e->getMessage());
@@ -135,10 +136,10 @@ class Sql {
 			$error_message = $stmt->errorInfo()[2];	
 
 
-			if ( strpos($error_message, 'ORA-00001') || strpos($error_message, 'uplicate')>0 ):
-				$_SESSION['msg'] = "Erro na transação com banco de dados: Esse registro já existe! - ".$error_message;
+			if ( strpos($error_message, 'ORA-00001') || strpos($error_message, 'uplica')>0 ):
+				$_SESSION['msg'] = "Não foi possível atualizar o banco de dados. Esse registro já existe! "; //.$error_message;
 			else:
-				$_SESSION['msg'] = "Erro na transação com banco de dados: " . $error_message;
+				$_SESSION['msg'] = "Não foi possível atualizar o banco de dados, verifique com o Administrador da aplicação"; //. $error_message;
 			endif;
 
 			$conn2 = new Sql();

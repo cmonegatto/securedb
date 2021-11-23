@@ -17,7 +17,7 @@ $days = -1; //$data['days'];
             <form method="post" action="\admlogins">
 
 
-                <h3>Consultar Cobertura das Regras</h3>  
+                <h3>Consultar Regras</h3>  
 
                 <hr />
 
@@ -56,26 +56,43 @@ $days = -1; //$data['days'];
 
 
                 <!--<table class="table tab-admloginslog-all table-bordered" id="myTable" style="width:100%"> -->
-                <table class="table table-dark  tab-admloginslog" id="myTable" style="width:100%"> 
+                <!-- <table class="table table-dark  tab-admloginslog" id="myTable" style="width:100%">  -->
+
+                <table class="table table-hover tab-admlogins table-bordered display nowrap" id="myTable" style="width:100%"> 
+
 
                     <thead>
                         <tr>
-                            <th scope="col">Tit.</th>
-                            <th scope="col">Instância</th>
-                            <th scope="col">Qtd</th>
                             <th scope="col"></th>
+                            <th scope="col">Instância</th>
+                            <th scope="col">ID</th>
                             <th scope="col">Username</th>
                             <th scope="col">OsUser</th>
                             <th scope="col">Machine</th>
-                            <th scope="col">Program</th>
-                            <th scope="col">Module</th>
+                            <th scope="col">Data Inicio</th>
+                            <th scope="col">Logar</th>
+                            <th scope="col">Ferramentas</th>
+                            <th scope="col">Último Uso</th>
+                            <!--
+                            <th scope="col">Begin Date</th>
+                            <th scope="col">End Data</th>
+                            <th scope="col">Sessões</th>
+                            <th scope="col">Hist</th>
+                            <th scope="col">Trace</th>
+                            <th scope="col">Comentários</th>
+                            <th scope="col">Criado por</th>
+                            <th scope="col">Dt Criação</th>
+                            <th scope="col">Última atualização por</th>
+                            <th scope="col">Dt última atualização</th>
+                            <th scope="col">Última utilização</th>
+                            -->
                         </tr>
                     </thead>
                     <tbody>
 
                         <?php 
                             if ($_SESSION['idcat'] <> 0):
-                                include_once 'model/list-admloginslog-all-logs.php';                            
+                                include_once 'model/list-admlogins-all.php';                            
                             endif;
                         ?>
 
@@ -84,12 +101,9 @@ $days = -1; //$data['days'];
                 </table>
 
                 <!-- <button type="submit" class="btn btn-primary">Gestão das Regras</button> -->
-                <span class="fa fa-square" style="color:yellow; padding-left:0px"></span>                
-                Sem Regra
-                <span class="fa fa-square" style="color:red"></span>
-                Bloquear
-                <span class="fa fa-square" style="color:green"></span>
-                Liberar
+                <span class="fa fa-square" style="color:#FFF68F; padding-left:0px"></span>                
+                Regras que necessitam de confirmação
+
                 
                 <br><br>
                 <?php
@@ -116,7 +130,8 @@ $days = -1; //$data['days'];
         //alert ("dias: " + days);
 
         if (idcat !== "") {
-            window.location=`\../../admloginslogall/${idcat}`;
+            // window.location=`\../../admloginslogall/${idcat}`;
+            window.location=`\../../admloginsAll/${idcat}`;
 
         };    
 

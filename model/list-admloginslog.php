@@ -229,8 +229,9 @@ if (isset($_SESSION['iddb']) && $_SESSION['iddb'] >0 ) :
 
 		
 		if ($cadeado && $result[$key]['TO_KILL'] == "N"):
-			//echo "<td style='text-align:center'><i class='fa fa-unlock x'></i></a></td>";
-			echo "<td style='text-align:center'><a href='\admlogins/lockuser/$user_name'><i class='fa fa-unlock x'></i></a></td>";
+			// abaixo configura opção do cadeado: a primeira só mostra o cadeado, a segunda permite clicar e aitvar KILL
+			echo "<td style='text-align:center'><i class='fa fa-unlock x'></i></a></td>";
+			//echo "<td style='text-align:center'><a href='\admlogins/lockuser/$user_name'><i class='fa fa-unlock x'></i></a></td>";
 
 		else:
 			echo "<td></td>";			                

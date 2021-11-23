@@ -234,6 +234,7 @@ foreach ($result1 as $key1 => $value) {
 		
 		if (strlen($_SESSION['msg']) > 0 ):
 			echo "<tr class='$pauta none'>";
+			echo "<td></td>";
 			echo "<td style='text-align:center'>".$aliasdb."</td>";
 			echo "<td></td>";
 			echo "<td></td>";
@@ -269,8 +270,10 @@ foreach ($result1 as $key1 => $value) {
                 echo "<tr class='$pauta todie'>";
             elseif ($result2[$key2]['REGRA'] ):
                 echo "<tr class='$pauta norule'>";
+				echo "<td style='text-align:center'>***</td>";
             else: 
                 echo "<tr class='$pauta rule'>";
+				echo "<td style='text-align:center'>---</td>";
                 $cadeado = 1;
             endif;
 
@@ -318,6 +321,7 @@ foreach ($result1 as $key1 => $value) {
 		};
 	else:
 		echo "<tr class='$pauta none'>";
+		echo "<td></td>";
 		echo "<td style='text-align:center'>".$aliasdb."</td>";
 		echo "<td></td>";
 		echo "<td></td>";

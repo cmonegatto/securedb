@@ -161,11 +161,11 @@ endif;
 		
 
 		if ($result[$key]['TO_KILL'] == "S" && $result[$key]['USERNAME']):
-			echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-lock'></i></a></td>"; // habilita o click no cadeado para LOCK
-			//echo "<td><i class='fa fa-lock'></i></a></td>";										// desabilita o click no cadeado para LOCK
+			//echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-lock'></i></a></td>"; // habilita o click no cadeado para LOCK
+			echo "<td><i class='fa fa-lock'></i></a></td>";										// desabilita o click no cadeado para LOCK
 		elseif ($result[$key]['TO_KILL'] == "N" && $result[$key]['USERNAME']):
-			echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-unlock'></i></a></td>";	// habilita o click no cadeado para LOCK
-			//echo "<td><i class='fa fa-unlock'></i></a></td>";											// desabilita o click no cadeado para LOCK 
+			//echo "<td><a href='\admlogins/lockuser/$username'><i class='fa fa-unlock'></i></a></td>";	// habilita o click no cadeado para LOCK
+			echo "<td><i class='fa fa-unlock'></i></a></td>";											// desabilita o click no cadeado para LOCK 
 		else:
 			echo "<td></td>";			
 		endif;

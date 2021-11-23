@@ -168,18 +168,15 @@ $player = $_SESSION['player'];
                 </div>
 
 
-
             </form>
 
-
             <?php
-                if(isset($_SESSION['msg'])):
+                if(isset($_SESSION['msg']) AND strlen($_SESSION['msg'])>0):
+                    echo "<br/>";
                     echo "<span style='color:red'> {$_SESSION['msg']}</span>";
                     $_SESSION['msg']="";
                 endif;
             ?>
-
-
                 <hr />
 
                 <!-- <a href="#" class="btn btn-danger   btn-custom"><span class="img-circle text-primary                btn-icon"></span>User Lock down</a> -->
@@ -206,7 +203,7 @@ $player = $_SESSION['player'];
                             <th scope="col"></th>
                             <th scope="col"></th>
                             <th scope="col"></th>
-                            <th scope="col">#</th>
+                            <th scope="col">ID</th>
                             <th scope="col">Username</th>
                             <th scope="col">OsUser</th>
                             <th scope="col">Machine</th>
