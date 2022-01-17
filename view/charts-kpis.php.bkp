@@ -47,7 +47,6 @@ $ArrayAcessosGeral          = [];
 $ArrayTentativas            = [];
 $ArrayStatusTrigger         = [];
 $ArrayDBVersion             = [];
-$ArrayUltimosAcessos        = [];
 
 $result1 = $conn1->sql( basename(__FILE__), 
     "SELECT hostname, username, password, aliasdb, dbname, port, player, iddb
@@ -59,36 +58,6 @@ $result1 = $conn1->sql( basename(__FILE__),
 
 $msgALL = 'Ocorreu erro de abertura nas seguintes instâncias: '; //acumula mensagens de erros de abertura dos bancos depois envia para MSG da SESSION Global
 $msgErro = 0; // se ocorrer algum erro seta 1. Ao final se >0 então alimenta MSG da Global Session 
-
-
-
-/********************************************************************************************************************
- * Sumarização direto da tabela global de acessos do repositorio MYSQL 
- *******************************************************************************************************************
- */
-
-    $idcia = $_SESSION['s_idcia'];
-
-    $UltimosAcessos= $conn1->sql( basename(__FILE__), 
-            "SELECT DATE_FORMAT(max(l.dtregister), '%d/%m/%Y %H:%i:%s') as DATA, lower(user) as USER
-            FROM adm_login_activity l
-            LEFT JOIN adm_users u on l.user = u.email
-            WHERE l.status='success' and u.idcia=$idcia and l.user not like 'CLAUDIOM@%'
-            GROUP by user
-            ORDER by max(l.dtregister) desc"
-    );
-
-
-    foreach ($UltimosAcessos as $key2 => $value) 
-    {
-        $ArrayUltimosAcessos[] = array( 'data'  => $UltimosAcessos[$key2]['DATA'], 'user'  => $UltimosAcessos[$key2]['USER'] );
-
-    };  
-
-
-//********************************************************************************************************************
-
-
 
 foreach ($result1 as $key1 => $value) {
 
@@ -110,8 +79,6 @@ foreach ($result1 as $key1 => $value) {
     $aliasdb	= strtolower($result1[$key1]['aliasdb']);
     $dbname		= strtolower($result1[$key1]['dbname']);
 
-
-    
     if (strlen($_SESSION['msg']) == 0 ):
 
         if ($player == 'OCI'):
@@ -392,13 +359,9 @@ foreach ($result1 as $key1 => $value) {
 
 
             $StatusTrigger = $conn2->sql( basename(__FILE__), 
-                                "select @@GLOBAL.init_connect as STATUS"                               
-                                 
-                                 /* -- comando abaixo só para versões mais novas, o comando acima garante
-                                 "SELECT if(GLOBAL_VALUE like '%p_logon%', 1, 0) as STATUS
+                                "SELECT if(GLOBAL_VALUE like '%p_logon%', 1, 0) as STATUS
                                    FROM INFORMATION_SCHEMA.SYSTEM_VARIABLES 
                                   WHERE VARIABLE_NAME = 'INIT_CONNECT'"
-                                  */
                                 );                                
 
             $DBVersion = $conn2->sql( basename(__FILE__), 
@@ -938,37 +901,8 @@ $height = $height <= 200 ? 200 : $height;
             <div class="col-sm-6 verticalLine"   id="Chart-Operadores"              style="width: 300px; height: 300px;                     padding-top:10px;"></div>
 
           
-            <div class="col-sm-6"                                                   style="width: 300px; height: 300px;                     padding-top:30px;">
-                Últimos acessos dos colaboradores
-                <table class="table table-sm table-dark table-hover table-bordered">
-                    <thead>
-                        <tr>
-                        <th style='width:50%; text-align:center' scope="col">Usuário</th>
-                        <th style='width:50%; text-align:center' scope="col">Último Acesso</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-
-                            foreach ($ArrayUltimosAcessos as $key => $value) {
-                                echo "<tr>";
-                                echo "<td>".$ArrayUltimosAcessos[$key]['user']."</td>";
-                                echo "<td>".$ArrayUltimosAcessos[$key]['data']."</td>";
-                                echo "</tr>";
-                            };
-                        ?>
-
-                    </tbody>
-                </table>               
-            </div>
-
-            <!-- <div class="col-sm-2 "></div>            -->
-            <div class="col-sm-6 verticalLine"   id="Chart-DBVersion"           style="width: 300px; height: 300px ;   padding-top:20px;"></div>            
-
-
-           
-
-            <div class="col-sm-4"                                                   style="width: 300px; height: 400px;">
+            
+            <div class="col-sm-4"                                                   style="width: 300px; height: 300px;                     padding-top:10px;">
                 Status Controle de Acessos (agora)
                 <table class="table table-sm table-dark table-hover table-bordered">
                     <thead>
@@ -994,10 +928,13 @@ $height = $height <= 200 ? 200 : $height;
                 </table>               
             </div>
 
+            <div class="col-sm-2 "></div>            
+            <div class="col-sm-6 verticalLine"   id="Chart-DBVersion"           style="width: 300px; height: 300px ;   padding-top:20px;"></div>            
+            
             <div class="col-sm-12 ">
                 <hr/>
             </div>
-
+                       
        </div>
 
 <?php include_once 'include/footer_inc.php' ?>

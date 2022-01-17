@@ -60,7 +60,7 @@ if ($result[0]['QTD']>0):
                         "DELETE FROM adm_logins_to_kill WHERE username = :USERNAME", array(":USERNAME" => $user_name));
 
     $result= $conn->sql(basename(__FILE__), 
-                        "INSERT INTO ADM_LOGINS_AUD ( ACTION, ACTION_BY, ACTION_DATE, USERNAME )
+                        "INSERT INTO adm_logins_aud ( ACTION, ACTION_BY, ACTION_DATE, USERNAME )
                               VALUES ('KILL-NOT', '$loginname', $datetimestr, :USERNAME)", array(":USERNAME" => $user_name));
            
 else:
@@ -68,7 +68,7 @@ else:
                         "INSERT INTO adm_logins_to_kill values (:USERNAME)", array(":USERNAME" => $user_name));
 
     $result= $conn->sql(basename(__FILE__), 
-                        "INSERT INTO ADM_LOGINS_AUD ( ACTION, ACTION_BY, ACTION_DATE, USERNAME )
+                        "INSERT INTO adm_logins_aud ( ACTION, ACTION_BY, ACTION_DATE, USERNAME )
                               VALUES ('KILL-YES', '$loginname', $datetimestr, :USERNAME)", array(":USERNAME" => $user_name));
 
 endif;

@@ -48,8 +48,8 @@ if ($player == 'OCI'):
                             WHERE l.username = ll.username
                             and l.osuser     = ll.osuser
                             and l.machine    = ll.machine
---                          and l.freetools  = ll.program
-                            and instr(l.freetools, '%') =0",
+                            --and l.freetools  = ll.program
+                            --and instr(l.freetools, '%') =0",
                         array(":ID_LOG"=> $id_log)
                         );
 
@@ -62,8 +62,8 @@ elseif ($player == 'SQLSRV'):
                         WHERE l.username = ll.username
                         and isnull(l.osuser,'')     = isnull(ll.osuser,'')
                         and isnull(l.machine,'')    = isnull(ll.machine,'')
---                      and isnull(l.freetools,'')  = isnull(ll.program,'')
-                        and charindex('%', l.freetools)=0",
+                        --and isnull(l.freetools,'')  = isnull(ll.program,'')
+                        --and charindex('%', l.freetools)=0",
                         array(":ID_LOG"=> $id_log)
                         );
 
@@ -77,7 +77,7 @@ elseif ($player == 'MYSQL'):
                         WHERE l.username = ll.username
                         and if(isnull(l.osuser),'', l.osuser)     = if(isnull(ll.osuser),'', ll.osuser)
                         and if(isnull(l.machine),'', l.machine)    = if(isnull(ll.machine),'', ll.machine)
---                      and isnull(l.freetools,'')  = isnull(ll.program,'')
+                        -- and isnull(l.freetools,'')  = isnull(ll.program,'')
                         and instr('%', l.freetools)=0",
                         array(":ID_LOG"=> $id_log)
                         );
@@ -148,9 +148,16 @@ if ($result[0]['QTD'] >0) :
                             where ll.id_log=:ID_LOG",
                             array(":ID_LOG"=> $id_log, ":LAST_UPDATED_BY" => $loginname)
                         );
-                    
 
-
+                        /* Trecho para medir o tamano do campo se estoura ou não... usar futuramente
+                        select length( concat( if(isnull(ll.program),'',ll.program), if(isnull(l.freetools),'',l.freetools))  )
+                        from adm_logins_log ll 
+                        join adm_logins l
+                          on if(isnull(l.username),'', l.username)    = if(isnull(ll.username),'', ll.username)
+                              and if(isnull(l.osuser),'', l.osuser)   = if(isnull(ll.osuser),'', ll.osuser)
+                              and if(isnull(l.machine),'', l.machine) = if(isnull(ll.machine),'', ll.machine)
+                       where ll.id_log=846;
+                       */                        
     endif;
 
 

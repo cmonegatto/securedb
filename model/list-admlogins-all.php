@@ -63,7 +63,7 @@ foreach ($result1 as $key1 => $value) {
 											,LAST_UPDATED_DATE
 											, to_char(LAST_USED_DATE, 'dd/mm/yyyy') 	as LAST_USED_DATE
 											,FLAG
-									   FROM ADM_LOGINS l
+									   FROM adm_logins l
 									  ORDER BY USERNAME, OSUSER, MACHINE									
 									"
 			);
@@ -91,7 +91,7 @@ foreach ($result1 as $key1 => $value) {
 											--,CONVERT(VARCHAR(10), LAST_USED_DATE, 103) + ' '  + convert(VARCHAR(8), LAST_USED_DATE, 14) as LAST_USED_DATE
 											,CONVERT(VARCHAR(10), LAST_USED_DATE, 103)  as LAST_USED_DATE
 											,FLAG
-									   FROM ADM_LOGINS l
+									   FROM adm_logins l
 									  ORDER BY USERNAME, OSUSER, MACHINE									
 									"
 			);
@@ -120,7 +120,7 @@ foreach ($result1 as $key1 => $value) {
 											,LAST_UPDATED_DATE
 											,DATE_FORMAT(LAST_USED_DATE, '%d/%m/%Y') 	as LAST_USED_DATE
 											,FLAG 
-									   FROM ADM_LOGINS l
+									   FROM adm_logins l
 									  ORDER BY USERNAME, OSUSER, MACHINE									
 									"
 			);

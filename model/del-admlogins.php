@@ -48,7 +48,7 @@ endif;
 $loginname = strtoupper($_SESSION['s_login']);
 
 $result= $conn->sql(basename(__FILE__), 
-					"INSERT INTO ADM_LOGINS_AUD ( ACTION
+					"INSERT INTO adm_logins_aud ( ACTION
 												, ACTION_BY
 												, ACTION_DATE
 												, ID_LOGIN
@@ -89,7 +89,7 @@ $result= $conn->sql(basename(__FILE__),
 							, CREATED_DATE		
 							, LAST_UPDATED_BY	
 							, LAST_UPDATED_DATE
-					  FROM ADM_LOGINS
+					  FROM adm_logins
 					 WHERE id_login = :ID",
 					array(":ID" => $id));
 

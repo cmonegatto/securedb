@@ -50,7 +50,7 @@ $loginname = strtoupper($_SESSION['s_login']);
 
 
 $result= $conn->sql( basename(__FILE__),     
-    "INSERT INTO ADM_LOGINS_AUD ( ACTION, ACTION_BY, ACTION_DATE, USERNAME, OSUSER, MACHINE )
+    "INSERT INTO adm_logins_aud ( ACTION, ACTION_BY, ACTION_DATE, USERNAME, OSUSER, MACHINE )
      SELECT 'BLACK-NO', '$loginname', $datetimestr, USERNAME, OSUSER, MACHINE
        FROM adm_logins_locked
       WHERE id=:ID", array(":ID"=> $id)

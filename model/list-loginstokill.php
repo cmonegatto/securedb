@@ -96,14 +96,23 @@ elseif ($player == 'MYSQL'):
 
     $orderby = "order by 3 desc,1";
 
-    $result= $conn->sql( basename(__FILE__),  
+    $result= $conn->sql( basename(__FILE__), 
+                    "SELECT DISTINCT u.user as USERNAME, if(u.super_priv='Y', 1, 0) as ADMTRIGGER, if(k.TOKILL=0,1,0) as TOKILL, if(l.ADMLOGINS=0,1,0) as ADMLOGINS
+                       from mysql.user u
+                       left outer join (select username, ifnull(username,0) tokill from adm_logins_to_kill) k
+                            on upper(u.user) = k.username
+                       left outer join (select username, ifnull(username,0) admlogins from adm_logins) l
+                            on upper(u.user) = l.username " . $orderby
+                            
+                    /* codigo ficou imcompativel no MYSQL de versão anterior ao MARIADB local
                     "SELECT DISTINCT u.user as USERNAME, if(u.super_priv='Y', 1, 0) as ADMTRIGGER, k.TOKILL as TOKILL, l.ADMLOGINS as ADMLOGINS
                        from mysql.user u
                        left outer join (select username, 1 tokill from adm_logins_to_kill) k
                             on u.user = k.username
                        left outer join (select username, 1 admlogins from adm_logins) l
                             on u.user = l.username " . $orderby
-    );
+                    */
+                );
 
     
 
@@ -112,7 +121,7 @@ endif;
 
 /*
     tokill       : (1) O registro já está na tabela adm_logins_to_kill (ícone unlock) - (0) ainda não está (ícone lock)
-    admlogins    : (1) Existe regra, portanto pode permitir o LOCK (0) Não há regra, não permitir LOCK, ou seja, enviar para ADM_LOGINS_TO_KILL
+    admlogins    : (1) Existe regra, portanto pode permitir o LOCK (0) Não há regra, não permitir LOCK, ou seja, enviar para adm_logins_to_kill
     admtrigger   : (1) Para banco ORACLE - Usuários com GRANT ADMINISTER DATABASE TRIGGER não podem ser cortados (0) Não tem esse grant, pode sofrer KILL SESSION
 */
 

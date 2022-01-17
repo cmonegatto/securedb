@@ -67,7 +67,7 @@ $result= $conn->sql( basename(__FILE__),
     );
 
 $result= $conn->sql( basename(__FILE__),     
-    "INSERT INTO ADM_LOGINS_AUD ( ACTION, ACTION_BY, ACTION_DATE, USERNAME, OSUSER, MACHINE )
+    "INSERT INTO adm_logins_aud ( ACTION, ACTION_BY, ACTION_DATE, USERNAME, OSUSER, MACHINE )
     VALUES ('BLACK-YES', '$loginname', $datetimestr, :USERNAME, :OSUSER, :MACHINE)", array(":USERNAME"=> $username, ":OSUSER"=> $osuser, ":MACHINE"=> $machine)
     );
 

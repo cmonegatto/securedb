@@ -221,14 +221,17 @@ endif;
 
 
                 <div class="row">   
+
+                    <!--
                     <div class="form-group col-md-6">
                         <label for="initplsql">PL/SQL para inicialização</label>
                         <textarea class="form-control" name="initplsql" id="initplsql" rows="3" maxlength="4000"><?php echo $initplsql ?></textarea>
                     </div>
+                    -->
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-12">
                         <label for="comments">Comentários sobre essa regra...</label>
-                        <textarea class="form-control" name="comments" id="comments" rows="3" maxlength="4000"><?php echo $comments ?></textarea>
+                        <textarea class="form-control" name="comments" id="comments" rows="2" maxlength="4000"><?php echo $comments ?></textarea>
                     </div>
 
                 </div>

@@ -49,146 +49,59 @@ foreach ($result1 as $key1 => $value) {
 		if ($player == 'OCI'):
 
 			$result2= $conn2->sql( basename(__FILE__), 
-									"SELECT count(*) as qtd
-										, ll.username
-										, ll.osuser
-										, ll.machine
-										, ll.program
-										, ll.module
-										, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S')) as TO_KILL
-										, SecDB_F(ll.username, ll.osuser, ll.machine, ll.program, ll.module) as REGRA
-										, max(id_log) as ID_LOG
-									FROM adm_logins_log ll
-								LEFT JOIN adm_logins_to_kill tk
-										ON ll.username = tk.username                              
-									--
-								LEFT JOIN adm_logins_locked lk
-										ON ll.username LIKE decode(lk.username, NULL, '%', lk.username)
-										AND ( ll.MACHINE  LIKE decode(lk.machine , NULL, '%', '%' || lk.machine)
-										OR   decode(lk.machine , NULL, '%', lk.machine) LIKE ll.MACHINE
-											)
-										AND   ll.OSUSER   LIKE decode(lk.osuser  , NULL, '%', lk.osuser) 
-									  WHERE archived is null 
+									 "SELECT count(*) as qtd
+											, ll.username
+											, ll.osuser
+											, ll.machine
+											, ll.program
+											, ll.module
+											, decode(tk.username,'','N','S') as TO_KILL
+											, SecDB_F(ll.username, ll.osuser, ll.machine, ll.program, ll.module) as REGRA										
+											, max(id_log) as ID_LOG
+										FROM adm_logins_log ll 
+										LEFT JOIN adm_logins_to_kill tk ON ll.username = tk.username                              
+										WHERE  ll.archived is null 
+										GROUP BY decode(tk.username,'','N','S'), ll.username, ll.osuser, ll.machine, ll.program, ll.module
+										ORDER BY decode(REGRA,-1,1,decode(REGRA,0,0,decode(REGRA,9,2,3))) , 1 DESC"
+								);
 
-									    -- essa parte é para não apresentar os vermelhos --
-									    and (SecDB_F(ll.username, ll.osuser, ll.machine, ll.program, ll.module)>=0
-										      and decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S')) = 'N'
-											)
-										  or (SecDB_F(ll.username, ll.osuser, ll.machine, ll.program, ll.module)=0
-										      and decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S')) = 'S'
-											)
-										--
-								GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
-											, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S'))
-								ORDER BY SecDB_F(ll.username, ll.osuser, ll.machine, ll.program, ll.module) DESC
-											, decode(decode(tk.username,'','N','S'),'S','S', decode(lk.username||lk.machine||lk.osuser,'','N','S'))
-											, 1 DESC"
-			);
-/*
-
-                                "SELECT count(*) as qtd
-                                    , ll.username
-                                    , ll.osuser
-                                    , ll.machine
-                                    , ll.program
-                                    , ll.module
-                                    , decode(tk.username,'','N','S') as TO_KILL
-                                    , SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) as REGRA
---                                    , max(id_log) as ID_LOG
-                                FROM adm_logins_log ll
-                                LEFT JOIN adm_logins_to_kill tk
-                                    ON ll.username = tk.username
---                                 WHERE SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) =1
-                                   --AND decode(tk.username,'','N','S') ='N'
-                                GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, decode(tk.username,'','N','S')
-                                ORDER BY SecDB_F(ll.username, ll.osuser, '%' || substr(ll.machine, instr(ll.machine, '\')+1) || '%', ll.program, ll.module) DESC, decode(tk.username,'','N','S'), 1 DESC"
-                                );
-*/
+								/*
+								Racional do ORDER BY 
+									-1 		(kill)			=> 1
+									 0 		(sem regra)		=> 0
+									 9 		(com regra ?)	=> 2
+									 1>0	(com regra)		=> 3
+								*/
 
 
 		elseif ($player == 'SQLSRV'):			
 
-			$result2 = $conn2->sql( basename(__FILE__), 			
-							  "SELECT count(*) as QTD
+			$result2 = $conn2->sql( basename(__FILE__), 	
+
+			
+							"SELECT * FROM  
+								(
+								SELECT count(*) as QTD
 									, ll.USERNAME
 									, ll.OSUSER
 									, ll.MACHINE
 									, ll.PROGRAM
 									, ll.MODULE
-									-- , CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END as TO_KILL
-									, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when isnull(lk.username,'' ) + isnull(lk.machine,'' ) + isnull(lk.osuser,'' ) ='' THEN 'N' ELSE 'S' END END as TO_KILL
-									, CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0 THEN 1 ELSE 0 END as REGRA
+									, CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END as TO_KILL
+									, securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine, 0) as REGRA						   
 									, max(id_log) as ID_LOG
-								FROM adm_logins_log ll
-							LEFT JOIN adm_logins_to_kill tk
-									ON ll.username = tk.username
-							--
-							LEFT JOIN adm_logins_locked lk
-									ON CASE WHEN ll.username IS NULL THEN '%' ELSE ll.username END LIKE CASE WHEN lk.username IS NULL THEN '%' ELSE lk.username END
-								AND ( CASE WHEN ll.machine IS NULL THEN '%' ELSE ll.machine END  LIKE CASE WHEN lk.machine IS NULL THEN '%' ELSE '%' + lk.machine END
-									OR   CASE WHEN lk.machine IS NULL THEN '%' ELSE lk.machine END LIKE CASE WHEN ll.machine IS NULL THEN '%' ELSE ll.machine END
-									)
-								AND   CASE WHEN ll.osuser IS NULL THEN '%' ELSE ll.osuser END LIKE CASE WHEN lk.osuser IS NULL THEN '%' ELSE lk.osuser END
-								WHERE  ll.archived is null 
-								
-								-- essa parte é para não apresentar os vermelhos --
-								and securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)>=0
-
-							--
-							GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module
-										--, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END
-										, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when isnull(lk.username,'' ) + isnull(lk.machine,'' ) + isnull(lk.osuser,'' ) ='' THEN 'N' ELSE 'S' END END
-							--
-									,CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END
-									--,case when concat(lk.username,lk.machine,lk.osuser) IS NULL THEN 'N' ELSE 'S' END 
-									,case when isnull(lk.username,'' ) + isnull(lk.machine,'' ) + isnull(lk.osuser,'' ) = '' THEN 'N' ELSE 'S' END 
-								ORDER BY CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0 THEN 1 ELSE 0 END DESC
-										--, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when concat(lk.username,lk.machine,lk.osuser) ='' THEN 'N' ELSE 'S' END END
-										, CASE WHEN (CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END)='S' THEN 'S' ELSE case when isnull(lk.username,'' ) + isnull(lk.machine,'' ) + isnull(lk.osuser,'' ) ='' THEN 'N' ELSE 'S' END END
-										, 1 DESC"			
+								  FROM adm_logins_log ll
+								  LEFT JOIN adm_logins_to_kill tk ON ll.username = tk.username
+								 WHERE  ll.archived is null
+								 GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, CASE WHEN tk.username IS NULL THEN 'N' ELSE 'S' END
+								) ll
+								ORDER by CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine, 0)=-1 THEN 1
+						    		ELSE CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine, 0)=0 THEN 0 
+						   			ELSE CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine, 0)=9 THEN 2 
+						   			ELSE 3 END END END, QTD DESC"
 								);
 
-								/*			
-                                "SELECT count(*) as QTD
-                                    , ll.USERNAME
-                                    , ll.OSUSER
-                                    , ll.MACHINE
-                                    , ll.PROGRAM
-                                    , ll.MODULE
-									, CASE WHEN tk.USERNAME IS NULL THEN 'N' ELSE 'S' END as TO_KILL
-								    , CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0 THEN 1 ELSE 0 END as REGRA
---                                    , max(id_log) as ID_LOG
-                                   FROM adm_logins_log ll
-                                   LEFT JOIN adm_logins_to_kill tk
-                                     ON ll.username = tk.username
---                                  WHERE iif(securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0,1,0)=1
---                                    AND iif(tk.USERNAME IS NULL,'N','S') = 'N'
-                                  GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, CASE WHEN tk.USERNAME IS NULL THEN 'N' ELSE 'S' END
-                                  ORDER BY CASE WHEN securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0 THEN 1 ELSE 0 END DESC, CASE WHEN tk.USERNAME IS NULL THEN 'N' ELSE 'S' END, 1 DESC"
-								);
-*/
 
-			/*
-            $result2 = $conn2->sql( basename(__FILE__), 
-                                "SELECT count(*) as QTD
-                                    , ll.USERNAME
-                                    , ll.OSUSER
-                                    , ll.MACHINE
-                                    , ll.PROGRAM
-                                    , ll.MODULE
-                                    , iif(tk.USERNAME IS NULL,'N','S') as TO_KILL
-                                    , iif(securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0,1,0) as REGRA
---                                    , max(id_log) as ID_LOG
-                                   FROM adm_logins_log ll
-                                   LEFT JOIN adm_logins_to_kill tk
-                                     ON ll.username = tk.username
---                                  WHERE iif(securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0,1,0)=1
---                                    AND iif(tk.USERNAME IS NULL,'N','S') = 'N'
-                                  GROUP BY  ll.username, ll.osuser, ll.machine, ll.program, ll.module, iif(tk.username IS NULL,'N','S')
-                                  ORDER BY iif(securedb.dbo.F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0,1,0) DESC, iif(tk.USERNAME IS NULL,'N','S'), 1 DESC"
-								);
-			*/
-            
                 
 		elseif ($player == 'MYSQL'):
 
@@ -200,7 +113,8 @@ foreach ($result1 as $key1 => $value) {
 							, ll.PROGRAM
 							, ll.MODULE
 							, if ( if(ISNULL(tk.username), 'N', 'S')='S', 'S', if(length(concat( coalesce(lk.username,''), coalesce(lk.machine,''), coalesce(lk.osuser,'')))>0, 'S','N')) as TO_KILL
-							, if( F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0, 1, 0) as REGRA
+							-- , if( F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0)<=0, 1, 0) as REGRA
+							, F_LOGON ('%', ll.username, ll.osuser, ll.program, ll.machine,0) as REGRA
 							, max(id_log) as ID_LOG
 							FROM adm_logins_log ll
 						LEFT JOIN adm_logins_to_kill tk
@@ -235,6 +149,7 @@ foreach ($result1 as $key1 => $value) {
 		if (strlen($_SESSION['msg']) > 0 ):
 			echo "<tr class='$pauta none'>";
 			echo "<td></td>";
+			echo "<td></td>";
 			echo "<td style='text-align:center'>".$aliasdb."</td>";
 			echo "<td></td>";
 			echo "<td></td>";
@@ -266,21 +181,28 @@ foreach ($result1 as $key1 => $value) {
 
             $cadeado = 0;
 
-            if ($result2[$key2]['REGRA'] && $result2[$key2]['TO_KILL']=='S'):
+            if ($result2[$key2]['REGRA'] <0 && $result2[$key2]['TO_KILL']=='S'):
                 echo "<tr class='$pauta todie'>";
-            elseif ($result2[$key2]['REGRA'] ):
+				echo "<td style='text-align:center'>---</td>";
+            elseif ($result2[$key2]['REGRA'] ==0):
                 echo "<tr class='$pauta norule'>";
 				echo "<td style='text-align:center'>***</td>";
-            else: 
-                echo "<tr class='$pauta rule'>";
-				echo "<td style='text-align:center'>---</td>";
+			elseif ($result2[$key2]['REGRA'] > 0):
+				echo "<tr class='$pauta rule'>";
+				echo "<td style='text-align:center'>...</td>";
                 $cadeado = 1;
             endif;
 
-			//echo "<tr class='$pauta'>";
-            //echo "<td style='text-align:center; font-weight:bolder'>".$dbname."</td>";
-            
 
+			// ------------------------------------------------------------------------------------------------------------------------
+			if ($result2[$key2]['REGRA'] == 9 ):
+				echo "<td style='text-align:center'><i  style='color:red'; class='fa fa-question-circle fa-2x'></i></td>";
+			else:
+				echo "<td></td>";			
+			endif;            
+			// ------------------------------------------------------------------------------------------------------------------------
+
+			
 			echo "<td style='text-align:center'>".$aliasdb."</td>";
             echo "<td style='text-align:center'>".$result2[$key2]['QTD']."</td>";
 
@@ -321,6 +243,7 @@ foreach ($result1 as $key1 => $value) {
 		};
 	else:
 		echo "<tr class='$pauta none'>";
+		echo "<td></td>";
 		echo "<td></td>";
 		echo "<td style='text-align:center'>".$aliasdb."</td>";
 		echo "<td></td>";

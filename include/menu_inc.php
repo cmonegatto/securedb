@@ -73,9 +73,9 @@ endif;
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle text-white-50" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Visão Geral</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="/admloginslogall/0/0">Bloqueios e logins não mapeados</a>
-						<a class="dropdown-item" href="/admloginslogall/0">Consultar cobertura das Regras</a>
-						<a class="dropdown-item" 	href="/admloginsAll/0">Consultar Regras</a>
+						<a class="dropdown-item <?= ($user)? '': 'disabled'?>" href="/admloginslogall/0/0">Bloqueios e logins não mapeados</a>
+						<a class="dropdown-item <?= ($user)? '': 'disabled'?>" href="/admloginslogall/0">Consultar cobertura das Regras</a>
+						<a class="dropdown-item <?= ($user)? '': 'disabled'?>" 	href="/admloginsAll/0">Consultar Regras</a>
 					</div>
 				</li>
 

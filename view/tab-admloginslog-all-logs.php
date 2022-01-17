@@ -60,7 +60,8 @@ $days = -1; //$data['days'];
 
                     <thead>
                         <tr>
-                            <th scope="col">Tit.</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
                             <th scope="col">Instância</th>
                             <th scope="col">Qtd</th>
                             <th scope="col"></th>
@@ -85,11 +86,11 @@ $days = -1; //$data['days'];
 
                 <!-- <button type="submit" class="btn btn-primary">Gestão das Regras</button> -->
                 <span class="fa fa-square" style="color:yellow; padding-left:0px"></span>                
-                Sem Regra
+                Sem Regra (***)
                 <span class="fa fa-square" style="color:red"></span>
-                Bloquear
+                Bloquear (---)
                 <span class="fa fa-square" style="color:green"></span>
-                Liberar
+                Liberar (...)
                 
                 <br><br>
                 <?php
