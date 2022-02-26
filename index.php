@@ -3,7 +3,8 @@
 
 session_start();
 require_once("vendor/autoload.php");
-//include_once "class/Sql.php";
+
+//include_once "class/Sql.php"; /* Ativar quando utilizar API (dependendo de como for utilizada) */
 
 $url = $_SERVER["REQUEST_URI"];
 
@@ -421,8 +422,9 @@ $app->get('/kpi/:idcat/:dayAccess/:dayRules', function ($idcat, $dayAccess, $day
 - Exemplo de chamada API para retornar dados do banco de dados em JSON
 - Incluir  include_once "class/Sql.php";
 - Necessita estar conectado por causa das variáveis de ambiente global (pensar em algo independente)...
+*/
 
-
+/*
 $app->get('/api', function () {      
 
 
@@ -430,13 +432,13 @@ $app->get('/api', function () {
 
     $result1 = $conn1->sql( basename(__FILE__), 
     "SELECT 'PROD' CATEGORY, 'DB-MYSQL' DBNAME, DATETIME, USERNAME, OSUSER, MACHINE, TERMINAL, PROGRAM, MODULE, KILLED
-       FROM adm_logins_log where killed is not null  limit 3     
+       FROM adm_logins_log -- where killed is not null  limit 3     
        ");
 
 
     echo json_encode($result1);
+    
 });
-
 */
 
 $app->run();

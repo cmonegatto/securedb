@@ -32,7 +32,7 @@ function encrypt_decrypt($action, $string) {
     return $output;
 }
 
-$plain_txt = "Compaqv410";
+$plain_txt = "Securedb%2NOW2020@";
 echo "Plain Text =" .$plain_txt. "<br/>";
 
 $encrypted_txt = encrypt_decrypt('encrypt', $plain_txt);

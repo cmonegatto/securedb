@@ -47,7 +47,7 @@ class Sql {
 			}catch(PDOException $e){
 				//echo ($e->getMessage());
 				$_SESSION['msg'] = "Ocorreu um erro na conexão com banco de dados. Verifique os dados de conexão (tnsnames.ora e variável TNS_ADMIN) - " . ($e->getMessage());
-				$_SESSION['msg'] = $_SESSION['msg']."$db:dbname=".$tns .'/'. $username .'/**************';
+				$_SESSION['msg'] = $_SESSION['msg']."$db:dbname=".$dbname .'/'. $username .'/**************';
 			}
 
 		elseif ($db=='SQLSRV'):
@@ -137,9 +137,9 @@ class Sql {
 
 
 			if ( strpos($error_message, 'ORA-00001') || strpos($error_message, 'uplica')>0 ):
-				$_SESSION['msg'] = "Não foi possível atualizar o banco de dados. Esse registro já existe! "; //.$error_message;
+				$_SESSION['msg'] = "Não foi possível atualizar o banco de dados. Esse registro já existe! ".$error_message;
 			else:
-				$_SESSION['msg'] = "Não foi possível atualizar o banco de dados, verifique com o Administrador da aplicação"; //. $error_message;
+				$_SESSION['msg'] = "Não foi possível atualizar o banco de dados, verifique com o Administrador da aplicação". $error_message;
 			endif;
 
 			$conn2 = new Sql();
